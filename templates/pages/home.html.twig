@@ -3,5 +3,29 @@
 {% block title %}Accueil
 {% endblock %}
 {% block body %}
-	hey
+	<h1>Capsule</h1>
+
+	<div class="bloc-container">
+		<div class="bloc-item">
+			<div class="addBlock"></div>
+      <form action="{{path('add_bloc')}}" method="POST">
+			  <textarea name="txt_input" class="addBlock-textarea"></textarea>
+			  <button type="submit" name="submit">-> Ajouter le Bloc</button>
+      </form>
+		</div>
+		{% for bloc in blocs %}
+			<div class="bloc-item">
+      <p>{{bloc.description}}</p>
+      {% if bloc.texte %}
+        <p>{{ bloc.texte.texte}}</p>
+      {% endif %}
+      {% if bloc.image %}
+				<a href="bloc/1">
+					<img src="{{path(bloc.img.url)}}" alt="#">
+				</a>
+      {% endif %}
+
+			</div>
+		{% endfor %}
+	</div>
 {% endblock %}

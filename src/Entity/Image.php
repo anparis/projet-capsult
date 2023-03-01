@@ -19,7 +19,7 @@ class Image
     #[ORM\Column(length: 10)]
     private ?string $type_fichier = null;
 
-    #[ORM\OneToOne(mappedBy: 'image', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'image', cascade: ['persist', 'remove'])]
     private ?Bloc $bloc = null;
 
     public function getId(): ?int

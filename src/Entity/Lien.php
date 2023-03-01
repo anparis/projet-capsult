@@ -15,8 +15,8 @@ class Lien
 
     #[ORM\Column(length: 255)]
     private ?string $url = null;
-
-    #[ORM\OneToOne(mappedBy: 'lien', cascade: ['persist', 'remove'])]
+    
+    #[ORM\OneToOne(inversedBy: 'lien', cascade: ['persist', 'remove'])]
     private ?Bloc $bloc = null;
 
     public function getId(): ?int

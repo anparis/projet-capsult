@@ -17,7 +17,7 @@ class Texte
     #[ORM\Column(type: Types::TEXT)]
     private ?string $texte = null;
 
-    #[ORM\OneToOne(mappedBy: 'texte', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'texte', cascade: ['persist', 'remove'])]
     private ?Bloc $bloc = null;
 
     public function getId(): ?int
