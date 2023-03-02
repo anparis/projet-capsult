@@ -7,17 +7,22 @@ use DateTimeZone;
 use App\Entity\Bloc;
 use App\Entity\Texte;
 use App\Repository\BlocRepository;
+use App\Service\Validation;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Url;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
   #[Route('/', name: 'app_home')]
-  public function home(BlocRepository $bl, EntityManagerInterface $entity, ManagerRegistry $doctrine): Response
+  public function home(BlocRepository $bl): Response
   {
     // $bloc = new Bloc();
     // $date = new DateTime('now',new DateTimeZone('Europe/Paris'));
@@ -41,11 +46,15 @@ class HomeController extends AbstractController
   }
 
   #[Route('/add', name: 'add_bloc')]
-  public function addBloc(EntityManagerInterface $entity, ManagerRegistry $doctrine, Request $request): Response
+  public function addBloc(EntityManagerInterface $entity, Request $request, Validation $validation, ValidatorInterface $validator): Response
   {
     $post = $request->request;
     $textarea = $post->get('txt_input');
-    if ($post->has('submit') && $textarea) {
+
+    $violation = $validation->validateUrl($textarea,$validator);
+
+    if ($post->has('submit') && $textarea && $violation) {
+      dd("marche");
       $bloc = new Bloc();
       $date = new DateTime();
       $bloc->setDateCreation($date);
@@ -58,13 +67,16 @@ class HomeController extends AbstractController
       $txt->setBloc($bloc);
       $entity->persist($txt);
       $entity->flush();
-    }
-    else{
+    } elseif ($violation == 0) {
+      return new Response(
+        'success'
+      );
+    } else {
       return new Response(
         'failed'
       );
     }
-    
+
     return $this->redirectToRoute('app_home');
   }
 }
