@@ -2,7 +2,9 @@
   --bloc-color : lightgray;
 }
 
-
+*{
+  box-sizing: border-box;
+}
 
 /* BLOC */
 .bloc-container{
@@ -13,8 +15,28 @@
 .bloc-item{
   box-sizing: border-box;
   width: 315px;
+  height: 315px;
   position: relative;
   margin: 0px 10px 40px;
   background-color: var(--bloc-color);
   border-radius: 5px;
+}
+
+/* BLOC add */
+.addBlock{
+  padding: 1em 1em 0 1em;
+}
+
+#ab-form{
+ box-sizing: border-box;
+  position: relative;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.ab-textarea{
+ 
 }
