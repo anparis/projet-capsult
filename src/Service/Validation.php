@@ -29,20 +29,18 @@ class Validation
   }
 
   /**
-   * Validate an url input from user
+   * Check if user upload is a valid Image 
    * Return true if number of violation>0
    */
   public function validateImage(UploadedFile $img, ValidatorInterface $validator): bool
   {
     $input = ['img' => $img];
 
-    dump($input);
     $constraints = new Collection([
       'img' => [new Image(), new NotBlank()],
     ]);
 
     $violation = $validator->validate($input, $constraints);
-    dd($violation);
     return count($violation) > 0 ? 1 : 0;
   }
 }
