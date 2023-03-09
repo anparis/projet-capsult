@@ -9,11 +9,11 @@ use App\Entity\Image;
 use App\Entity\Lien;
 use App\Entity\Texte;
 use App\Service\Validation;
+use App\Service\FileUploader;
 use App\Repository\BlocRepository;
 use App\Repository\ImageRepository;
 use App\Repository\LienRepository;
 use App\Repository\TexteRepository;
-use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,36 +36,44 @@ class HomeController extends AbstractController
   }
 
   #[Route('/add', name: 'add_bloc')]
-  public function addBloc(HtmlSanitizerInterface $htmlSanitizer, Request $request, BlocRepository $br, ImageRepository $ir, TexteRepository $tr, LienRepository $lr, Validation $validation,ValidatorInterface $validator, SluggerInterface $slugger): Response
+  public function addBloc(HtmlSanitizerInterface $htmlSanitizer, Request $request, BlocRepository $br, ImageRepository $ir, TexteRepository $tr, LienRepository $lr, Validation $validation,ValidatorInterface $validator, FileUploader $fileUploader): Response
   {
     $post = $request->request;
+    /** @var UserTextareaInput $textarea */
     $textarea = $post->get('txt_input');
+    /** @var UploadedFile $imgFile */
     $imgFile = $request->files->get('image');
 
     //get token generated on form
     $submittedToken = $request->request->get('token');
 
     if ($this->isCsrfTokenValid('add-bloc', $submittedToken) && $post->has('submit') && ($imgFile || $textarea)) {
+
       $bloc = new Bloc();
       $date = new DateTime();
       $bloc->setDateCreation($date);
       $bloc->setDateModification($date);
       $br->save($bloc, true);
+
       if($imgFile && !$textarea)
       {
         //calling validation service to check if user upload is an image 
         $imgViolation = $validation->validateImage($imgFile,$validator);
         if(!$imgViolation)
         {
-          $uploader = new FileUploader($this->getParameter('images_directory'),$slugger); 
-          $fileName = $uploader->upload($imgFile);
+          $fileName = $fileUploader->upload($imgFile); 
+          $fullImgPath = $fileUploader->getTargetDirectory().'/'.$fileName;
+          dd(getimagesize($fullImgPath));
+          [$width,$height] = getimagesize($fileName);
+
+
           $img = new Image();
           $img->setNomFichier($fileName);
           $img->setTypeFichier($imgFile->getClientOriginalExtension());
           $img->setBloc($bloc);
           $ir->save($img, true);
           return $this->redirectToRoute('app_home');
-      }
+        }
       else{
         return new Response(
           '<h1>not an Image</h1>'

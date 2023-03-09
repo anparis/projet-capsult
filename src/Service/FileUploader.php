@@ -8,8 +8,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileUploader
 {
-    private $targetDirectory;
-    private $slugger;
+    private string $targetDirectory;
+    private SluggerInterface $slugger;
 
     public function __construct($targetDirectory, SluggerInterface $slugger)
     {

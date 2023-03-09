@@ -19,6 +19,9 @@ class Image
     #[ORM\Column(length: 10)]
     private ?string $type_fichier = null;
 
+    #[ORM\Column(length: 200)]
+    private ?string $thumb = null;
+
     #[ORM\OneToOne(inversedBy: 'image', cascade: ['persist', 'remove'])]
     private ?Bloc $bloc = null;
 
@@ -47,6 +50,18 @@ class Image
     public function setTypeFichier(string $type_fichier): self
     {
         $this->type_fichier = $type_fichier;
+
+        return $this;
+    }
+
+    public function getThumb(): ?string
+    {
+        return $this->type_fichier;
+    }
+
+    public function setThumb(string $thumb): self
+    {
+        $this->thumb = $thumb;
 
         return $this;
     }
