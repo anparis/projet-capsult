@@ -22,16 +22,18 @@
 		</div>
 		{% for bloc in blocs %}
 			<div class="bloc-item">
-				<p>{{bloc.description}}</p>
 				{% if bloc.texte %}
 					<p>{{ bloc.texte.texte}}</p>
 				{% endif %}
 				{% if bloc.image %}
 					<a href="bloc/1">
-						<img src="{{path(bloc.img.url)}}" alt="#">
+						<img src="{{asset('/images/uploads/'~bloc.image.nomFichier)}}" alt="#">
 					</a>
 				{% endif %}
-
+				{% if bloc.lien %}
+					<a href="{{path(bloc.lien.url)}}">{{bloc.lien.url}}
+					</a>
+				{% endif %}
 			</div>
 		{% endfor %}
 	</div>

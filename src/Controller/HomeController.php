@@ -10,6 +10,7 @@ use App\Entity\Lien;
 use App\Entity\Texte;
 use App\Service\Validation;
 use App\Repository\BlocRepository;
+use App\Repository\ImageRepository;
 use App\Repository\LienRepository;
 use App\Repository\TexteRepository;
 use App\Service\FileUploader;
@@ -44,27 +45,26 @@ class HomeController extends AbstractController
     //get token generated on form
     $submittedToken = $request->request->get('token');
 
-
-
-    if ($this->isCsrfTokenValid('add-bloc', $submittedToken) && $post->has('submit') && ($imgFile || $safeTextArea)) {
-      /* $bloc = new Bloc();
+    if ($this->isCsrfTokenValid('add-bloc', $submittedToken) && $post->has('submit') && ($imgFile || $textarea)) {
+      $bloc = new Bloc();
       $date = new DateTime();
       $bloc->setDateCreation($date);
       $bloc->setDateModification($date);
-      $br->save($bloc, true); */
-      if($imgFile)
+      $br->save($bloc, true);
+      if($imgFile && !$textarea)
       {
         //calling validation service to check if user upload is an image 
         $imgViolation = $validation->validateImage($imgFile,$validator);
         if(!$imgViolation)
         {
-          dd('isanimage');
           $uploader = new FileUploader($this->getParameter('images_directory'),$slugger); 
           $fileName = $uploader->upload($imgFile);
           $img = new Image();
           $img->setNomFichier($fileName);
-          $img->setTypeFichier($imgFile->guessExtension());
+          $img->setTypeFichier($imgFile->getClientOriginalExtension());
+          $img->setBloc($bloc);
           $ir->save($img, true);
+          return $this->redirectToRoute('app_home');
       }
       else{
         return new Response(
@@ -74,36 +74,34 @@ class HomeController extends AbstractController
     }
 
     if($textarea){
-    //Sanitize user input
-    //Code will not contain any scripts, styles or other elements that can cause the website to behave or look different.
-    $safeTextArea = $htmlSanitizer->sanitize($textarea);
+      //Sanitize user input
+      //Code will not contain any scripts, styles or other elements that can cause the website to behave or look different.
+      $safeTextArea = $htmlSanitizer->sanitize($textarea);
 
-
-    //calling validation service to check if user input is a url
-    $urlViolation = $validation->validateUrl($safeTextArea,$validator);
+      //calling validation service to check if user input is a url
+      $urlViolation = $validation->validateUrl($safeTextArea,$validator);
 
       if($urlViolation){
-        dd("ajout texte");
         $txt = new Texte();
         $txt->setTexte($textarea);
         $txt->setBloc($bloc);
         $tr->save($txt, true);
+        return $this->redirectToRoute('app_home');
       }
       else {
-        dd("ajout lien");
         $link = new Lien();
         $link->setUrl($textarea);
         $link->setBloc($bloc);
         $lr->save($link, true);
-        return new Response(
-          'ajout url'
-        );
+        return $this->redirectToRoute('app_home');
       } 
     }
-    
     }
-
-    return $this->redirectToRoute('app_home');
+    else{
+        return new Response(
+          'Erreur de formulaire'
+        );
+    }
   }
 
   #[Route('/add-image', name: 'add_image_bloc')]

@@ -28,7 +28,6 @@ class FileUploader
         } catch (FileException $e) {
             // ... handle exception if something happens during file upload
             dump('file upload error');
-            
         }
 
         return $fileName;
