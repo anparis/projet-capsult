@@ -2,39 +2,45 @@
 
 namespace App\Service;
 
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Asset\Context\RequestStackContext;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class FileUploader
 {
-    private string $targetDirectory;
-    private SluggerInterface $slugger;
+  const BLOC_IMAGE = 'bloc_img';
+  private string $targetDirectory;
+  private RequestStackContext $requestStackContext;
 
-    public function __construct($targetDirectory, SluggerInterface $slugger)
-    {
-        $this->targetDirectory = $targetDirectory;
-        $this->slugger = $slugger;
+  public function __construct($targetDirectory, RequestStackContext $requestStackContext)
+  {
+    $this->targetDirectory = $targetDirectory;
+    $this->requestStackContext = $requestStackContext;
+  }
+
+  public function upload(UploadedFile $file)
+  {
+    // $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+    $destination = $this->getTargetDirectory() . '/' . self::BLOC_IMAGE;
+    $fileName = bin2hex(random_bytes(6)) . '.' . $file->guessExtension();
+    try {
+      $file->move($destination, $fileName);
+    } catch (FileException $e) {
+      // ... handle exception if something happens during file upload
+      dump('file upload error');
     }
 
-    public function upload(UploadedFile $file)
-    {
-        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $safeFilename = $this->slugger->slug($originalFilename);
-        $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+    return $fileName;
+  }
 
-        try {
-            $file->move($this->getTargetDirectory(), $fileName);
-        } catch (FileException $e) {
-            // ... handle exception if something happens during file upload
-            dump('file upload error');
-        }
+  public function getTargetDirectory()
+  {
+    return $this->targetDirectory . '/' . self::BLOC_IMAGE;
+  }
 
-        return $fileName;
-    }
-
-    public function getTargetDirectory()
-    {
-        return $this->targetDirectory;
-    }
-}  
+  public function getPublicPath(string $path): string
+  {
+    return $this->requestStackContext
+       ->getBasePath() . '/uploads/' . $path;
+  }
+}

@@ -22,8 +22,16 @@
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
+/public/images/uploads/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 .DS-Store
+
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###
+
+/public/uploads/bloc_img/

@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\ImageRepository;
+use App\Service\FileUploader;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ImageRepository;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
@@ -19,9 +20,6 @@ class Image
     #[ORM\Column(length: 10)]
     private ?string $type_fichier = null;
 
-    #[ORM\Column(length: 200)]
-    private ?string $thumb = null;
-
     #[ORM\OneToOne(inversedBy: 'image', cascade: ['persist', 'remove'])]
     private ?Bloc $bloc = null;
 
@@ -32,7 +30,7 @@ class Image
 
     public function getNomFichier(): ?string
     {
-        return $this->nom_fichier;
+        return FileUploader::BLOC_IMAGE.'/'.$this->nom_fichier;
     }
 
     public function setNomFichier(string $nom_fichier): self
@@ -50,18 +48,6 @@ class Image
     public function setTypeFichier(string $type_fichier): self
     {
         $this->type_fichier = $type_fichier;
-
-        return $this;
-    }
-
-    public function getThumb(): ?string
-    {
-        return $this->type_fichier;
-    }
-
-    public function setThumb(string $thumb): self
-    {
-        $this->thumb = $thumb;
 
         return $this;
     }
