@@ -1,43 +1,100 @@
-:root{
-  --bloc-color : lightgray;
+:root {
+  --bloc-color: lightgray;
 }
 
-*{
+* {
   box-sizing: border-box;
 }
 
-/* BLOC */
-.bloc-container{
+/* BLOC page */
+.box-constraint {
+  margin: 0 auto;
+}
+
+.bloc-container {
   display: flex;
   flex-flow: row wrap;
+  margin-left: -10px;
+  margin-right: -10px;
 }
 
-.bloc-item{
-  box-sizing: border-box;
+.bloc-item {
   width: 315px;
-  height: 315px;
   position: relative;
   margin: 0px 10px 40px;
+}
+
+a.connection-container {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  user-select: none;
   background-color: var(--bloc-color);
+  width: 315px;
+  height: 315px;
+  margin-bottom: 3em;
   border-radius: 5px;
 }
 
-.bloc-item .bloc-content{
+/* BLOC TYPE  */
+.bloc-img {
   width: 100%;
   height: 100%;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+}
+
+.bloc-txt {
+  padding-top: 0.65em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  text-align: left;
 }
 
 /* BLOC add */
-.addBlock{
+.addBlock {
+  width: 315px;
+  height: 315px;
+  border-radius: 5px;
   padding: 1em 1em 0 1em;
+  background-color: var(--bloc-color);
 }
 
-#ab-form{
- box-sizing: border-box;
+#ab-form {
+  box-sizing: border-box;
   position: relative;
   -webkit-box-align: center;
   align-items: center;
   -webkit-box-pack: center;
   justify-content: center;
   text-align: center;
+}
+
+/* MEDIA QUERIES */
+@media (min-width: 355px) {
+  .box-constraint {
+    max-width: 335px;
+  }
+}
+
+@media (min-width: 690px) {
+  .box-constraint {
+    max-width: 670px;
+  }
+}
+@media (min-width: 1020px) {
+  .box-constraint {
+    max-width: 1010px;
+  }
+}
+@media (min-width: 1360px) {
+  .box-constraint {
+    max-width: 1340px;
+  }
 }

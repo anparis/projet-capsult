@@ -3,41 +3,45 @@
 {% block title %}Accueil
 {% endblock %}
 {% block body %}
-	<h1>Capsule</h1>
-
-	<div class="bloc-container">
-		<div class="bloc-item">
-			<div class="addBlock">
-				<form id="ab-form" action="{{path('add_bloc')}}" method="POST" enctype="multipart/form-data">
-					<div class="ab-text">
-						Collez une URL (image ou lien), écrivez directement du texte ou choisissez une image
-						<input type="file" name="image">
+	<main>
+		<div class="box-constraint">
+			<h1>Capsule</h1>
+			<div class="bloc-container">
+				<div class="bloc-item">
+					<div class="addBlock">
+						<form id="ab-form" action="{{path('add_bloc')}}" method="POST" enctype="multipart/form-data">
+							<div class="ab-text">
+								Collez une URL (image ou lien), écrivez directement du texte ou choisissez une image
+								<input type="file" name="image">
+							</div>
+							<textarea class="ab-textarea" name="txt_input" class="addBlock-textarea"></textarea>
+							<input type="hidden" name="token" value="{{ csrf_token('add-bloc') }}"/>
+							<button type="submit" name="submit">-> Ajouter le Bloc</button>
+						</form>
 					</div>
-					<textarea class="ab-textarea" name="txt_input" class="addBlock-textarea"></textarea>
-					<input type="hidden" name="token" value="{{ csrf_token('add-bloc') }}"/>
-					<button type="submit" name="submit">-> Ajouter le Bloc</button>
-				</form>
-
+				</div>
+				{% for bloc in blocs %}
+					<div class="bloc-item">
+						<a href="{{path('app_bloc_edit',{'id':bloc.id})}}" class="connection-container">
+								{% if bloc.texte %}
+							  <div class="bloc-txt">
+									<p>{{ bloc.texte.texte}}</p>
+							  </div>
+								{% endif %}
+								{% if bloc.image %}
+							  <div class="bloc-img">
+									<img src="{{ asset('/uploads/'~bloc.image.nomFichier) | imagine_filter('my_thumb') }}" alt="#">
+							  </div>
+								{% endif %}
+								{% if bloc.lien %}
+							  <div class="bloc-img">
+									<p>{{bloc.lien.url}}</p>
+							  </div>
+								{% endif %}
+						</a>
+					</div>
+				{% endfor %}
 			</div>
 		</div>
-		{% for bloc in blocs %}
-			<div class="bloc-item">
-				<a href="{{path('app_bloc_edit',{'id':bloc.id})}}">
-					<div class="bloc-content">
-						{% if bloc.texte %}
-							<p>{{ bloc.texte.texte}}</p>
-						{% endif %}
-						{% if bloc.image %}
-							<img src="{{ asset('/uploads/'~bloc.image.nomFichier) | imagine_filter('my_thumb') }}" alt="#">
-						{% endif %}
-						{% if bloc.lien %}
-							<img src="{{ asset('/uploads/bloc_img/image.jpg') | imagine_filter('my_thumb') }}" alt="#">
-							<a href="{{bloc.lien.url}}" target="_blank">{{bloc.lien.url}}
-							</a>
-						{% endif %}
-					</div>
-				</a>
-			</div>
-		{% endfor %}
-	</div>
+	</main>
 {% endblock %}

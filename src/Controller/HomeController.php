@@ -9,7 +9,6 @@ use App\Entity\Image;
 use App\Entity\Texte;
 use App\Service\Validation;
 use App\Service\FileUploader;
-use Knp\Snappy\Image as knpImage;
 use App\Repository\BlocRepository;
 use App\Repository\LienRepository;
 use App\Repository\ImageRepository;
@@ -33,7 +32,7 @@ class HomeController extends AbstractController
   }
 
   #[Route('/add', name: 'add_bloc')]
-  public function addBloc(HtmlSanitizerInterface $htmlSanitizer, Request $request, ImageRepository $ir, TexteRepository $tr, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader,knpImage $knpSnappyImage): Response
+  public function addBloc(HtmlSanitizerInterface $htmlSanitizer, Request $request, ImageRepository $ir, TexteRepository $tr, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
   {
     $post = $request->request;
     /** $textarea */
