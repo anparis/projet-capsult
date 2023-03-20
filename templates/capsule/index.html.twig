@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bloc index
+{% endblock %}
+
+{% block body %}
+  <h1>Capsules</h1>
+	{% for capsule in capsules %}
+
+		{{ capsule.titre }}
+		{{ capsule.dateCreation ? capsule.dateCreation|date('Y-m-d H:i:s') : '' }}
+
+		{# <a href="{{ path('app_capsule_show', {'id': capsule.id}) }}">show</a>
+		<a href="{{ path('app_capsule_edit', {'id': capsule.id}) }}">edit</a> #}
+
+
+	{% else %}
+    <p>no records found</p>
+	{% endfor %}
+<a href="{{ path('app_capsule_add') }}">Create new</a>
+{% endblock %}

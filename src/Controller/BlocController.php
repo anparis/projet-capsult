@@ -34,7 +34,7 @@ class BlocController extends AbstractController
             return $this->redirectToRoute('app_bloc_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('bloc/new.html.twig', [
+        return $this->render('bloc/new.html.twig', [
             'bloc' => $bloc,
             'form' => $form,
         ]);
@@ -60,7 +60,7 @@ class BlocController extends AbstractController
             return $this->redirectToRoute('app_bloc_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('bloc/edit.html.twig', [
+        return $this->render('bloc/edit.html.twig', [
             'bloc' => $bloc,
             'form' => $form,
         ]);

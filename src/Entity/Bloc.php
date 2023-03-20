@@ -37,6 +37,10 @@ class Bloc
   #[ORM\OneToOne(mappedBy: 'bloc', cascade: ['persist', 'remove'])]
   private ?Image $image = null;
 
+  #[ORM\ManyToOne(inversedBy: 'blocs')]
+  #[ORM\JoinColumn(nullable: false)]
+  private ?Capsule $capsule = null;
+
   public function getId(): ?int
   {
     return $this->id;
@@ -123,5 +127,17 @@ class Bloc
     $this->image = $image;
 
     return $this;
+  }
+
+  public function getCapsule(): ?Capsule
+  {
+      return $this->capsule;
+  }
+
+  public function setCapsule(?Capsule $capsule): self
+  {
+      $this->capsule = $capsule;
+
+      return $this;
   }
 }
