@@ -4,24 +4,23 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Bloc;
-use App\Entity\Image;
 use App\Entity\Lien;
+use App\Entity\Image;
 use App\Entity\Texte;
 use App\Service\Validation;
 use App\Service\FileUploader;
+use Knp\Snappy\Image as knpImage;
 use App\Repository\BlocRepository;
-use App\Repository\ImageRepository;
 use App\Repository\LienRepository;
+use App\Repository\ImageRepository;
 use App\Repository\TexteRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class HomeController extends AbstractController
 {
@@ -34,7 +33,7 @@ class HomeController extends AbstractController
   }
 
   #[Route('/add', name: 'add_bloc')]
-  public function addBloc(HtmlSanitizerInterface $htmlSanitizer, Request $request, BlocRepository $br, ImageRepository $ir, TexteRepository $tr, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
+  public function addBloc(HtmlSanitizerInterface $htmlSanitizer, Request $request, ImageRepository $ir, TexteRepository $tr, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader,knpImage $knpSnappyImage): Response
   {
     $post = $request->request;
     /** $textarea */
@@ -94,6 +93,9 @@ class HomeController extends AbstractController
           $link->setUrl($safeTextArea);
           $link->setBloc($bloc);
           $lr->save($link, true);
+
+          // $knpSnappyImage->generate($safeTextArea, 'uploads/bloc_img/test.png');
+          
           return $this->redirectToRoute('app_home');
         }
       }

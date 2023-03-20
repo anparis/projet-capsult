@@ -14,7 +14,7 @@
 						<input type="file" name="image">
 					</div>
 					<textarea class="ab-textarea" name="txt_input" class="addBlock-textarea"></textarea>
-          <input type="hidden" name="token" value="{{ csrf_token('add-bloc') }}"/>
+					<input type="hidden" name="token" value="{{ csrf_token('add-bloc') }}"/>
 					<button type="submit" name="submit">-> Ajouter le Bloc</button>
 				</form>
 
@@ -22,18 +22,21 @@
 		</div>
 		{% for bloc in blocs %}
 			<div class="bloc-item">
-				{% if bloc.texte %}
-					<p>{{ bloc.texte.texte}}</p>
-				{% endif %}
-				{% if bloc.image %}
-					<a href="bloc/1">
-						<img src="{{ asset('/uploads/'~bloc.image.nomFichier) | imagine_filter('my_thumb') }}" alt="#">
-					</a>
-				{% endif %}
-				{% if bloc.lien %}
-					<a href="{{bloc.lien.url}}" target="_blank">{{bloc.lien.url}}
-					</a>
-				{% endif %}
+				<a href="{{path('app_bloc_edit',{'id':bloc.id})}}">
+					<div class="bloc-content">
+						{% if bloc.texte %}
+							<p>{{ bloc.texte.texte}}</p>
+						{% endif %}
+						{% if bloc.image %}
+							<img src="{{ asset('/uploads/'~bloc.image.nomFichier) | imagine_filter('my_thumb') }}" alt="#">
+						{% endif %}
+						{% if bloc.lien %}
+							<img src="{{ asset('/uploads/bloc_img/image.jpg') | imagine_filter('my_thumb') }}" alt="#">
+							<a href="{{bloc.lien.url}}" target="_blank">{{bloc.lien.url}}
+							</a>
+						{% endif %}
+					</div>
+				</a>
 			</div>
 		{% endfor %}
 	</div>

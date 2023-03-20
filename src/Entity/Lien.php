@@ -15,6 +15,9 @@ class Lien
 
     #[ORM\Column(length: 255)]
     private ?string $url = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $nom_fichier = null;
     
     #[ORM\OneToOne(inversedBy: 'lien', cascade: ['persist', 'remove'])]
     private ?Bloc $bloc = null;
@@ -32,6 +35,18 @@ class Lien
     public function setUrl(string $url): self
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getNomFichier(): ?string
+    {
+        return $this->nom_fichier;
+    }
+
+    public function setNomFichier(string $nom_fichier): self
+    {
+        $this->nom_fichier = $nom_fichier;
 
         return $this;
     }
