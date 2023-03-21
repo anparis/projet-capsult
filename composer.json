@@ -12,6 +12,7 @@
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.14",
+        "fakerphp/faker": "^1.21",
         "imagine/imagine": "^1.2",
         "knplabs/knp-snappy-bundle": "^1.9",
         "liip/imagine-bundle": "^2.10",
@@ -97,6 +98,7 @@
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "6.2.*",
         "symfony/css-selector": "6.2.*",

@@ -10,6 +10,7 @@ use App\Entity\Trait\UpdatedAtTrait;
 use App\Repository\CapsuleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints\Cascade;
 
 #[ORM\Entity(repositoryClass: CapsuleRepository::class)]
 class Capsule
@@ -33,25 +34,27 @@ class Capsule
     private ?string $background = null;
 
     #[ORM\Column]
-    private ?bool $ouvert = null;
+    private ?bool $open = null;
 
     #[ORM\Column]
     private ?bool $collaboration = null;
 
     #[ORM\Column(length: 10)]
-    private ?string $statut = null;
+    private ?string $status = null;
 
     #[ORM\OneToMany(mappedBy: 'capsule', targetEntity: Bloc::class, orphanRemoval: true)]
     private Collection $blocs;
 
     #[ORM\ManyToOne(inversedBy: 'capsules')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete:'CASCADE')]
     private ?User $user = null;
 
     public function __construct()
     {
         $this->blocs = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = $this->created_at;
+        $this->collaboration = 0;
     }
 
     public function getId(): ?int
@@ -95,14 +98,14 @@ class Capsule
         return $this;
     }
 
-    public function isOuvert(): ?bool
+    public function isOpen(): ?bool
     {
-        return $this->ouvert;
+        return $this->open;
     }
 
-    public function setOuvert(bool $ouvert): self
+    public function setOpen(bool $open): self
     {
-        $this->ouvert = $ouvert;
+        $this->open = $open;
 
         return $this;
     }
@@ -119,14 +122,14 @@ class Capsule
         return $this;
     }
 
-    public function getStatut(): ?string
+    public function getStatus(): ?string
     {
-        return $this->statut;
+        return $this->status;
     }
 
-    public function setStatut(string $statut): self
+    public function setStatus(string $status): self
     {
-        $this->statut = $statut;
+        $this->status = $status;
 
         return $this;
     }
