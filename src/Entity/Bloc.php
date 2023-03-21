@@ -28,11 +28,14 @@ class Bloc
   #[ORM\Column(type: Types::TEXT, nullable: true)]
   private ?string $description = null;
 
-  #[ORM\OneToOne(mappedBy: 'bloc', cascade: ['persist', 'remove'])]
-  private ?Lien $lien = null;
+  #[ORM\Column(type: Types::TEXT, nullable: true)]
+  private ?string $contenu = null;
+
+  #[ORM\Column(length: 20)]
+  private ?string $type = null;
 
   #[ORM\OneToOne(mappedBy: 'bloc', cascade: ['persist', 'remove'])]
-  private ?Texte $texte = null;
+  private ?Lien $lien = null;
 
   #[ORM\OneToOne(mappedBy: 'bloc', cascade: ['persist', 'remove'])]
   private ?Image $image = null;
@@ -93,6 +96,31 @@ class Bloc
 
     return $this;
   }
+
+  public function getContenu(): ?string
+  {
+    return $this->contenu;
+  }
+
+  public function setContenu(?string $contenu): self
+  {
+    $this->contenu = $contenu;
+
+    return $this;
+  }
+
+  public function getType(): ?string
+  {
+    return $this->type;
+  }
+
+  public function setType(?string $type): self
+  {
+    $this->type = $type;
+
+    return $this;
+  }
+
   public function getLien(): ?Lien
   {
     return $this->lien;
@@ -101,18 +129,6 @@ class Bloc
   public function setLien(?Lien $lien): self
   {
     $this->lien = $lien;
-
-    return $this;
-  }
-
-  public function getTexte(): ?Texte
-  {
-    return $this->texte;
-  }
-
-  public function setTexte(?Texte $texte): self
-  {
-    $this->texte = $texte;
 
     return $this;
   }
