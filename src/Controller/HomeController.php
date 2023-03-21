@@ -6,13 +6,11 @@ use DateTime;
 use App\Entity\Bloc;
 use App\Entity\Lien;
 use App\Entity\Image;
-use App\Entity\Texte;
 use App\Service\Validation;
 use App\Service\FileUploader;
 use App\Repository\BlocRepository;
 use App\Repository\LienRepository;
 use App\Repository\ImageRepository;
-use App\Repository\TexteRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,7 +30,7 @@ class HomeController extends AbstractController
   }
 
   #[Route('/add', name: 'add_bloc')]
-  public function addBloc(HtmlSanitizerInterface $htmlSanitizer, Request $request, ImageRepository $ir, TexteRepository $tr, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
+  public function addBloc(HtmlSanitizerInterface $htmlSanitizer, Request $request, ImageRepository $ir, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
   {
     $post = $request->request;
     /** $textarea */
@@ -58,6 +56,7 @@ class HomeController extends AbstractController
             '<h1>not an Image</h1>'
           );
         } else {
+          $bloc->setType('Image');
           $img = new Image();
           $fileName = $fileUploader->upload($imgFile);
           $img->setNomFichier($fileName);
@@ -82,12 +81,11 @@ class HomeController extends AbstractController
         $urlViolation = $validation->validateUrl($safeTextArea, $validator);
 
         if ($urlViolation) {
-          $txt = new Texte();
-          $txt->setTexte($safeTextArea);
-          $txt->setBloc($bloc);
-          $tr->save($txt, true);
+          $bloc->setType('Texte');
+          $bloc->setContenu($safeTextArea);
           return $this->redirectToRoute('app_home');
         } else {
+          $bloc->setType('Lien');
           $link = new Lien();
           $link->setUrl($safeTextArea);
           $link->setBloc($bloc);

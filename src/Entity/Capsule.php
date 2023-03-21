@@ -22,10 +22,10 @@ class Capsule
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type:'datetime_immutable')]
     private ?\DateTimeImmutable $date_creation = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type:'datetime_immutable')]
     private ?\DateTimeImmutable $date_modification = null;
 
     #[ORM\Column(length: 150, nullable: true)]
@@ -45,6 +45,10 @@ class Capsule
 
     #[ORM\Column(length: 150)]
     private ?string $slug = null;
+
+    #[ORM\ManyToOne(inversedBy: 'capsules')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -190,6 +194,18 @@ class Capsule
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
