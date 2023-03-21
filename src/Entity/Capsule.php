@@ -2,15 +2,22 @@
 
 namespace App\Entity;
 
-use App\Repository\CapsuleRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\CreatedAtTrait;
+use App\Entity\Trait\SlugTrait;
+use App\Entity\Trait\UpdatedAtTrait;
+use App\Repository\CapsuleRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CapsuleRepository::class)]
 class Capsule
 {
+    use CreatedAtTrait;
+    use UpdatedAtTrait;
+    use SlugTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -21,12 +28,6 @@ class Capsule
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
-
-    #[ORM\Column(type:'datetime_immutable')]
-    private ?\DateTimeImmutable $date_creation = null;
-
-    #[ORM\Column(type:'datetime_immutable')]
-    private ?\DateTimeImmutable $date_modification = null;
 
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $background = null;
@@ -43,9 +44,6 @@ class Capsule
     #[ORM\OneToMany(mappedBy: 'capsule', targetEntity: Bloc::class, orphanRemoval: true)]
     private Collection $blocs;
 
-    #[ORM\Column(length: 150)]
-    private ?string $slug = null;
-
     #[ORM\ManyToOne(inversedBy: 'capsules')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -53,6 +51,7 @@ class Capsule
     public function __construct()
     {
         $this->blocs = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -80,30 +79,6 @@ class Capsule
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getDateCreation(): ?\DateTimeImmutable
-    {
-        return $this->date_creation;
-    }
-
-    public function setDateCreation(\DateTimeImmutable $date_creation): self
-    {
-        $this->date_creation = $date_creation;
-
-        return $this;
-    }
-
-    public function getDateModification(): ?\DateTimeImmutable
-    {
-        return $this->date_modification;
-    }
-
-    public function setDateModification(\DateTimeImmutable $date_modification): self
-    {
-        $this->date_modification = $date_modification;
 
         return $this;
     }
@@ -186,17 +161,6 @@ class Capsule
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {

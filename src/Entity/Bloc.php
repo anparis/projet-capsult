@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\CreatedAtTrait;
+use App\Entity\Trait\SlugTrait;
+use App\Entity\Trait\UpdatedAtTrait;
 use ORM\Embeddable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,6 +14,10 @@ use Doctrine\ORM\Mapping\Embedded;
 #[ORM\Entity(repositoryClass: BlocRepository::class)]
 class Bloc
 {
+  use CreatedAtTrait;
+  use UpdatedAtTrait;
+  use SlugTrait;
+
   #[ORM\Id]
   #[ORM\GeneratedValue]
   #[ORM\Column]
@@ -20,10 +27,7 @@ class Bloc
   private ?string $titre = null;
 
   #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-  private ?\DateTimeInterface $date_creation = null;
-
-  #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-  private ?\DateTimeInterface $date_modification = null;
+  private ?\DateTimeImmutable $date_modification = null;
 
   #[ORM\Column(type: Types::TEXT, nullable: true)]
   private ?string $description = null;
@@ -44,6 +48,11 @@ class Bloc
   #[ORM\JoinColumn(nullable: false)]
   private ?Capsule $capsule = null;
 
+  public function __construct()
+  {
+    $this->created_at = new \DateTimeImmutable();
+  }
+
   public function getId(): ?int
   {
     return $this->id;
@@ -61,17 +70,7 @@ class Bloc
     return $this;
   }
 
-  public function getDateCreation(): ?\DateTimeInterface
-  {
-    return $this->date_creation;
-  }
 
-  public function setDateCreation(\DateTimeInterface $date_creation): self
-  {
-    $this->date_creation = $date_creation;
-
-    return $this;
-  }
 
   public function getDateModification(): ?\DateTimeInterface
   {
