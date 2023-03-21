@@ -23,7 +23,7 @@ class UserFixtures extends Fixture
     $me->setEmail('kentaro@test.com');
     $me->setUsername('Kentaro Myura');
     $me->setPassword($this->hasher->hashPassword($me, 'kentaro'));
-    $me->setSlug($this->sluger->slug($me->getUsername()))->lower();
+    $me->setSlug($this->sluger->slug($me->getUsername())->lower());
 
     $manager->persist($me);
     
@@ -34,7 +34,7 @@ class UserFixtures extends Fixture
       $user->setEmail($faker->email);
       $user->setUsername($faker->name);
       $user->setPassword($this->hasher->hashPassword($user, 'secret'));
-      $user->setSlug($this->sluger->slug($user->getUsername()))->lower();
+      $user->setSlug($this->sluger->slug($user->getUsername())->lower());
       
       $manager->persist($user);
     }

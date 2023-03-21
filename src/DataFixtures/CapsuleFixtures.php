@@ -7,8 +7,10 @@ use App\Entity\Capsule;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class CapsuleFixtures extends Fixture
+
+class CapsuleFixtures extends Fixture implements DependentFixtureInterface
 {
   public function __construct(private SluggerInterface $sluger){}
 
@@ -16,7 +18,7 @@ class CapsuleFixtures extends Fixture
   {
     
     $user = $this->getReference('myself');
-    
+
     $this->createCapsule('Berserk Fanclub', 0, $user, $manager);
     $this->createCapsule('September feelings', 0, $user, $manager);
     $this->createCapsule('Océan bleu', 0, $user, $manager);
@@ -39,4 +41,11 @@ class CapsuleFixtures extends Fixture
 
     $manager->persist($capsule);
   }
+
+  public function getDependencies()
+    {
+        return [
+            UserFixtures::class,
+        ];
+    }
 }
