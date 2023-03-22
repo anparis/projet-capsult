@@ -2,18 +2,23 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/{slug}', name: 'profile_')]
 class ProfileController extends AbstractController
 {
-    #[Route('/', name: 'index')]
-    public function index(): Response
+    #[Route('/{slug}', name: 'profile_index')]
+    public function index(User $user = null): Response
     {
-        return $this->render('profile/index.html.twig', [
-            'controller_name' => 'ProfileController',
-        ]);
+      if(!$user){
+        dd('erreur404');
+      }
+
+      return $this->render('profile/index.html.twig', [
+        'user' => $user,
+        'capsules' => $user->getCapsules()
+      ]);
     }
 }
