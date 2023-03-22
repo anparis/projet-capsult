@@ -34,7 +34,7 @@ class CapsuleController extends AbstractController
 
     return $this->render('capsule/index.html.twig', [
       'capsule' => $capsule,
-      'blocs' => $blocRepository->findAll($capsule->getId()),
+      'blocs' => $blocRepository->findBy(['capsule' => $capsule->getId()]),
     ]);
   }
 
