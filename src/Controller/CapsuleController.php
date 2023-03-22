@@ -27,19 +27,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CapsuleController extends AbstractController
 {
-  #[Route('/{slug_user}/{slug_capsule}', name: 'app_capsule_index', methods: ['GET'])]
-  
+  #[Route('/{slug_user}/{slug_capsule}', name: 'capsule_index', methods: ['GET'])]
   public function index(string $slug_user, string $slug_capsule, EntityManagerInterface $entityManager, BlocRepository $blocRepository): Response
   {
-    $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug'=>$slug_capsule]);
-    
+    $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug' => $slug_capsule]);
+
     return $this->render('capsule/index.html.twig', [
-      'blocs' => $blocRepository->find($capsule->getId()),
+      'capsule' => $capsule,
+      'blocs' => $blocRepository->findAll($capsule->getId()),
     ]);
   }
 
-  #[Route('/add', name: 'add_bloc')]
-  public function addBloc(HtmlSanitizerInterface $htmlSanitizer, Request $request, ImageRepository $ir, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
+  #[Route('/add/{id}', name: 'capsule_add_bloc', methods: ['POST'])]
+  public function addBloc(Capsule $capsule, HtmlSanitizerInterface $htmlSanitizer, Request $request,BlocRepository $br, ImageRepository $ir, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
   {
     $post = $request->request;
     /** $textarea */
@@ -53,7 +53,7 @@ class CapsuleController extends AbstractController
     if ($this->isCsrfTokenValid('add-bloc', $submittedToken) && $post->has('submit') && ($imgFile || $textarea)) {
 
       $bloc = new Bloc();
-
+      $bloc->setCapsule($capsule);
       if ($imgFile && !$textarea) {
         //calling validation service to check if user upload is an image 
         $imgViolation = $validation->validateImage($imgFile, $validator);
@@ -75,7 +75,13 @@ class CapsuleController extends AbstractController
 
           //using ImageRepository save method to persist and flush
           $ir->save($img, true);
-          return $this->redirectToRoute('app_bloc_index');
+          return $this->redirectToRoute(
+            'capsule_index',
+            [
+              'slug_user' => 'kentaro-myura',
+              'slug_capsule' => 'berserk-fanclub'
+            ]
+          );
         }
       }
       if ($textarea && !$imgFile) {
@@ -89,7 +95,14 @@ class CapsuleController extends AbstractController
         if ($urlViolation) {
           $bloc->setType('Texte');
           $bloc->setContenu($safeTextArea);
-          return $this->redirectToRoute('app_bloc_index');
+          $br->save($bloc,true);
+          return $this->redirectToRoute(
+            'capsule_index',
+            [
+              'slug_user' => 'kentaro-myura',
+              'slug_capsule' => 'berserk-fanclub'
+            ]
+          );
         } else {
           $bloc->setType('Lien');
           $link = new Lien();
@@ -99,11 +112,23 @@ class CapsuleController extends AbstractController
 
           // $knpSnappyImage->generate($safeTextArea, 'uploads/bloc_img/test.png');
 
-          return $this->redirectToRoute('app_bloc_index');
+          return $this->redirectToRoute(
+            'capsule_index',
+            [
+              'slug_user' => 'kentaro-myura',
+              'slug_capsule' => 'berserk-fanclub'
+            ]
+          );
         }
       }
       // user can't submit textarea and upload file at the same time
-      return $this->redirectToRoute('app_bloc_index');
+      return $this->redirectToRoute(
+        'capsule_index',
+        [
+          'slug_user' => 'kentaro-myura',
+          'slug_capsule' => 'berserk-fanclub'
+        ]
+      );
     } else {
       return new Response(
         'Erreur de formulaire'

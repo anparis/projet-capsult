@@ -26,9 +26,6 @@ class Bloc
   #[ORM\Column(length: 100, nullable: true)]
   private ?string $title = null;
 
-  #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-  private ?\DateTimeImmutable $date_modification = null;
-
   #[ORM\Column(type: Types::TEXT, nullable: true)]
   private ?string $description = null;
 
@@ -51,6 +48,7 @@ class Bloc
   public function __construct()
   {
     $this->created_at = new \DateTimeImmutable();
+    $this->updated_at = $this->created_at;
   }
 
   public function getId(): ?int
@@ -70,19 +68,6 @@ class Bloc
     return $this;
   }
 
-
-
-  public function getDateModification(): ?\DateTimeInterface
-  {
-    return $this->date_modification;
-  }
-
-  public function setDateModification(\DateTimeInterface $date_modification): self
-  {
-    $this->date_modification = $date_modification;
-
-    return $this;
-  }
 
   public function getDescription(): ?string
   {

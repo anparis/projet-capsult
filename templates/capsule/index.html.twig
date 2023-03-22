@@ -11,7 +11,7 @@
 			<div class="bloc-container">
 				<div class="bloc-item">
 					<div class="addBlock">
-						<form id="ab-form" action="{{path('add_bloc')}}" method="POST" enctype="multipart/form-data">
+						<form id="ab-form" action="{{path('capsule_add_bloc', {'id':capsule.id})}}" method="POST" enctype="multipart/form-data">
 							<div class="ab-text">
 								Collez une URL (image ou lien), écrivez directement du texte ou choisissez une image
 								<input type="file" name="image">
@@ -25,9 +25,9 @@
 				{% for bloc in blocs %}
 					<div class="bloc-item">
 						<a href="{{path('app_bloc_edit',{'id':bloc.id})}}" class="connection-container">
-								{% if bloc.texte %}
+								{% if bloc.contenu %}
 							  <div class="bloc-txt">
-									<p>{{ bloc.texte.texte}}</p>
+									<p>{{ bloc.contenu}}</p>
 							  </div>
 								{% endif %}
 								{% if bloc.image %}

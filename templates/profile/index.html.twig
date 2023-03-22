@@ -23,7 +23,7 @@
 
 		{% for capsule in capsules %}
 			<p>
-				<a href="{{path('app_capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
+				<a href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
 			</p>
 		{% endfor %}
 	</div>
