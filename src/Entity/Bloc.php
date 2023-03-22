@@ -24,7 +24,7 @@ class Bloc
   private ?int $id = null;
 
   #[ORM\Column(length: 100, nullable: true)]
-  private ?string $titre = null;
+  private ?string $title = null;
 
   #[ORM\Column(type: Types::DATETIME_MUTABLE)]
   private ?\DateTimeImmutable $date_modification = null;
@@ -58,14 +58,14 @@ class Bloc
     return $this->id;
   }
 
-  public function getTitre(): ?string
+  public function getTitle(): ?string
   {
-    return $this->titre;
+    return $this->title;
   }
 
-  public function setTitre(?string $titre): self
+  public function setTitle(?string $title): self
   {
-    $this->titre = $titre;
+    $this->title = $title;
 
     return $this;
   }

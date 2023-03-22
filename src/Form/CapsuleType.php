@@ -13,11 +13,10 @@ class CapsuleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('titre', TextType::class)
+            ->add('title', TextType::class)
             ->add('description', TextType::class)
             ->add('background')
-            ->add('ouvert')
-            ->add('statut')
+            ->add('status')
         ;
     }
 

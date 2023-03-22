@@ -3,39 +3,47 @@
 {% block title %}Bloc index{% endblock %}
 
 {% block body %}
-    <h1>Bloc index</h1>
+<main>
+		<div class="box-constraint">
+			<h1>Bloc index</h1>
+			<div class="bloc-container">
+				<div class="bloc-item">
+					<div class="addBlock">
+						<form id="ab-form" action="{{path('add_bloc')}}" method="POST" enctype="multipart/form-data">
+							<div class="ab-text">
+								Collez une URL (image ou lien), écrivez directement du texte ou choisissez une image
+								<input type="file" name="image">
+							</div>
+							<textarea class="ab-textarea" name="txt_input" class="addBlock-textarea"></textarea>
+							<input type="hidden" name="token" value="{{ csrf_token('add-bloc') }}"/>
+							<button type="submit" name="submit">-> Ajouter le Bloc</button>
+						</form>
+					</div>
+				</div>
+				{% for bloc in blocs %}
+					<div class="bloc-item">
+						<a href="{{path('app_bloc_edit',{'id':bloc.id})}}" class="connection-container">
+								{% if bloc.texte %}
+							  <div class="bloc-txt">
+									<p>{{ bloc.texte.texte}}</p>
+							  </div>
+								{% endif %}
+								{% if bloc.image %}
+							  <div class="bloc-img">
+									<img src="{{ asset('/uploads/'~bloc.image.nomFichier) | imagine_filter('my_thumb') }}" alt="#">
+							  </div>
+								{% endif %}
+								{% if bloc.lien %}
+							  <div class="bloc-img br1s">
+									<p>{{bloc.lien.url}}</p>
+							  </div>
+								{% endif %}
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</main>
+    
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Date_creation</th>
-                <th>Date_modification</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for bloc in blocs %}
-            <tr>
-                <td>{{ bloc.id }}</td>
-                <td>{{ bloc.titre }}</td>
-                <td>{{ bloc.dateCreation ? bloc.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ bloc.dateModification ? bloc.dateModification|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ bloc.description }}</td>
-                <td>
-                    <a href="{{ path('app_bloc_show', {'id': bloc.id}) }}">show</a>
-                    <a href="{{ path('app_bloc_edit', {'id': bloc.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_bloc_new') }}">Create new</a>
 {% endblock %}

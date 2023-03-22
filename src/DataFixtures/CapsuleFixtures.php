@@ -26,11 +26,11 @@ class CapsuleFixtures extends Fixture implements DependentFixtureInterface
     $manager->flush();
   }
 
-  public function createCapsule(string $titre, bool $open, User $user = null, ObjectManager $manager)
+  public function createCapsule(string $title, bool $open, User $user = null, ObjectManager $manager)
   {
     $capsule = new Capsule();
-    $capsule->setTitre($titre);
-    $capsule->setSlug($this->sluger->slug($capsule->getTitre()));
+    $capsule->setTitle($title);
+    $capsule->setSlug($this->sluger->slug($capsule->getTitle())->lower());
     $capsule->setOpen($open);
     if ($capsule->isOpen()) {
       $capsule->setStatus('sealed');
