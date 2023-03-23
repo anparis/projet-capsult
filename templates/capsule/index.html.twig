@@ -4,10 +4,11 @@
 {% endblock %}
 
 {% block body %}
-  <h1>Capsules</h1>
+  <h1>Capsules : {{capsule.title}}</h1>
+  <hr>
+  <a href="{{path('profile_index',{'slug':user.slug})}}"><- mes capsules</a>
 	<main>
 		<div class="box-constraint">
-			<h1>Bloc index</h1>
 			<div class="bloc-container">
 				<div class="bloc-item">
 					<div class="addBlock">

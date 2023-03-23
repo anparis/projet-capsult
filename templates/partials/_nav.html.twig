@@ -1,7 +1,18 @@
 <nav>
 	<ul>
-		<li><a href="{{path('app_register')}}">register</a></li>
-		<li><a href="{{path('app_login')}}">login</a></li>
-		<li><a href="{{path('app_logout')}}">logout</a></li>
+		{% if app.user %}
+			<li>
+				<a href="{{path('app_logout')}}">logout</a>
+			</li>
+		{% else %}
+			<li>
+				<a href="{{path('app_register')}}">register</a>
+			</li>
+			<li>
+				<a href="{{path('app_login')}}">login</a>
+			</li>
+
+		{% endif %}
+
 	</ul>
 </nav>

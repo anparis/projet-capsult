@@ -21,6 +21,9 @@
 		<h1>Hello
 			{{ user.username }}! ✅</h1>
 
+    <a href="{{path('profile_add_capsule', {'id':user.id})}}">+ Ajouter une capsule</a>
+    <hr>
+    <h2>Mes capsules</h2>
 		{% for capsule in capsules %}
 			<p>
 				<a href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>

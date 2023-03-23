@@ -25,17 +25,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CapsuleController extends AbstractController
 {
-  #[Route('/{slug_user}/{slug_capsule}', name: 'capsule_index', methods: ['GET'])]
+  // #[Route('/{slug_user}/{slug_capsule}', name: 'capsule_index', methods: ['GET'])]
   public function index(string $slug_user, string $slug_capsule, EntityManagerInterface $entityManager, BlocRepository $blocRepository): Response
   {
     $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug' => $slug_capsule]);
+    $user = $entityManager->getRepository(User::class)->findOneBy(['slug' => $slug_user]);
     return $this->render('capsule/index.html.twig', [
       'capsule' => $capsule,
+      'user' => $user,
       'blocs' => $blocRepository->findBy(['capsule' => $capsule->getId()]),
     ]);
   }
 
-  #[Route('/add/{id}', name: 'capsule_add_bloc', methods: ['POST'])]
+  #[Route('/add_bloc/{id}', name: 'capsule_add_bloc', methods: ['POST'])]
   public function addBloc(Capsule $capsule, HtmlSanitizerInterface $htmlSanitizer, Request $request, BlocRepository $br, ImageRepository $ir, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
   {
     $post = $request->request;

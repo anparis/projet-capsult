@@ -9,5 +9,12 @@ app_login:
 profile_index:
     path: /{slug}
     controller: App\Controller\ProfileController::index
+profile_add_capsule:
+    path: /add_capsule/{id}
+    controller: App\Controller\ProfileController::addCapsule
+capsule_index:
+    path: /{slug_user}/{slug_capsule}
+    controller: App\Controller\CapsuleController::index
+
 
 
