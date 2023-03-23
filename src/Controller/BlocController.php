@@ -58,6 +58,12 @@ class BlocController extends AbstractController
       $blocRepository->remove($bloc, true);
     }
 
-    return $this->redirectToRoute('app_bloc_index', [], Response::HTTP_SEE_OTHER);
+    return $this->redirectToRoute(
+      'capsule_index',
+      [
+        'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
+        'slug_capsule' => $bloc->getCapsule()->getSlug()
+      ]
+    );
   }
 }

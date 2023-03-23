@@ -21,7 +21,7 @@ class FileUploader
   public function upload(UploadedFile $file)
   {
     // $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-    $destination = $this->getTargetDirectory() . '/' . self::BLOC_IMAGE;
+    $destination = $this->getTargetDirectory();
     $fileName = bin2hex(random_bytes(6)) . '.' . $file->guessExtension();
     try {
       $file->move($destination, $fileName);

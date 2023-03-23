@@ -7,7 +7,7 @@
 
     {{ include('bloc/_form.html.twig') }}
 
-    <a href="{{ path('app_home') }}">back to list</a>
+    <a href="{{ path('capsule_index', {'slug_user':bloc.capsule.user.slug, 'slug_capsule':bloc.capsule.slug}) }}">back to list</a>
 
     {{ include('bloc/_delete_form.html.twig') }}
 {% endblock %}

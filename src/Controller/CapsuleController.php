@@ -10,7 +10,6 @@ use App\Entity\Capsule;
 use App\Form\CapsuleType;
 use App\Service\Validation;
 use App\Service\FileUploader;
-use Doctrine\ORM\Mapping\Entity;
 use App\Repository\BlocRepository;
 use App\Repository\LienRepository;
 use App\Repository\ImageRepository;
@@ -19,7 +18,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -31,7 +29,6 @@ class CapsuleController extends AbstractController
   public function index(string $slug_user, string $slug_capsule, EntityManagerInterface $entityManager, BlocRepository $blocRepository): Response
   {
     $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug' => $slug_capsule]);
-
     return $this->render('capsule/index.html.twig', [
       'capsule' => $capsule,
       'blocs' => $blocRepository->findBy(['capsule' => $capsule->getId()]),
@@ -39,15 +36,15 @@ class CapsuleController extends AbstractController
   }
 
   #[Route('/add/{id}', name: 'capsule_add_bloc', methods: ['POST'])]
-  public function addBloc(Capsule $capsule, HtmlSanitizerInterface $htmlSanitizer, Request $request,BlocRepository $br, ImageRepository $ir, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
+  public function addBloc(Capsule $capsule, HtmlSanitizerInterface $htmlSanitizer, Request $request, BlocRepository $br, ImageRepository $ir, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
   {
     $post = $request->request;
-    /** $textarea */
+
     $textarea = $post->get('txt_input');
     /** @var UploadedFile $imgFile */
     $imgFile = $request->files->get('image');
 
-    //get token generated on form
+    //get csrf token generated on form
     $submittedToken = $request->request->get('token');
 
     if ($this->isCsrfTokenValid('add-bloc', $submittedToken) && $post->has('submit') && ($imgFile || $textarea)) {
@@ -73,13 +70,12 @@ class CapsuleController extends AbstractController
           // $fullSizeImgPath = $fileUploader->getTargetDirectory() . '/' . $imageName;
           // $imageOptimizer->resize($fullSizeImgPath);
 
-          //using ImageRepository save method to persist and flush
           $ir->save($img, true);
           return $this->redirectToRoute(
             'capsule_index',
             [
-              'slug_user' => 'kentaro-myura',
-              'slug_capsule' => 'berserk-fanclub'
+              'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
+              'slug_capsule' => $bloc->getCapsule()->getSlug()
             ]
           );
         }
@@ -95,12 +91,12 @@ class CapsuleController extends AbstractController
         if ($urlViolation) {
           $bloc->setType('Texte');
           $bloc->setContenu($safeTextArea);
-          $br->save($bloc,true);
+          $br->save($bloc, true);
           return $this->redirectToRoute(
             'capsule_index',
             [
-              'slug_user' => 'kentaro-myura',
-              'slug_capsule' => 'berserk-fanclub'
+              'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
+              'slug_capsule' => $bloc->getCapsule()->getSlug()
             ]
           );
         } else {
@@ -115,8 +111,8 @@ class CapsuleController extends AbstractController
           return $this->redirectToRoute(
             'capsule_index',
             [
-              'slug_user' => 'kentaro-myura',
-              'slug_capsule' => 'berserk-fanclub'
+              'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
+              'slug_capsule' => $bloc->getCapsule()->getSlug()
             ]
           );
         }
@@ -125,8 +121,8 @@ class CapsuleController extends AbstractController
       return $this->redirectToRoute(
         'capsule_index',
         [
-          'slug_user' => 'kentaro-myura',
-          'slug_capsule' => 'berserk-fanclub'
+          'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
+          'slug_capsule' => $bloc->getCapsule()->getSlug()
         ]
       );
     } else {
