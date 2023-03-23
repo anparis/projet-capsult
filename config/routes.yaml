@@ -3,3 +3,11 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+profile_index:
+    path: /{slug}
+    controller: App\Controller\ProfileController::index
+
+
