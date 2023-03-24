@@ -4,11 +4,12 @@
 {% endblock %}
 
 {% block body %}
-  <div class="br1sd m-a">
+  <div class="brsd m-a">
     <a href="{{path('capsule_edit',{'id':capsule.id})}}">/{{capsule.title}}</a>
   </div>
-  <hr>
   <a href="{{path('profile_index',{'slug':user.slug})}}"><- mes capsules</a>
+  <hr>
+  <br>
 	<main>
 		<div class="box-constraint">
 			<div class="bloc-container">
@@ -39,10 +40,11 @@
 							  </div>
 								{% endif %}
 								{% if bloc.lien %}
-							  <div class="bloc-img br1s">
+							  <div class="bloc-img">
 									<p>{{bloc.lien.url}}</p>
 							  </div>
 								{% endif %}
+                <a href="#">-> Connecter</a>
 						</a>
 					</div>
 				{% endfor %}

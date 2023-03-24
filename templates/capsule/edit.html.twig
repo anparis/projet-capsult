@@ -3,10 +3,10 @@
 {% block title %}Edit Bloc{% endblock %}
 
 {% block body %}
+    <a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">back to capsule</a>
     <h1>Edit Capsule</h1>
 
     {{ include('capsule/_form.html.twig') }}
 
-    {# <a href="{{ path('capsule_index', {'slug_user':bloc.capsule.user.slug, 'slug_capsule':bloc.capsule.slug}) }}">back to list</a> #}
 
 {% endblock %}
