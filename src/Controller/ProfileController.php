@@ -44,6 +44,7 @@ class ProfileController extends AbstractController
 
     return $this->render('capsule/add.html.twig', [
       'form' => $form,
+      'user' => $user
     ]);
   }
 }

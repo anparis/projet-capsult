@@ -4,7 +4,9 @@
 {% endblock %}
 
 {% block body %}
-  <h1>Capsules : {{capsule.title}}</h1>
+  <div class="br1sd">
+    <a href="">/{{capsule.title}}</a>
+  </div>
   <hr>
   <a href="{{path('profile_index',{'slug':user.slug})}}"><- mes capsules</a>
 	<main>
@@ -26,7 +28,7 @@
 				{% for bloc in blocs %}
 					<div class="bloc-item">
 						<a href="{{path('app_bloc_edit',{'id':bloc.id})}}" class="connection-container">
-								{% if bloc.contenu %}
+								{% if bloc.contenu | escape %}
 							  <div class="bloc-txt">
 									<p>{{ bloc.contenu}}</p>
 							  </div>

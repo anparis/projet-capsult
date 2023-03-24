@@ -1,5 +1,6 @@
 :root {
-  --bloc-color: lightgray;
+  --bloc-color: hsl(0, 0%, 83%);
+  --dark-color: hsl(0, 0%, 13%);
 }
 
 * {
@@ -9,9 +10,16 @@
 /*  */
 /* GENERIC PROPERTIES */
 /*  */
-.br1s{
+.br1sl{
   border: 1px solid var(--bloc-color);
 }
+
+.br1sd{
+  border: 1px solid var(--dark-color);
+  border-radius: 5px;
+  width: fit-content;
+}
+
 
 /*  */
 /* BLOC */
@@ -53,7 +61,6 @@ a.connection-container {
   align-items: center;
   -webkit-box-pack: center;
   justify-content: center;
-
 }
 
 .bloc-img img{

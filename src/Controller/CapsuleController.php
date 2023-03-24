@@ -38,7 +38,7 @@ class CapsuleController extends AbstractController
   }
 
   #[Route('/add_bloc/{id}', name: 'capsule_add_bloc', methods: ['POST'])]
-  public function addBloc(Capsule $capsule, HtmlSanitizerInterface $htmlSanitizer, Request $request, BlocRepository $br, ImageRepository $ir, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
+  public function addBloc(Capsule $capsule, Request $request, BlocRepository $br, ImageRepository $ir, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
   {
     $post = $request->request;
 
@@ -83,16 +83,13 @@ class CapsuleController extends AbstractController
         }
       }
       if ($textarea && !$imgFile) {
-        //Sanitize user input
-        //Code will not contain any scripts, styles or other elements that can cause the website to behave or look different.
-        $safeTextArea = $htmlSanitizer->sanitize($textarea);
 
         //calling validation service to check if user input is a url
-        $urlViolation = $validation->validateUrl($safeTextArea, $validator);
+        $urlViolation = $validation->validateUrl($textarea, $validator);
 
         if ($urlViolation) {
           $bloc->setType('Texte');
-          $bloc->setContenu($safeTextArea);
+          $bloc->setContenu($textarea);
           $br->save($bloc, true);
           return $this->redirectToRoute(
             'capsule_index',
@@ -104,7 +101,7 @@ class CapsuleController extends AbstractController
         } else {
           $bloc->setType('Lien');
           $link = new Lien();
-          $link->setUrl($safeTextArea);
+          $link->setUrl($textarea);
           $link->setBloc($bloc);
           $lr->save($link, true);
 

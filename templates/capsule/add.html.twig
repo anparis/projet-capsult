@@ -4,6 +4,8 @@
 
 {% block body %}
     <h1>Create new Capsule</h1>
+    <a href="{{path('profile_index', {'slug':user.slug})}}"><- Mes capsules</a>
+    <hr>
 
     {{ include('capsule/_form.html.twig') }}
 

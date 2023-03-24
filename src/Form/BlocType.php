@@ -17,7 +17,6 @@ class BlocType extends AbstractType
         $builder
             ->add('title', TextType::class)
             ->add('description', TextType::class)
-            ->add('contenu', TextareaType::class)
             // ->add('lien')
             // ->add('texte')
             // ->add('image')
