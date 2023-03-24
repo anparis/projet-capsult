@@ -157,23 +157,29 @@ class CapsuleController extends AbstractController
   //     ]);
   // }
 
-  // #[Route('/{id}/edit', name: 'app_capsule_edit', methods: ['GET', 'POST'])]
-  // public function edit(Request $request, Capsule $capsule, CapsuleRepository $capsuleRepository): Response
-  // {
-  //     $form = $this->createForm(CapsuleType::class, $capsule);
-  //     $form->handleRequest($request);
+  #[Route('/{id}/edit', name: 'capsule_edit', methods: ['GET', 'POST'])]
+  public function edit(Request $request, Capsule $capsule, CapsuleRepository $capsuleRepository): Response
+  {
+    $form = $this->createForm(CapsuleType::class, $capsule);
+    $form->handleRequest($request);
 
-  //     if ($form->isSubmitted() && $form->isValid()) {
-  //         $capsuleRepository->save($capsule, true);
+    if ($form->isSubmitted() && $form->isValid()) {
+      $capsuleRepository->save($capsule, true);
 
-  //         return $this->redirectToRoute('app_capsule_index', [], Response::HTTP_SEE_OTHER);
-  //     }
+      return $this->redirectToRoute(
+        'capsule_index',
+        [
+          'slug_user' => $capsule->getUser()->getSlug(),
+          'slug_capsule' => $capsule->getSlug()
+        ]
+      );
+    }
 
-  //     return $this->render('capsule/edit.html.twig', [
-  //         'capsule' => $capsule,
-  //         'form' => $form,
-  //     ]);
-  // }
+    return $this->render('capsule/edit.html.twig', [
+      'capsule' => $capsule,
+      'form' => $form,
+    ]);
+  }
 
   // #[Route('/{id}', name: 'app_capsule_delete', methods: ['POST'])]
   // public function delete(Request $request, Capsule $capsule, CapsuleRepository $capsuleRepository): Response
