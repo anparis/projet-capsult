@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Entity\Trait\CreatedAtTrait;
 use App\Entity\Trait\SlugTrait;
 use App\Entity\Trait\UpdatedAtTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use ORM\Embeddable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -45,10 +47,14 @@ class Bloc
   #[ORM\JoinColumn(nullable: false, onDelete:'CASCADE')]
   private ?Capsule $capsule = null;
 
+  #[ORM\OneToMany(mappedBy: 'bloc', targetEntity: Connection::class, orphanRemoval: true)]
+  private Collection $connections;
+
   public function __construct()
   {
     $this->created_at = new \DateTimeImmutable();
     $this->updated_at = $this->created_at;
+    $this->connections = new ArrayCollection();
   }
 
   public function getId(): ?int
@@ -137,6 +143,36 @@ class Bloc
   public function setCapsule(?Capsule $capsule): self
   {
       $this->capsule = $capsule;
+
+      return $this;
+  }
+
+  /**
+   * @return Collection<int, Connection>
+   */
+  public function getConnections(): Collection
+  {
+      return $this->connections;
+  }
+
+  public function addConnection(Connection $connection): self
+  {
+      if (!$this->connections->contains($connection)) {
+          $this->connections->add($connection);
+          $connection->setBloc($this);
+      }
+
+      return $this;
+  }
+
+  public function removeConnection(Connection $connection): self
+  {
+      if ($this->connections->removeElement($connection)) {
+          // set the owning side to null (unless already changed)
+          if ($connection->getBloc() === $this) {
+              $connection->setBloc(null);
+          }
+      }
 
       return $this;
   }

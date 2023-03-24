@@ -53,12 +53,16 @@ class Capsule
   #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
   private ?User $user = null;
 
+  #[ORM\OneToMany(mappedBy: 'capsule', targetEntity: Connection::class, orphanRemoval: true)]
+  private Collection $connections;
+
   public function __construct()
   {
     $this->blocs = new ArrayCollection();
     $this->created_at = new \DateTimeImmutable();
     $this->updated_at = $this->created_at;
     $this->collaboration = 0;
+    $this->connections = new ArrayCollection();
   }
 
   public function getId(): ?int
@@ -179,5 +183,35 @@ class Capsule
     $this->user = $user;
 
     return $this;
+  }
+
+  /**
+   * @return Collection<int, Connection>
+   */
+  public function getConnections(): Collection
+  {
+      return $this->connections;
+  }
+
+  public function addConnection(Connection $connection): self
+  {
+      if (!$this->connections->contains($connection)) {
+          $this->connections->add($connection);
+          $connection->setCapsule($this);
+      }
+
+      return $this;
+  }
+
+  public function removeConnection(Connection $connection): self
+  {
+      if ($this->connections->removeElement($connection)) {
+          // set the owning side to null (unless already changed)
+          if ($connection->getCapsule() === $this) {
+              $connection->setCapsule(null);
+          }
+      }
+
+      return $this;
   }
 }
