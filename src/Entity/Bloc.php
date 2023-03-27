@@ -7,11 +7,10 @@ use App\Entity\Trait\SlugTrait;
 use App\Entity\Trait\UpdatedAtTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use ORM\Embeddable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BlocRepository;
-use Doctrine\ORM\Mapping\Embedded;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BlocRepository::class)]
 class Bloc
@@ -25,6 +24,7 @@ class Bloc
   #[ORM\Column]
   private ?int $id = null;
 
+  #[Assert\NotBlank]
   #[ORM\Column(length: 100, nullable: true)]
   private ?string $title = null;
 

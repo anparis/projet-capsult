@@ -36,6 +36,9 @@ class Capsule
   #[ORM\Column]
   private ?bool $open = null;
 
+  #[ORM\Column(type: Types::BOOLEAN, nullable:true)]
+  private ?bool $explore = null;
+
   #[ORM\Column]
   private ?bool $collaboration = null;
 
@@ -213,5 +216,17 @@ class Capsule
       }
 
       return $this;
+  }
+
+  public function getExplore()
+  {
+    return $this->explore;
+  }
+
+  public function setExplore(bool $explore)
+  {
+    $this->explore = $explore;
+
+    return $this;
   }
 }

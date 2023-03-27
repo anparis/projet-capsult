@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bloc index
+{% endblock %}
+
+{% block body %}
+  <div class="brsd m-a">
+    <a href="{{path('capsule_edit',{'id':capsule.id})}}">/{{capsule.title}}</a>
+  </div>
+  <a href="{{path('profile_index',{'slug':user.slug})}}"><- mes capsules</a>
+  <hr>
+  <br>
+	<main>
+		<div class="box-constraint">
+			<div class="bloc-container">
+				<div class="bloc-item">
+					<div class="addBlock">
+						<form id="ab-form" action="{{path('capsule_add_bloc', {'id':capsule.id})}}" method="POST" enctype="multipart/form-data">
+							<div class="ab-text">
+								Collez un lien URL, écrivez directement du texte ou choisissez une image
+								<input class="fss" type="file" name="image">
+							</div>
+							<textarea class="ab-textarea" name="txt_input" class="addBlock-textarea"></textarea>
+							<input type="hidden" name="token" value="{{ csrf_token('add-bloc') }}"/>
+							<button type="submit" name="submit">-> Ajouter le Bloc</button>
+						</form>
+					</div>
+				</div>
+				{% for bloc in blocs %}
+					<div class="bloc-item">
+						<a href="{{path('app_bloc_edit',{'id':bloc.id})}}" class="connection-container">
+								{% if bloc.contenu | escape %}
+							  <div class="bloc-txt">
+									<p>{{ bloc.contenu}}</p>
+							  </div>
+								{% endif %}
+								{% if bloc.type == "Image" %}
+							  <div class="bloc-img">
+									<img src="{{ asset('/uploads/'~bloc.image.nomFichier) | imagine_filter('my_thumb') }}" alt="#">
+							  </div>
+								{% endif %}
+								{% if bloc.type == "Lien" %}
+							  <div class="bloc-img">
+									<p>{{bloc.lien.url}}</p>
+							  </div>
+								{% endif %}
+                <a href="#" class="click">-> Connecter</a>
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</main>
+    
+{# <a href="{{ path('app_capsule_add') }}">Create new</a> #}
+{% endblock %}

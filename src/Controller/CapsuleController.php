@@ -26,14 +26,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CapsuleController extends AbstractController
 {
   // #[Route('/{slug_user}/{slug_capsule}', name: 'capsule_index', methods: ['GET'])]
-  public function index(string $slug_user, string $slug_capsule, EntityManagerInterface $entityManager, BlocRepository $blocRepository): Response
+  public function index(string $slug_user, string $slug_capsule, EntityManagerInterface $entityManager, BlocRepository $blocRepository, CapsuleRepository $capsuleRepository): Response
   {
     $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug' => $slug_capsule]);
     $user = $entityManager->getRepository(User::class)->findOneBy(['slug' => $slug_user]);
     return $this->render('capsule/index.html.twig', [
       'capsule' => $capsule,
       'user' => $user,
-      'blocs' => $blocRepository->findBy(['capsule' => $capsule->getId()]),
+      'capsules' => $capsuleRepository->findBy(['user' => $user->getId()]),
+      'blocs' => $blocRepository->findBy(['capsule' => $capsule->getId()],['updated_at' => 'DESC'])
     ]);
   }
 
@@ -49,8 +50,7 @@ class CapsuleController extends AbstractController
     //get csrf token generated on form
     $submittedToken = $request->request->get('token');
 
-    if ($this->isCsrfTokenValid('add-bloc', $submittedToken) && $post->has('submit') && ($imgFile || $textarea)) {
-
+    if ($this->isCsrfTokenValid('add-bloc', $submittedToken) && $post->has('submit')) {
       $bloc = new Bloc();
       $bloc->setCapsule($capsule);
       if ($imgFile && !$textarea) {
@@ -67,11 +67,6 @@ class CapsuleController extends AbstractController
           $img->setNomFichier($fileName);
           $img->setTypeFichier($imgFile->getClientOriginalExtension());
           $img->setBloc($bloc);
-
-          // $imageName = $img->getNomFichier();
-          // $fullSizeImgPath = $fileUploader->getTargetDirectory() . '/' . $imageName;
-          // $imageOptimizer->resize($fullSizeImgPath);
-
           $ir->save($img, true);
           return $this->redirectToRoute(
             'capsule_index',

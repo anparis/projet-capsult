@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>
 			{% block title %}Welcome!
 			{% endblock %}
@@ -14,12 +14,17 @@
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
 
-		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-		{% endblock %}
 	</head>
 	<body>
-      {{ include('partials/_nav.html.twig') }}
-			{% block body %}{% endblock %}
+		{{ include('partials/_nav.html.twig') }}
+		{% block body %}{% endblock %}
+		<footer>
+			This is the footer
+		</footer>
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+
+			<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+		{% endblock %}
 	</body>
 </html>

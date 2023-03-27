@@ -10,6 +10,11 @@
 /*  */
 /* GENERIC PROPERTIES */
 /*  */
+
+.fss{
+  font-size: small;
+}
+
 .brsl{
   border: 1px solid var(--bloc-color);
 }
@@ -51,7 +56,7 @@
 
 a.connection-container {
   position: relative;
-  display: block;
+  /* display: block; */
   text-decoration: none;
   user-select: none;
   width: 315px;
