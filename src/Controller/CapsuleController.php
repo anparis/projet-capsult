@@ -18,10 +18,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class CapsuleController extends AbstractController
 {
@@ -126,23 +128,19 @@ class CapsuleController extends AbstractController
     }
   }
 
-  // #[Route('/add', name: 'app_capsule_add', methods: ['GET', 'POST'])]
-  // public function new(Request $request, CapsuleRepository $CapsuleRepository): Response
-  // {
-  //     $capsule = new Capsule();
-  //     $form = $this->createForm(CapsuleType::class, $capsule);
-  //     $form->handleRequest($request);
+  #[Route('/{id}/{slug}/capsules-connection', name: 'capsules_connection', methods: ['GET'])]
+  #[ParamConverter('bloc', options: ['mapping' => ['id' => 'id']])]
+  #[ParamConverter('user', options: ['mapping' => ['slug' => 'slug']])]
+  public function userConnections(Bloc $bloc, User $user, EntityManagerInterface $entityManager): Response
+  {
+      $capsules = $entityManager->getRepository(Capsule::class)->findBy(['user' => $user->getId()]);
+      $bloc = $entityManager->getRepository(Bloc::class)->find($bloc->getId());
 
-  //     if ($form->isSubmitted() && $form->isValid()) {
-  //         $CapsuleRepository->save($capsule, true);
-
-  //         return $this->redirectToRoute('app_Capsule_index', [], Response::HTTP_SEE_OTHER);
-  //     }
-
-  //     return $this->render('capsule/add.html.twig', [
-  //         'form' => $form,
-  //     ]);
-  // }
+      return $this->render('connection/index.html.twig', [
+        'capsules' => $capsules,
+        'bloc' => $bloc
+      ]);
+  }
 
   // #[Route('/{id}', name: 'app_capsule_show', methods: ['GET'])]
   // public function show(Capsule $capsule): Response

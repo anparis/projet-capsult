@@ -44,7 +44,7 @@
 									<p>{{bloc.lien.url}}</p>
 							  </div>
 								{% endif %}
-                <a href="#" class="click">-> Connecter</a>
+                <a href="{{path('capsules_connection', {'slug':user.slug, 'id':bloc.id})}}">-> Connecter</a>
 						</a>
 					</div>
 				{% endfor %}

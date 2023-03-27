@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ConnectionController!
+{% endblock %}
+
+{% block body %}
+	<div>
+		{% for capsule in capsules %}
+			<a href="#">{{capsule.title}}</a><br>
+		{% endfor %}
+	</div>
+
+{% endblock %}
