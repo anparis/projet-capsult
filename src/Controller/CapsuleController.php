@@ -138,7 +138,8 @@ class CapsuleController extends AbstractController
 
       return $this->render('connection/index.html.twig', [
         'capsules' => $capsules,
-        'bloc' => $bloc
+        'bloc' => $bloc,
+        'user' => $user
       ]);
   }
 

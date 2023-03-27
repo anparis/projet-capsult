@@ -4,9 +4,10 @@
 {% endblock %}
 
 {% block body %}
+<p>Connecter à</p>
 	<div>
 		{% for capsule in capsules %}
-			<a href="#">{{capsule.title}}</a><br>
+			<a href="{{path('app_connection', {'slugUser': user.slug, 'idCapsule': capsule.id, 'idBloc':bloc.id})}}">{{capsule.title}}</a><br>
 		{% endfor %}
 	</div>
 
