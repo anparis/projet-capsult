@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Bloc;
 use App\Entity\Capsule;
 use App\Entity\Connection;
+use App\Entity\User;
 use App\Repository\ConnectionRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +18,7 @@ class ConnectionController extends AbstractController
   #[ParamConverter('user', options: ['mapping' => ['slugUser' => 'slug']])]
   #[ParamConverter('capsule', options: ['mapping' => ['idCapsule' => 'id']])]
   #[ParamConverter('bloc', options: ['mapping' => ['idBloc' => 'id']])]
-  public function Connection(Capsule $capsule, Bloc $bloc, ConnectionRepository $connectionRepository): Response
+  public function Connection(Capsule $capsule, User $user, Bloc $bloc, ConnectionRepository $connectionRepository): Response
   {
     if($bloc->getCapsule()->getId() === $capsule->getId()){
       return new Response('La connexion existe-déjà');
@@ -28,8 +29,9 @@ class ConnectionController extends AbstractController
     $connection->setBloc($bloc);
     $connectionRepository->save($connection, true);
 
-    return $this->redirectToRoute('profile_index',[
-      'slug' => $capsule->getUser()->getSlug()
+    return $this->redirectToRoute('capsule_index',[
+      'slug_user' => $user->getSlug(),
+      'slug_capsule' => $capsule->getSlug()
     ]);
   }
 }

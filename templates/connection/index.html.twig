@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ConnectionController!
+{% block title %}Connecter une capsule
 {% endblock %}
 
 {% block body %}
+<a href="{{path('capsule_index', {'slug_capsule':capsule.slug, 'slug_user':user.slug})}}">back to {{capsule.slug}}</a>
 <p>Connecter à</p>
 	<div>
 		{% for capsule in capsules %}

@@ -35,36 +35,41 @@ class CapsuleController extends AbstractController
     $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug' => $slug_capsule]);
     $user = $entityManager->getRepository(User::class)->findOneBy(['slug' => $slug_user]);
 
+    $blocCol = $capsule->getBlocs()->isEmpty();
+    $connectedBlocCol = $capsule->getConnections()->isEmpty();
 
-    if ($capsule->getBlocs()->isEmpty()) {
+    if ($blocCol && $connectedBlocCol) {
       return $this->render('capsule/index.html.twig', [
         'capsule' => $capsule,
         'user' => $user,
         'capsules' => $user->getCapsules(),
         'blocs' => null
       ]);
-    } else {
-      foreach ($capsule->getBlocs() as $key => $val) {
-        //I associate a key with a bloc and his last updated date
-        $blocs[] = ['bloc' => $val, 'date' => $val->getUpdatedAt()];
+    } 
+    else{
+      foreach ($capsule->getConnections() as $connections) {
+        //I associate a key with a connected bloc and his connection date
+        $blocsConnected[] = ['bloc' => $connections->getBloc(), 'date' => $connections->getCreatedAt()];
       }
-      if ($capsule->getConnections()->isEmpty())
-        $allBlocs = $blocs;
-      else {
-        foreach ($capsule->getConnections() as $connections) {
-          //I associate a key with a connected bloc and his connection date
-          $blocsConnected[] = ['bloc' => $connections->getBloc(), 'date' => $connections->getCreatedAt()];
-        }
-
+      foreach ($capsule->getBlocs() as $bloc) {
+        //I associate a key with a bloc and his last updated date
+        $blocs[] = ['bloc' => $bloc, 'date' => $bloc->getUpdatedAt()];
+      }
+      if($connectedBlocCol || $blocCol){
+        if($blocCol)
+          $allBlocs = $blocsConnected;
+        else
+          $allBlocs = $blocs;
+      }
+      else
         //merging the two arrays together
         $allBlocs = array_merge($blocsConnected, $blocs);
+    } 
 
-        //sorting the array by most descending date
-        usort($allBlocs, function ($a, $b) {
-          return $a['date'] < $b['date'];
-        });
-      }
-    }
+    //sorting the array by descending date
+    usort($allBlocs, function ($a, $b) {
+      return $a['date'] < $b['date'];
+    });
 
     return $this->render('capsule/index.html.twig', [
       'capsule' => $capsule,
@@ -162,16 +167,18 @@ class CapsuleController extends AbstractController
     }
   }
 
-  #[Route('/{id}/{slug}/capsules-connection', name: 'capsules_connection', methods: ['GET'])]
+  #[Route('/{user_slug}/{capsule_slug}/{id}/capsules-connection', name: 'capsules_connection', methods: ['GET'])]
   #[ParamConverter('bloc', options: ['mapping' => ['id' => 'id']])]
-  #[ParamConverter('user', options: ['mapping' => ['slug' => 'slug']])]
-  public function userConnections(Bloc $bloc, User $user, EntityManagerInterface $entityManager): Response
+  #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
+  #[ParamConverter('capsule', options: ['mapping' => ['capsule_slug' => 'slug']])]
+  public function userConnections(Bloc $bloc, User $user, Capsule $capsule, EntityManagerInterface $entityManager): Response
   {
     $capsules = $entityManager->getRepository(Capsule::class)->findBy(['user' => $user->getId()]);
     $bloc = $entityManager->getRepository(Bloc::class)->find($bloc->getId());
 
     return $this->render('connection/index.html.twig', [
       'capsules' => $capsules,
+      'capsule' => $capsule,
       'bloc' => $bloc,
       'user' => $user
     ]);
