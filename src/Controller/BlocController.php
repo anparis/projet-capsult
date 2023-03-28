@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Bloc;
+use App\Entity\Capsule;
 
 use App\Form\BlocType;
 
 use App\Repository\BlocRepository;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,8 +34,10 @@ class BlocController extends AbstractController
     ]);
   }
 
-  #[Route('/{id}/edit', name: 'app_bloc_edit', methods: ['GET', 'POST'])]
-  public function edit(Request $request, Bloc $bloc, BlocRepository $blocRepository): Response
+  #[Route('/{bloc_id}/{capsule_slug}/edit', name: 'app_bloc_edit', methods: ['GET', 'POST'])]
+  #[ParamConverter('bloc', options: ['mapping' => ['bloc_id' => 'id']])]
+  #[ParamConverter('capsule', options: ['mapping' => ['capsule_slug' => 'slug']])]
+  public function edit(Bloc $bloc, Capsule $capsule, Request $request, BlocRepository $blocRepository): Response
   {
     $form = $this->createForm(BlocType::class, $bloc);
     $form->handleRequest($request);
@@ -47,6 +50,7 @@ class BlocController extends AbstractController
 
     return $this->render('bloc/edit.html.twig', [
       'bloc' => $bloc,
+      'capsule' => $capsule,
       'form' => $form,
     ]);
   }

@@ -29,7 +29,7 @@
         {% if blocs %}
 				{% for key, bloc in blocs %}
 					<div class="bloc-item">
-						<a href="{{path('app_bloc_edit',{'id':bloc['bloc'].id})}}" class="connection-container">
+						<a href="{{path('app_bloc_edit', {'bloc_id':bloc['bloc'].id, 'capsule_slug':capsule.slug })}}" class="connection-container">
 								{% if bloc['bloc'].contenu | escape %}
 							  <div class="bloc-txt">
 									<p>{{ bloc['bloc'].contenu}}</p>
