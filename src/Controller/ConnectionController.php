@@ -14,15 +14,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ConnectionController extends AbstractController
 {
-  #[Route('{slugUser}/{idCapsule}/{idBloc}/connection', name: 'app_connection')]
+  #[Route('{slugUser}/{slugCapsule}/{idCapsule}/{idBloc}/connection', name: 'app_connection')]
   #[ParamConverter('user', options: ['mapping' => ['slugUser' => 'slug']])]
   #[ParamConverter('capsule', options: ['mapping' => ['idCapsule' => 'id']])]
   #[ParamConverter('bloc', options: ['mapping' => ['idBloc' => 'id']])]
-  public function Connection(Capsule $capsule, User $user, Bloc $bloc, ConnectionRepository $connectionRepository): Response
+  public function Connection(string $slugCapsule, Capsule $capsule, User $user, Bloc $bloc, ConnectionRepository $connectionRepository): Response
   {
-    if($bloc->getCapsule()->getId() === $capsule->getId()){
-      return new Response('La connexion existe-déjà');
-    }
     $connection = new Connection();
 
     $connection->setCapsule($capsule);
@@ -31,7 +28,7 @@ class ConnectionController extends AbstractController
 
     return $this->redirectToRoute('capsule_index',[
       'slug_user' => $user->getSlug(),
-      'slug_capsule' => $capsule->getSlug()
+      'slug_capsule' => $slugCapsule
     ]);
   }
 }
