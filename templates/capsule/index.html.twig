@@ -26,28 +26,31 @@
 						</form>
 					</div>
 				</div>
-				{% for bloc in blocs %}
+        {% if blocs %}
+				{% for key, bloc in blocs %}
 					<div class="bloc-item">
-						<a href="{{path('app_bloc_edit',{'id':bloc.id})}}" class="connection-container">
-								{% if bloc.contenu | escape %}
+						<a href="{{path('app_bloc_edit',{'id':bloc['bloc'].id})}}" class="connection-container">
+								{% if bloc['bloc'].contenu | escape %}
 							  <div class="bloc-txt">
-									<p>{{ bloc.contenu}}</p>
+									<p>{{ bloc['bloc'].contenu}}</p>
 							  </div>
 								{% endif %}
-								{% if bloc.type == "Image" %}
+								{% if bloc['bloc'].type == "Image" %}
 							  <div class="bloc-img">
-									<img src="{{ asset('/uploads/'~bloc.image.nomFichier) | imagine_filter('my_thumb') }}" alt="#">
+									<img src="{{ asset('/uploads/'~bloc['bloc'].image.nomFichier) | imagine_filter('my_thumb') }}" alt="#">
 							  </div>
 								{% endif %}
-								{% if bloc.type == "Lien" %}
+								{% if bloc['bloc'].type == "Lien" %}
 							  <div class="bloc-img">
-									<p>{{bloc.lien.url}}</p>
+									<p>{{bloc['bloc'].lien.url}}</p>
 							  </div>
 								{% endif %}
-                <a href="{{path('capsules_connection', {'slug':user.slug, 'id':bloc.id})}}">-> Connecter</a>
+                <a href="{{path('capsules_connection', {'slug':user.slug, 'id':bloc['bloc'].id})}}">-> Connecter</a>
 						</a>
 					</div>
 				{% endfor %}
+        {% endif %}
+
 			</div>
 		</div>
 	</main>

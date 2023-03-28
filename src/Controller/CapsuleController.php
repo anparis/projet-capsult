@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Capsule;
 use App\Form\CapsuleType;
+use App\Entity\Connection;
 use App\Service\Validation;
 use App\Service\FileUploader;
 use App\Repository\BlocRepository;
@@ -18,6 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
@@ -32,11 +34,43 @@ class CapsuleController extends AbstractController
   {
     $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug' => $slug_capsule]);
     $user = $entityManager->getRepository(User::class)->findOneBy(['slug' => $slug_user]);
+
+
+    if ($capsule->getBlocs()->isEmpty()) {
+      return $this->render('capsule/index.html.twig', [
+        'capsule' => $capsule,
+        'user' => $user,
+        'capsules' => $user->getCapsules(),
+        'blocs' => null
+      ]);
+    } else {
+      foreach ($capsule->getBlocs() as $key => $val) {
+        //I associate a key with a bloc and his last updated date
+        $blocs[] = ['bloc' => $val, 'date' => $val->getUpdatedAt()];
+      }
+      if ($capsule->getConnections()->isEmpty())
+        $allBlocs = $blocs;
+      else {
+        foreach ($capsule->getConnections() as $connections) {
+          //I associate a key with a connected bloc and his connection date
+          $blocsConnected[] = ['bloc' => $connections->getBloc(), 'date' => $connections->getCreatedAt()];
+        }
+
+        //merging the two arrays together
+        $allBlocs = array_merge($blocsConnected, $blocs);
+
+        //sorting the array by most descending date
+        usort($allBlocs, function ($a, $b) {
+          return $a['date'] < $b['date'];
+        });
+      }
+    }
+
     return $this->render('capsule/index.html.twig', [
       'capsule' => $capsule,
       'user' => $user,
-      'capsules' => $capsuleRepository->findBy(['user' => $user->getId()]),
-      'blocs' => $blocRepository->findBy(['capsule' => $capsule->getId()],['updated_at' => 'DESC'])
+      'capsules' => $user->getCapsules(),
+      'blocs' => $allBlocs,
     ]);
   }
 
@@ -133,14 +167,14 @@ class CapsuleController extends AbstractController
   #[ParamConverter('user', options: ['mapping' => ['slug' => 'slug']])]
   public function userConnections(Bloc $bloc, User $user, EntityManagerInterface $entityManager): Response
   {
-      $capsules = $entityManager->getRepository(Capsule::class)->findBy(['user' => $user->getId()]);
-      $bloc = $entityManager->getRepository(Bloc::class)->find($bloc->getId());
+    $capsules = $entityManager->getRepository(Capsule::class)->findBy(['user' => $user->getId()]);
+    $bloc = $entityManager->getRepository(Bloc::class)->find($bloc->getId());
 
-      return $this->render('connection/index.html.twig', [
-        'capsules' => $capsules,
-        'bloc' => $bloc,
-        'user' => $user
-      ]);
+    return $this->render('connection/index.html.twig', [
+      'capsules' => $capsules,
+      'bloc' => $bloc,
+      'user' => $user
+    ]);
   }
 
   // #[Route('/{id}', name: 'app_capsule_show', methods: ['GET'])]
