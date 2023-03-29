@@ -36,10 +36,10 @@ class CapsuleController extends AbstractController
     $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug' => $slug_capsule]);
     $user = $entityManager->getRepository(User::class)->findOneBy(['slug' => $slug_user]);
 
-    $blocCol = $capsule->getBlocs()->isEmpty();
+    // $blocCol = $capsule->getBlocs()->isEmpty();
     $connectedBlocCol = $capsule->getConnections()->isEmpty();
 
-    if ($blocCol && $connectedBlocCol) {
+    if ($connectedBlocCol) {
       return $this->render('capsule/index.html.twig', [
         'capsule' => $capsule,
         'user' => $user,
@@ -48,27 +48,30 @@ class CapsuleController extends AbstractController
       ]);
     } 
     else{
-      foreach ($capsule->getConnections() as $connections) {
+      foreach ($capsule->getConnections() as $connection) {
         //I associate a key with a connected bloc and his connection date
-        $blocsConnected[] = ['bloc' => $connections->getBloc(), 'date' => $connections->getCreatedAt()];
-      }
-      foreach ($capsule->getBlocs() as $bloc) {
-        //I associate a key with a bloc and his last updated date
-        $blocs[] = ['bloc' => $bloc, 'date' => $bloc->getUpdatedAt()];
-      }
-      if($connectedBlocCol || $blocCol){
-        if($blocCol)
-          $allBlocs = $blocsConnected;
+        if($connection->getBloc()->getCapsule()->getId() === $connection->getCapsule()->getId())
+          $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getBloc()->getCreatedAt()];
         else
-          $allBlocs = $blocs;
+          $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getCreatedAt()];
       }
-      else
-        //merging the two arrays together
-        $allBlocs = array_merge($blocsConnected, $blocs);
+      // foreach ($capsule->getBlocs() as $bloc) {
+      //   //I associate a key with a bloc and his last updated date
+      //   $blocs[] = ['bloc' => $bloc, 'date' => $bloc->getUpdatedAt()];
+      // }
+      // if($connectedBlocCol || $blocCol){
+      //   if($blocCol)
+      //     $allBlocs = $blocsConnected;
+      //   else
+      //     $allBlocs = $blocs;
+      // }
+      // else
+      //   //merging the two arrays together
+      //   $allBlocs = array_merge($blocsConnected, $blocs);
     } 
 
     //sorting the array by descending date
-    usort($allBlocs, function ($a, $b) {
+    usort($blocsConnected, function ($a, $b) {
       return $a['date'] < $b['date'];
     });
 
@@ -78,7 +81,7 @@ class CapsuleController extends AbstractController
       'capsule' => $capsule,
       'user' => $user,
       'capsules' => $user->getCapsules(),
-      'blocs' => $allBlocs,
+      'blocs' => $blocsConnected,
     ]);
   }
 
