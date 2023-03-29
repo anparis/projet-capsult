@@ -56,7 +56,7 @@ class Capsule
   #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
   private ?User $user = null;
 
-  #[ORM\OneToMany(mappedBy: 'capsule', targetEntity: Connection::class, orphanRemoval: true)]
+  #[ORM\OneToMany(mappedBy: 'capsule', targetEntity: Connection::class, orphanRemoval: false)]
   private Collection $connections;
 
   public function __construct()

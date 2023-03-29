@@ -47,7 +47,7 @@ class Bloc
   #[ORM\JoinColumn(nullable: false, onDelete:'CASCADE')]
   private ?Capsule $capsule = null;
 
-  #[ORM\OneToMany(mappedBy: 'bloc', targetEntity: Connection::class, orphanRemoval: true)]
+  #[ORM\OneToMany(mappedBy: 'bloc', targetEntity: Connection::class, orphanRemoval: false)]
   private Collection $connections;
 
   public function __construct()
