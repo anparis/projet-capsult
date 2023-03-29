@@ -15,6 +15,7 @@ use App\Repository\BlocRepository;
 use App\Repository\LienRepository;
 use App\Repository\ImageRepository;
 use App\Repository\CapsuleRepository;
+use App\Repository\ConnectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,6 +72,8 @@ class CapsuleController extends AbstractController
       return $a['date'] < $b['date'];
     });
 
+    // dd($allBlocs);
+
     return $this->render('capsule/index.html.twig', [
       'capsule' => $capsule,
       'user' => $user,
@@ -80,7 +83,7 @@ class CapsuleController extends AbstractController
   }
 
   #[Route('/add_bloc/{id}', name: 'capsule_add_bloc', methods: ['POST'])]
-  public function addBloc(Capsule $capsule, Request $request, BlocRepository $br, ImageRepository $ir, LienRepository $lr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
+  public function addBloc(Capsule $capsule, Request $request, BlocRepository $br, ImageRepository $ir, LienRepository $lr, ConnectionRepository $cr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
   {
     $post = $request->request;
 
@@ -109,62 +112,44 @@ class CapsuleController extends AbstractController
           $img->setTypeFichier($imgFile->getClientOriginalExtension());
           $img->setBloc($bloc);
           $ir->save($img, true);
-          return $this->redirectToRoute(
-            'capsule_index',
-            [
-              'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
-              'slug_capsule' => $bloc->getCapsule()->getSlug()
-            ]
-          );
         }
       }
-      if ($textarea && !$imgFile) {
+      elseif ($textarea && !$imgFile) {
 
-        //calling validation service to check if user input is a url
+        //check if user input is url
         $urlViolation = $validation->validateUrl($textarea, $validator);
-
+        
+        // user can't submit textarea and upload file in the same time
         if ($urlViolation) {
           $bloc->setType('Texte');
           $bloc->setContenu($textarea);
           $br->save($bloc, true);
-          return $this->redirectToRoute(
-            'capsule_index',
-            [
-              'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
-              'slug_capsule' => $bloc->getCapsule()->getSlug()
-            ]
-          );
         } else {
           $bloc->setType('Lien');
           $link = new Lien();
           $link->setUrl($textarea);
           $link->setBloc($bloc);
           $lr->save($link, true);
-
           // $knpSnappyImage->generate($safeTextArea, 'uploads/bloc_img/test.png');
-
-          return $this->redirectToRoute(
-            'capsule_index',
-            [
-              'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
-              'slug_capsule' => $bloc->getCapsule()->getSlug()
-            ]
-          );
         }
       }
-      // user can't submit textarea and upload file at the same time
-      return $this->redirectToRoute(
-        'capsule_index',
-        [
-          'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
-          'slug_capsule' => $bloc->getCapsule()->getSlug()
-        ]
-      );
     } else {
       return new Response(
         'Erreur de formulaire'
       );
     }
+    // I finally set a new connection between bloc and capsule
+    $connection = new Connection();
+    $connection->setBloc($bloc);
+    $connection->setCapsule($capsule);
+    $cr->save($connection, true);
+    return $this->redirectToRoute(
+      'capsule_index',
+      [
+        'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
+        'slug_capsule' => $bloc->getCapsule()->getSlug()
+      ]
+    );
   }
 
   #[Route('/{user_slug}/{capsule_slug}/{id}/capsules-connection', name: 'capsules_connection', methods: ['GET'])]

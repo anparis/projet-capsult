@@ -3,7 +3,7 @@
 {% block title %}Edit Bloc{% endblock %}
 
 {% block body %}
-    <a href="{{ path('capsule_index', {'slug_user':bloc.capsule.user.slug, 'slug_capsule':capsule.slug}) }}">back to list</a>
+    <a href="{{ path('capsule_index', {'slug_user':app.user.slug, 'slug_capsule':capsule.slug}) }}">back to list</a>
     <h1>Edit Bloc</h1>
 
     {{ include('bloc/_form.html.twig') }}
