@@ -45,7 +45,7 @@
 									<p>{{bloc['bloc'].lien.url}}</p>
 							  </div>
 								{% endif %}
-                <a href="{{path('capsules_connection', {'user_slug':user.slug,'capsule_slug':capsule.slug, 'id':bloc['bloc'].id})}}">-> Connecter</a>
+                <a href="{{path('capsules_connection', {'user_slug':app.user.slug,'capsule_slug':capsule.slug, 'id':bloc['bloc'].id})}}">-> Connecter</a>
 						</a>
 					</div>
 				{% endfor %}

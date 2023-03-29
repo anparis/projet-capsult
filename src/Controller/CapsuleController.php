@@ -183,13 +183,6 @@ class CapsuleController extends AbstractController
     ]);
   }
 
-  // #[Route('/{id}', name: 'app_capsule_show', methods: ['GET'])]
-  // public function show(Capsule $capsule): Response
-  // {
-  //     return $this->render('capsule/show.html.twig', [
-  //         'capsule' => $capsule,
-  //     ]);
-  // }
 
   #[Route('/{id}/edit', name: 'capsule_edit', methods: ['GET', 'POST'])]
   public function edit(Request $request, Capsule $capsule, CapsuleRepository $capsuleRepository): Response
