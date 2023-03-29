@@ -46,11 +46,10 @@ class CapsuleController extends AbstractController
         'capsules' => $user->getCapsules(),
         'blocs' => null
       ]);
-    } 
-    else{
+    } else {
       foreach ($capsule->getConnections() as $connection) {
         //I associate a key with a connected bloc and his connection date
-        if($connection->getBloc()->getCapsule()->getId() === $connection->getCapsule()->getId())
+        if ($connection->getBloc()->getCapsule()->getId() === $connection->getCapsule()->getId())
           $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getBloc()->getCreatedAt()];
         else
           $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getCreatedAt()];
@@ -68,7 +67,7 @@ class CapsuleController extends AbstractController
       // else
       //   //merging the two arrays together
       //   $allBlocs = array_merge($blocsConnected, $blocs);
-    } 
+    }
 
     //sorting the array by descending date
     usort($blocsConnected, function ($a, $b) {
@@ -116,12 +115,11 @@ class CapsuleController extends AbstractController
           $img->setBloc($bloc);
           $ir->save($img, true);
         }
-      }
-      elseif ($textarea && !$imgFile) {
+      } elseif ($textarea && !$imgFile) {
 
         //check if user input is url
         $urlViolation = $validation->validateUrl($textarea, $validator);
-        
+
         // user can't submit textarea and upload file in the same time
         if ($urlViolation) {
           $bloc->setType('Texte');
@@ -136,11 +134,17 @@ class CapsuleController extends AbstractController
           // $knpSnappyImage->generate($safeTextArea, 'uploads/bloc_img/test.png');
         }
       }
+      else{
+        return new Response(
+          'Erreur de formulaire'
+        );
+      }
     } else {
       return new Response(
         'Erreur de formulaire'
       );
     }
+
     // I finally set a new connection between bloc and capsule
     $connection = new Connection();
     $connection->setBloc($bloc);

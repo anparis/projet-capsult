@@ -5,8 +5,5 @@
 {% block body %}
     <a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">back to capsule</a>
     <h1>Edit Capsule</h1>
-
     {{ include('capsule/_form.html.twig') }}
-
-
 {% endblock %}
