@@ -1,9 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Bloc{% endblock %}
+{% block title %}Edit Capsule
+{% endblock %}
 
 {% block body %}
-    <a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">back to capsule</a>
-    <h1>Edit Capsule</h1>
-    {{ include('capsule/_form.html.twig') }}
+	<a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">back to capsule</a>
+	<br><br>
+	{{ include('capsule/_form.html.twig') }}
+
+	<hr>
+	<p>Mes capsules :</p>
+	{% for capsule in app.user.capsules %}
+		{% if capsule.open %}
+			<a href="#">{{capsule.slug}}
+				[{{capsule.status}}]</a>
+		{% endif %}
+
+	{% endfor %}
 {% endblock %}

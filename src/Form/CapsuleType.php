@@ -15,15 +15,17 @@ class CapsuleType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
-      ->add('title', TextType::class)
+      ->add('title', TextType::class,[
+        'label' => false
+      ])
       ->add('description', TextareaType::class,[
         'required'   => false
       ])
       ->add('status', ChoiceType::class, [
         'choices'  => [
           'Statut de la capsule' => [
-            'scellée' => 'sealed',
-            'ouverte' => 'open',
+            'statut > scellée' => 'sealed',
+            'statut > ouverte' => 'open',
           ],
         ],
         'label' => 'Statut'

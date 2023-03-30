@@ -141,6 +141,7 @@ class Capsule
   public function setStatus(string $status): self
   {
     $this->status = $status;
+    $this->status === 'sealed' ? $this->setOpen(0) : $this->setOpen(1);
 
     return $this;
   }
