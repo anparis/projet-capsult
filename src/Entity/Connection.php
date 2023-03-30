@@ -13,12 +13,12 @@ class Connection
 
   #[ORM\Id]
   #[ORM\ManyToOne(inversedBy: 'connections')]
-  #[ORM\JoinColumn(nullable: false, onDelete:'cascade')]
+  #[ORM\JoinColumn(nullable: false)]
   private ?Capsule $capsule = null;
 
   #[ORM\Id]
   #[ORM\ManyToOne(inversedBy: 'connections')]
-  #[ORM\JoinColumn(nullable: false,  onDelete:'cascade')]
+  #[ORM\JoinColumn(nullable: false)]
   private ?Bloc $bloc = null;
 
   public function __construct()

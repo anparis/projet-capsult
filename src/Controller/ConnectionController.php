@@ -7,7 +7,9 @@ use App\Entity\User;
 use App\Entity\Capsule;
 use App\Entity\Connection;
 use App\Repository\BlocRepository;
+use App\Repository\CapsuleRepository;
 use App\Repository\ConnectionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,11 +39,16 @@ class ConnectionController extends AbstractController
   #[Route('/{user_id}/{capsule_id}/{bloc_id}', name: 'app_connection_delete', methods: ['POST'])]
   #[ParamConverter('user', options: ['mapping' => ['user_id' => 'id']])]
   #[ParamConverter('capsule', options: ['mapping' => ['capsule_id' => 'id']])]
-  #[ParamConverter('connection', options: ['mapping' => ['capsule_id' => 'capsule_id']])]
-  #[ParamConverter('connection', options: ['mapping' => ['bloc_id' => 'bloc_id']])]
-  public function delete(User $user,Capsule $capsule, Request $request, Connection $connection, ConnectionRepository $connectionRepository): Response
+  #[ParamConverter('bloc', options: ['mapping' => ['bloc_id' => 'id']])]
+  public function delete(User $user,Capsule $capsule, Request $request, Bloc $bloc, EntityManagerInterface $entityManager, ConnectionRepository $connectionRepository): Response
   {
-    if ($this->isCsrfTokenValid('delete' . $connection->getBloc()->getId(), $request->request->get('_token'))) {
+    if ($this->isCsrfTokenValid('delete' . $bloc->getId(), $request->request->get('_token'))) {
+      // $connection->setCapsule(null);
+      // $connection->setBloc(null);
+      $connection = $connectionRepository->findOneBy(['capsule' => $capsule->getId(), 'bloc'=> $bloc->getId()]);
+
+      // $entityManager->getRepository(Capsule::class)->removeConnection($connection);
+      // $entityManager->getRepository(Bloc::class)->removeConnection($connection);
       $connectionRepository->remove($connection, true);
     }
 
