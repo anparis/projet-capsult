@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Trait\SlugTrait;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use Gedmo\Mapping\Annotation\Slug;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -31,6 +32,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
   #[ORM\Column]
   private array $roles = [];
+
+  #[ORM\Column(length: 150, unique: true)]
+  #[Slug(fields: ['username'])]
+  private ?string $slug = null;
 
   /**
    * @var string The hashed password

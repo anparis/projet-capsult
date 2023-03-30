@@ -10,7 +10,10 @@ use App\Entity\Trait\UpdatedAtTrait;
 use App\Repository\CapsuleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Gedmo\Mapping\Annotation\Slug;
 
 #[ORM\Entity(repositoryClass: CapsuleRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -57,17 +60,30 @@ class Capsule
   #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
   private ?User $user = null;
 
+  #[ORM\Column(length: 150, unique: true)]
+  #[Slug(fields: ['title'])]
+  private ?string $slug = null;
+
   #[ORM\OneToMany(mappedBy: 'capsule', targetEntity: Connection::class, orphanRemoval: false)]
   private Collection $connections;
 
   public function __construct()
   {
+    // $slugger = new AsciiSlugger();
     $this->blocs = new ArrayCollection();
     $this->created_at = new \DateTimeImmutable();
     $this->updated_at = $this->created_at;
     $this->collaboration = 0;
     $this->connections = new ArrayCollection();
+    // $this->slug = $slugger->slug($this->title)->lower();
   }
+
+  // #[ORM\PrePersist]
+  // #[ORM\PreUpdate]
+  // public function updateSlug(): void
+  // {
+  //   $this->setSlug($slugger->slug($this->title)->lower());
+  // }
 
   public function getId(): ?int
   {

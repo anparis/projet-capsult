@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\Entity\Trait\CreatedAtTrait;
-use App\Entity\Trait\SlugTrait;
-use App\Entity\Trait\UpdatedAtTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BlocRepository;
+use App\Entity\Trait\CreatedAtTrait;
+use App\Entity\Trait\UpdatedAtTrait;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BlocRepository::class)]
@@ -17,7 +16,6 @@ class Bloc
 {
   use CreatedAtTrait;
   use UpdatedAtTrait;
-  use SlugTrait;
 
   #[ORM\Id]
   #[ORM\GeneratedValue]

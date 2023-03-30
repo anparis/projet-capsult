@@ -31,7 +31,7 @@ class ProfileController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $capsule->setSlug($sluger->slug($form->get('title')->getData())->lower());
+      // $capsule->setSlug($sluger->slug($form->get('title')->getData())->lower());
       ($form->get('title')->getData() == 'open') ? $capsule->setOpen(1) : $capsule->setOpen(0);
       $capsule->setUser($user);
 

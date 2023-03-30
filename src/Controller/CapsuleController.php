@@ -54,19 +54,6 @@ class CapsuleController extends AbstractController
         else
           $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getCreatedAt()];
       }
-      // foreach ($capsule->getBlocs() as $bloc) {
-      //   //I associate a key with a bloc and his last updated date
-      //   $blocs[] = ['bloc' => $bloc, 'date' => $bloc->getUpdatedAt()];
-      // }
-      // if($connectedBlocCol || $blocCol){
-      //   if($blocCol)
-      //     $allBlocs = $blocsConnected;
-      //   else
-      //     $allBlocs = $blocs;
-      // }
-      // else
-      //   //merging the two arrays together
-      //   $allBlocs = array_merge($blocsConnected, $blocs);
     }
 
     //sorting the array by descending date
