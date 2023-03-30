@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints\Choice;
 
 #[ORM\Entity(repositoryClass: CapsuleRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Capsule
 {
   use CreatedAtTrait;

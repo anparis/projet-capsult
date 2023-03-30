@@ -13,7 +13,10 @@
 	{% for capsule in app.user.capsules %}
 		{% if capsule.open %}
 			<a href="#">{{capsule.slug}}
-				[{{capsule.status}}]</a>
+				[{{'ouverte'}}]</a>
+    {% else %}
+      <a href="#">{{capsule.slug}}
+				[{{'scellée'}}]</a>
 		{% endif %}
 
 	{% endfor %}

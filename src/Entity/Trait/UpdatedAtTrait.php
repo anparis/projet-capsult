@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Entity\Trait;
+
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 trait UpdatedAtTrait
@@ -18,5 +20,13 @@ trait UpdatedAtTrait
     $this->updated_at = $updated_at;
 
     return $this;
+  }
+
+  #[ORM\PrePersist]
+  #[ORM\PreUpdate]
+  public function updateDate(): void
+  {
+    $dateTimeNow = new DateTimeImmutable('now');
+    $this->setUpdatedAt($dateTimeNow);
   }
 }
