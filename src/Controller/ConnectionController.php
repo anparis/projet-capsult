@@ -43,12 +43,8 @@ class ConnectionController extends AbstractController
   public function delete(User $user,Capsule $capsule, Request $request, Bloc $bloc, EntityManagerInterface $entityManager, ConnectionRepository $connectionRepository): Response
   {
     if ($this->isCsrfTokenValid('delete' . $bloc->getId(), $request->request->get('_token'))) {
-      // $connection->setCapsule(null);
-      // $connection->setBloc(null);
       $connection = $connectionRepository->findOneBy(['capsule' => $capsule->getId(), 'bloc'=> $bloc->getId()]);
 
-      // $entityManager->getRepository(Capsule::class)->removeConnection($connection);
-      // $entityManager->getRepository(Bloc::class)->removeConnection($connection);
       $connectionRepository->remove($connection, true);
     }
 

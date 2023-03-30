@@ -163,9 +163,8 @@ class CapsuleController extends AbstractController
   #[ParamConverter('bloc', options: ['mapping' => ['id' => 'id']])]
   #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
   #[ParamConverter('capsule', options: ['mapping' => ['capsule_slug' => 'slug']])]
-  public function userConnections(Bloc $bloc, User $user, Capsule $capsule, EntityManagerInterface $entityManager): Response
+  public function userConnections(Bloc $bloc, User $user, Capsule $capsule): Response
   {
-    // $bloc = $entityManager->getRepository(Bloc::class)->find($bloc->getId());
 
     return $this->render('connection/index.html.twig', [
       'capsules' => $user->getCapsules(),
