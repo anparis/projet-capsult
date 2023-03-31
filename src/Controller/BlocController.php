@@ -40,11 +40,11 @@ class BlocController extends AbstractController
   public function edit(Bloc $bloc, Capsule $capsule, Request $request, BlocRepository $blocRepository): Response
   {
     $form = $this->createForm(BlocType::class, $bloc);
+    // dd($form);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       $blocRepository->save($bloc, true);
-
       return $this->redirectToRoute('app_bloc_index', [], Response::HTTP_SEE_OTHER);
     }
 

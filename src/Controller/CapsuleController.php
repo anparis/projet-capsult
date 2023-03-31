@@ -110,7 +110,7 @@ class CapsuleController extends AbstractController
         // user can't submit textarea and upload file in the same time
         if ($urlViolation) {
           $bloc->setType('Texte');
-          $bloc->setContenu($textarea);
+          $bloc->setContent($textarea);
           $br->save($bloc, true);
         } else {
           $bloc->setType('Lien');

@@ -30,7 +30,7 @@ class Bloc
   private ?string $description = null;
 
   #[ORM\Column(type: Types::TEXT, nullable: true)]
-  private ?string $contenu = null;
+  private ?string $content = null;
 
   #[ORM\Column(length: 20)]
   private ?string $type = null;
@@ -85,14 +85,14 @@ class Bloc
     return $this;
   }
 
-  public function getContenu(): ?string
+  public function getContent(): ?string
   {
-    return $this->contenu;
+    return $this->content;
   }
 
-  public function setContenu(?string $contenu): self
+  public function setContent(?string $content): self
   {
-    $this->contenu = $contenu;
+    $this->content = $content;
 
     return $this;
   }
