@@ -6,8 +6,10 @@
 {% block body %}
 	<a href="{{ path('capsule_index', {'slug_user':app.user.slug, 'slug_capsule':capsule.slug}) }}">back to list</a>
   <br><br>
-	<p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAt | date("d/m/Y")}}</p>
-
+  {% if bloc.capsule %}
+	  <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAt | date("d/m/Y")}}</p>
+  {% endif %}
+  
 	{{ include('bloc/_form.html.twig') }}
 
 	<br>

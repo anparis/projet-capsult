@@ -18,7 +18,9 @@ class BlocType extends AbstractType
   {
     $builder
       ->add('title', TextType::class)
-      ->add('description', TextareaType::class)
+      ->add('description', TextareaType::class, [
+        'required'   => false
+      ])
       ->add('submit', SubmitType::class, [
         'attr' => ['class' => 'btn']
       ]);

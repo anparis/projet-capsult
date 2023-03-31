@@ -53,7 +53,7 @@ class Capsule
   )]
   private ?string $status = null;
 
-  #[ORM\OneToMany(mappedBy: 'capsule', targetEntity: Bloc::class, orphanRemoval: true)]
+  #[ORM\OneToMany(mappedBy: 'capsule', targetEntity: Bloc::class, orphanRemoval: false)]
   private Collection $blocs;
 
   #[ORM\ManyToOne(inversedBy: 'capsules')]

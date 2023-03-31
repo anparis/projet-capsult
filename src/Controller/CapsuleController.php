@@ -20,10 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -49,8 +46,12 @@ class CapsuleController extends AbstractController
     } else {
       foreach ($capsule->getConnections() as $connection) {
         //I associate a key with a connected bloc and his connection date
-        if ($connection->getBloc()->getCapsule()->getId() === $connection->getCapsule()->getId())
-          $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getBloc()->getCreatedAt()];
+        if($connection->getBloc()->getCapsule()){
+          if ($connection->getBloc()->getCapsule()->getId() === $connection->getCapsule()->getId())
+            $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getBloc()->getCreatedAt()];
+          else
+            $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getCreatedAt()];
+        }
         else
           $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getCreatedAt()];
       }
@@ -186,13 +187,21 @@ class CapsuleController extends AbstractController
     ]);
   }
 
-  // #[Route('/{id}', name: 'app_capsule_delete', methods: ['POST'])]
-  // public function delete(Request $request, Capsule $capsule, CapsuleRepository $capsuleRepository): Response
-  // {
-  //     if ($this->isCsrfTokenValid('delete'.$capsule->getId(), $request->request->get('_token'))) {
-  //         $capsuleRepository->remove($capsule, true);
-  //     }
+  #[Route('/{slug}/{id}', name: 'app_capsule_delete', methods: ['POST'])]
+  public function delete(Request $request, string $slug, Capsule $capsule, CapsuleRepository $capsuleRepository, ConnectionRepository $connectionRepository): Response
+  {
+      if ($this->isCsrfTokenValid('delete'.$capsule->getId(), $request->request->get('_token'))) {
+        foreach($capsule->getConnections() as $connection){
+          $connectionRepository->remove($connection, true);
+        }
+        foreach($capsule->getBlocs() as $bloc){
+          $capsule->removeBloc($bloc);
+        }
+        $capsuleRepository->remove($capsule, true);
+      }
 
-  //     return $this->redirectToRoute('app_capsule_index', [], Response::HTTP_SEE_OTHER);
-  // }
+      return $this->redirectToRoute('profile_index', [
+        'slug' => $slug
+      ]);
+  }
 }

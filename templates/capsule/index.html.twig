@@ -46,12 +46,15 @@
 							  </div>
 								{% endif %}
                 <a href="{{path('capsules_connection', {'user_slug':app.user.slug,'capsule_slug':capsule.slug, 'id':bloc['bloc'].id})}}">-> Connecter</a>
+                {% if bloc['bloc'].capsule %}
                 {% if capsule.user.id == bloc['bloc'].capsule.user.id %}
                   <p>ajouté par {{user.username}}</p>
                 {% else %}
                   <p>connecté par {{app.user.username}}</p>
                 {% endif %}
-                
+                {% else %}
+                  <p>connecté par {{app.user.username}}</p>
+                {% endif %}
 						</a>
 					</div>
 				{% endfor %}

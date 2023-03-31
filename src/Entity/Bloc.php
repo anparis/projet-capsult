@@ -42,7 +42,7 @@ class Bloc
   private ?Image $image = null;
 
   #[ORM\ManyToOne(inversedBy: 'blocs')]
-  #[ORM\JoinColumn(nullable: false, onDelete:'CASCADE')]
+  #[ORM\JoinColumn(nullable: true)]
   private ?Capsule $capsule = null;
 
   #[ORM\OneToMany(mappedBy: 'bloc', targetEntity: Connection::class)]
