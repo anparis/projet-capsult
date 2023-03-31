@@ -62,8 +62,6 @@ class CapsuleController extends AbstractController
       return $a['date'] < $b['date'];
     });
 
-    // dd($allBlocs);
-
     return $this->render('capsule/index.html.twig', [
       'capsule' => $capsule,
       'user' => $user,

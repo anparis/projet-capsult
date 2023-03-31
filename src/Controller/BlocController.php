@@ -45,7 +45,10 @@ class BlocController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       $blocRepository->save($bloc, true);
-      return $this->redirectToRoute('app_bloc_index', [], Response::HTTP_SEE_OTHER);
+      return $this->redirectToRoute('capsule_index', [
+        'slug_capsule' => $capsule->getSlug(),
+        'slug_user' => $capsule->getUser()->getSlug()
+      ]);
     }
 
     return $this->render('bloc/edit.html.twig', [
