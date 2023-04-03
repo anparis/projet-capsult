@@ -3,8 +3,9 @@
 {% block title %}New Capsule{% endblock %}
 
 {% block body %}
-    <h1>Create new Capsule</h1>
-    <a href="{{path('profile_index', {'slug':user.slug})}}"><- Mes capsules</a>
+    {# {% if condition %} #}
+      <a href="{{path('profile_index', {'slug':user.slug})}}"><- Mes capsules</a>
+    {# {% endif %} #}
     <hr>
 
     {{ include('capsule/_form.html.twig') }}

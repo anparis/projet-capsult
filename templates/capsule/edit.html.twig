@@ -12,12 +12,7 @@
 	<hr>
 	<p>Mes capsules :</p>
 	{% for capsule in app.user.capsules %}
-		{% if capsule.open %}
-			<a href="#">{{capsule.slug}}
-				[{{'ouverte'}}]</a>
-    {% else %}
-      <a href="#">{{capsule.slug}}
-				[{{'scellée'}}]</a>
-		{% endif %}
+			<a href="{{path('capsule_index', {'slug_user': app.user.slug, 'slug_capsule':capsule.slug})}}">{{capsule.slug}}
+				[{{capsule.status}}]</a>
 	{% endfor %}
 {% endblock %}

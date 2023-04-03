@@ -13,6 +13,7 @@
 	<main>
 		<div class="box-constraint">
 			<div class="bloc-container">
+        {% if app.user is same as (user) %}
 				<div class="bloc-item">
 					<div class="addBlock">
 						<form id="ab-form" action="{{path('capsule_add_bloc', {'id':capsule.id})}}" method="POST" enctype="multipart/form-data">
@@ -26,6 +27,7 @@
 						</form>
 					</div>
 				</div>
+        {% endif %}
         {% if blocs %}
 				{% for key, bloc in blocs %}
 					<div class="bloc-item">

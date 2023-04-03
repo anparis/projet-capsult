@@ -8,8 +8,9 @@
 	<div class="example-wrapper">
 		<h1>
 			{{ user.username }}</h1>
-
+    {% if app.user is same as (user) %}
 		<a href="{{path('profile_add_capsule', {'id':user.id})}}">+ Ajouter une capsule</a>
+    {% endif %}
 		<hr>
 		<div class="capsule-list">
 			{% for capsule in capsules %}
