@@ -5,7 +5,7 @@
 
 {% block body %}
   <div class="brsd m-a">
-    <a href="{{path('capsule_edit',{'id':capsule.id})}}">/{{capsule.title}}</a>
+    <a href="{{path('capsule_show',{'id':capsule.id})}}">/{{capsule.title}}</a>
   </div>
   <a href="{{path('profile_index',{'slug':user.slug})}}"><- capsules</a>
   <hr>
@@ -39,12 +39,12 @@
 									<p>{{ bloc['bloc'].content}}</p>
 							  </div>
 								{% endif %}
-								{% if bloc['bloc'].type == "Image" %}
+								{% if bloc['bloc'].type is same as ("Image") %}
 							  <div class="bloc-img">
 									<img src="{{ asset('/uploads/'~bloc['bloc'].image.nomFichier) | imagine_filter('my_thumb') }}" alt="#">
 							  </div>
 								{% endif %}
-								{% if bloc['bloc'].type == "Lien" %}
+								{% if bloc['bloc'].type is same as ("Lien") %}
 							  <div class="bloc-img">
 									<p>{{bloc['bloc'].lien.url}}</p>
 							  </div>

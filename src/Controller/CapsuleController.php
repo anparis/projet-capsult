@@ -18,6 +18,7 @@ use App\Repository\CapsuleRepository;
 use App\Repository\ConnectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -162,7 +163,8 @@ class CapsuleController extends AbstractController
 
 
   #[Route('/{id}/edit', name: 'capsule_edit', methods: ['GET', 'POST'])]
-  public function edit(Request $request, Capsule $capsule, CapsuleRepository $capsuleRepository): Response
+  #[Security("is_granted('ROLE_USER') and user === capsule.getUser()")]
+  public function editCapsule(Request $request, Capsule $capsule, CapsuleRepository $capsuleRepository): Response
   {
     $form = $this->createForm(CapsuleType::class, $capsule);
     $form->handleRequest($request);
@@ -183,6 +185,18 @@ class CapsuleController extends AbstractController
       'capsule' => $capsule,
       'form' => $form,
     ]);
+  }
+
+  // Redirect to capsule details view
+  #[Route('/{id}/show', name: 'capsule_show', methods: ['GET', 'POST'])]
+  public function showCapsule(Capsule $capsule): Response
+  {
+      return $this->render(
+        'capsule/show.html.twig',
+        [
+          'capsule' => $capsule,
+        ]
+      );
   }
 
   #[Route('/{slug}/{id}', name: 'app_capsule_delete', methods: ['POST'])]

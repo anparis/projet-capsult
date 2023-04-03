@@ -1,23 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Capsule
+{% block title %}Show Capsule
 {% endblock %}
 
 {% block body %}
 	<a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">back to capsule</a>
 	<br><br>
-	{{ include('capsule/_form.html.twig') }}
-  <br>
-  {{ include ('capsule/_delete_form.html.twig')}}
+  <p>{{capsule.title}}</p>
+  <p>{{capsule.description}}</p>
+
 	<hr>
 	<p>Mes capsules :</p>
 	{% for capsule in app.user.capsules %}
 		{% if capsule.open %}
-			<a href="#">{{capsule.slug}}
-				[{{'ouverte'}}]</a>
+			<a href="{{path('capsule_index', {'slug_user': app.user.slug, 'slug_capsule':capsule.slug})}}">{{capsule.slug}}
+				[{{capsule.status}}]</a>
     {% else %}
       <a href="#">{{capsule.slug}}
-				[{{'scellée'}}]</a>
+				[{{capsule.status}}]</a>
 		{% endif %}
 	{% endfor %}
 {% endblock %}

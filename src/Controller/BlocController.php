@@ -11,8 +11,6 @@ use App\Repository\BlocRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -85,8 +83,7 @@ class BlocController extends AbstractController
 
     return $this->render('bloc/show.html.twig', [
       'bloc' => $bloc,
-      'capsule' => $capsule,
-      // 'slug_user' => $capsule->getUser()->getSlug()
+      'capsule' => $capsule
     ]);
   }
 
