@@ -201,6 +201,7 @@ class CapsuleController extends AbstractController
   }
 
   #[Route('/{slug}/{id}', name: 'app_capsule_delete', methods: ['POST'])]
+  #[Security("is_granted('ROLE_USER') and user === capsule.getUser()")]
   public function delete(Request $request, string $slug, Capsule $capsule, CapsuleRepository $capsuleRepository, ConnectionRepository $connectionRepository): Response
   {
       if ($this->isCsrfTokenValid('delete'.$capsule->getId(), $request->request->get('_token'))) {

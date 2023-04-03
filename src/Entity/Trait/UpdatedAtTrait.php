@@ -3,6 +3,7 @@
 namespace App\Entity\Trait;
 
 use DateTimeImmutable;
+use IntlDateFormatter;
 use Doctrine\ORM\Mapping as ORM;
 
 trait UpdatedAtTrait
@@ -10,9 +11,9 @@ trait UpdatedAtTrait
   #[ORM\Column(type: 'datetime_immutable')]
   private ?\DateTimeImmutable $updated_at = null;
 
-  public function getUpdatedAt(): ?\DateTimeImmutable
+  public function getUpdatedAt(): string
   {
-    return $this->updated_at;
+    return $this->updated_at->format('d/m/Y');
   }
 
   public function setUpdatedAt(\DateTimeImmutable $updated_at): self

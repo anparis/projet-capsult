@@ -6,17 +6,29 @@
   <a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">back to list</a>
   <br><br>
   {% if bloc.capsule %}
-	  <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAt | date("d/m/Y")}}</p>
+	  <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAt}}</p>
   {% else %}
     <p>Bloc orphelin</p>
   {% endif %}
   
   <div class="bloc-display">
-    {% if bloc.type == 'Text' %}
-    <p>{{bloc.contenu}}</p>
+    {% if bloc.type is same as ('Text') %}
+      <p>{{bloc.contenu}}</p>
     {% endif %}
-    <p>{{bloc.title}}</p>
-    <p>{{bloc.description}}</p>
+    {% if bloc.type is same as ('Image') %}
+      <img src="{{ asset('/uploads/'~bloc.image.nomFichier)}}" alt="">
+    {% endif %}
+    
+    {% if bloc.title %}
+      <strong>Titre</strong>
+      <p>{{bloc.title}}</p>
+    {% endif %}
+
+    {% if bloc.description %}
+      <strong>Description</strong>
+      <p>{{bloc.description}}</p>
+    {% endif %}
+    
   </div>
 
   <hr>

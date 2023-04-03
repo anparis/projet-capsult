@@ -88,6 +88,7 @@ class BlocController extends AbstractController
   }
 
   #[Route('/{id}', name: 'app_bloc_delete', methods: ['POST'])]
+  #[Security("is_granted('ROLE_USER') and user === bloc.getCapsule().getUser()")]
   public function delete(Request $request, Bloc $bloc, BlocRepository $blocRepository): Response
   {
     if ($this->isCsrfTokenValid('delete' . $bloc->getId(), $request->request->get('_token'))) {

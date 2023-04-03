@@ -7,9 +7,13 @@
 	<a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">back to list</a>
   <br><br>
   {% if bloc.capsule %}
-	  <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAt | date("d/m/Y")}}</p>
+	  <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAt}}</p>
   {% else %}
     <p>Bloc orphelin</p>
+  {% endif %}
+
+  {% if bloc.type is same as ('Image') %}
+      <img src="{{ asset('/uploads/'~bloc.image.nomFichier)}}" alt="">
   {% endif %}
 
 	{{ include('bloc/_form.html.twig') }}
