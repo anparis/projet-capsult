@@ -1,0 +1,10 @@
+<div class="connection-list">
+  <p>apparaît dans {{bloc.connections | length }} capsules : </p>
+	{% for connection in bloc.connections %}
+    <p> 
+      <a href="{{path('capsule_index', {'slug_user': connection.capsule.user.slug, 'slug_capsule': connection.capsule.slug})}}">
+        {{ connection.capsule.title }} (par {{connection.capsule.user.username}})
+      </a>
+    </p>
+  {% endfor %}
+</div>

@@ -5,7 +5,12 @@
 
 {% block body %}
   <div class="brsd m-a">
-    <a href="{{path('capsule_show',{'id':capsule.id})}}">/{{capsule.title}}</a>
+    {% if app.user is same as (user) %}
+      <a href="{{path('capsule_edit',{'id':capsule.id})}}">/{{capsule.title}}</a>
+    {% else %}
+      <a href="{{path('capsule_show',{'id':capsule.id})}}">/{{capsule.title}}</a>
+    {% endif %}
+    
   </div>
   <a href="{{path('profile_index',{'slug':user.slug})}}"><- capsules</a>
   <hr>

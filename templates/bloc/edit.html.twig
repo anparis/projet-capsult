@@ -11,10 +11,14 @@
   {% else %}
     <p>Bloc orphelin</p>
   {% endif %}
-    
 
 	{{ include('bloc/_form.html.twig') }}
 
 	<br>
 	{{ include('bloc/_delete_form.html.twig') }}
+
+  <hr>
+
+	{{ include('bloc/_connection_list.html.twig') }}
+
 {% endblock %}
