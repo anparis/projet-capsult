@@ -5,22 +5,25 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Capsule;
 use App\Form\CapsuleType;
+use Doctrine\ORM\EntityManager;
 use App\Repository\CapsuleRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProfileController extends AbstractController
 {
   // #[Route('/{slug}', name: 'profile_index')]
-  public function index(User $user = null): Response
+  public function index(User $user = null, EntityManagerInterface $entityManager): Response
   {
+    $capsules = $entityManager->getRepository(Capsule::class)->findBy(['user' => $user->getId()], ['updated_at' => 'DESC']);
     return $this->render('profile/index.html.twig', [
       'user' => $user,
-      'capsules' => $user->getCapsules()
+      'capsules' => $capsules
     ]);
   }
 
