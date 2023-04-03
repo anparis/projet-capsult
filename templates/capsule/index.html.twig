@@ -7,7 +7,7 @@
   <div class="brsd m-a">
     <a href="{{path('capsule_edit',{'id':capsule.id})}}">/{{capsule.title}}</a>
   </div>
-  <a href="{{path('profile_index',{'slug':user.slug})}}"><- mes capsules</a>
+  <a href="{{path('profile_index',{'slug':user.slug})}}"><- capsules</a>
   <hr>
   <br>
 	<main>
@@ -29,7 +29,11 @@
         {% if blocs %}
 				{% for key, bloc in blocs %}
 					<div class="bloc-item">
-						<a href="{{path('app_bloc_edit', {'bloc_id':bloc['bloc'].id, 'capsule_slug':capsule.slug })}}" class="connection-container">
+            {% if bloc['bloc'].capsule.user == app.user %}
+            <a href="{{path('app_bloc_edit', {'bloc_id':bloc['bloc'].id, 'capsule_slug':capsule.slug })}}" class="connection-container">
+            {% else %}
+						<a href="{{path('app_bloc_show', {'bloc_id':bloc['bloc'].id, 'capsule_slug':capsule.slug })}}" class="connection-container">
+            {% endif %}
 								{% if bloc['bloc'].content | escape %}
 							  <div class="bloc-txt">
 									<p>{{ bloc['bloc'].content}}</p>
@@ -56,6 +60,7 @@
                   <p>connecté par {{app.user.username}}</p>
                 {% endif %}
 						</a>
+
 					</div>
 				{% endfor %}
         {% endif %}

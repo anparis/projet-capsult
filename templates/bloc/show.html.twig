@@ -3,36 +3,19 @@
 {% block title %}Bloc{% endblock %}
 
 {% block body %}
-    <h1>Bloc</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ bloc.id }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ bloc.titre }}</td>
-            </tr>
-            <tr>
-                <th>Date_creation</th>
-                <td>{{ bloc.dateCreation ? bloc.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Date_modification</th>
-                <td>{{ bloc.dateModification ? bloc.dateModification|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ bloc.description }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_bloc_index') }}">back to list</a>
-
-    <a href="{{ path('app_bloc_edit', {'id': bloc.id}) }}">edit</a>
-
-    {{ include('bloc/_delete_form.html.twig') }}
+  <a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">back to list</a>
+  <br><br>
+  {% if bloc.capsule %}
+	  <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAt | date("d/m/Y")}}</p>
+  {% else %}
+    <p>Bloc orphelin</p>
+  {% endif %}
+  
+  <div class="bloc-display">
+    {% if bloc.type == 'Text' %}
+    <p>{{bloc.contenu}}</p>
+    {% endif %}
+    <p>{{bloc.title}}</p>
+    <p>{{bloc.description}}</p>
+  </div>
 {% endblock %}

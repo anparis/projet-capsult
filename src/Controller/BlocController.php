@@ -3,17 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Bloc;
-use App\Entity\Capsule;
-
 use App\Form\BlocType;
 
+use App\Entity\Capsule;
+
 use App\Repository\BlocRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 #[Route('/bloc')]
 class BlocController extends AbstractController
@@ -34,10 +36,19 @@ class BlocController extends AbstractController
     ]);
   }
 
+  /**
+   * This controller allow us to edit a bloc
+   * @param Bloc $bloc
+   * @param Request $resquest
+   * @param Capsule $capsule
+   * @param BlocRepository $blocRepository
+   * @return Response 
+  **/
   #[Route('/{bloc_id}/{capsule_slug}/edit', name: 'app_bloc_edit', methods: ['GET', 'POST'])]
   #[ParamConverter('bloc', options: ['mapping' => ['bloc_id' => 'id']])]
   #[ParamConverter('capsule', options: ['mapping' => ['capsule_slug' => 'slug']])]
-  public function edit(Bloc $bloc, Capsule $capsule, Request $request, BlocRepository $blocRepository): Response
+  #[Security("is_granted('ROLE_USER') and user === bloc.getCapsule().getUser()")]
+  public function editBloc(Bloc $bloc, Capsule $capsule, Request $request, BlocRepository $blocRepository): Response
   {
     $form = $this->createForm(BlocType::class, $bloc);
     // dd($form);
@@ -55,6 +66,27 @@ class BlocController extends AbstractController
       'bloc' => $bloc,
       'capsule' => $capsule,
       'form' => $form,
+    ]);
+  }
+
+  /**
+   * This controller allow us to edit a bloc
+   * @param Bloc $bloc
+   * @param Request $resquest
+   * @param Capsule $capsule
+   * @param BlocRepository $blocRepository
+   * @return Response 
+  **/
+  #[Route('/{bloc_id}/{capsule_slug}/show', name: 'app_bloc_show', methods: ['GET'])]
+  #[ParamConverter('bloc', options: ['mapping' => ['bloc_id' => 'id']])]
+  #[ParamConverter('capsule', options: ['mapping' => ['capsule_slug' => 'slug']])]
+  public function showBloc(Bloc $bloc, Capsule $capsule): Response
+  {
+
+    return $this->render('bloc/show.html.twig', [
+      'bloc' => $bloc,
+      'capsule' => $capsule,
+      // 'slug_user' => $capsule->getUser()->getSlug()
     ]);
   }
 

@@ -22,7 +22,7 @@ class ConnectionController extends AbstractController
   #[ParamConverter('user', options: ['mapping' => ['slugUser' => 'slug']])]
   #[ParamConverter('capsule', options: ['mapping' => ['idCapsule' => 'id']])]
   #[ParamConverter('bloc', options: ['mapping' => ['idBloc' => 'id']])]
-  public function Connection(string $slugCapsule, Capsule $capsule, User $user, Bloc $bloc, ConnectionRepository $connectionRepository): Response
+  public function connection(string $slugCapsule, Capsule $capsule, User $user, Bloc $bloc, ConnectionRepository $connectionRepository): Response
   {
     $connection = new Connection();
 
