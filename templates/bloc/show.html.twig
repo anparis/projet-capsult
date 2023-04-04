@@ -12,8 +12,8 @@
   {% endif %}
   
   <div class="bloc-display">
-    {% if bloc.type is same as ('Text') %}
-      <p>{{bloc.contenu}}</p>
+    {% if bloc.type is same as ('Texte') %}
+      <p>{{bloc.content}}</p>
     {% endif %}
     {% if bloc.type is same as ('Image') %}
       <img src="{{ asset('/uploads/'~bloc.image.nomFichier)}}" alt="">
