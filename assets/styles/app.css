@@ -29,6 +29,10 @@
   margin:auto;
 }
 
+.hidden{
+  display: none;
+}
+
 /*  */
 /* CAPSULE */
 /*  */
@@ -136,3 +140,8 @@ a.connection-container {
     max-width: 1340px;
   }
 }
+
+/* 
+  SVG
+ */
+

@@ -10,7 +10,16 @@ import './styles/normalize.css'
 import './styles/app.css';
 import './styles/sakura.css'
 
-
+//Js
+import Like from './javascript/like.js';
 // start the Stimulus application
 import './bootstrap';
 
+// Tout ce qui se trouve dans cet EventListener va être effectué quand le DOM aura fini de charger
+document.addEventListener('DOMContentLoaded', () => {
+  const likeElement = document.querySelector('a[data-action="like"]');
+
+  if(likeElement){
+    new Like(likeElement);
+  }
+})
