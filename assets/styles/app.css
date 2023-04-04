@@ -56,12 +56,11 @@
 
 a.connection-container {
   position: relative;
-  /* display: block; */
+  display: flex;
   text-decoration: none;
   user-select: none;
   width: 315px;
   height: 315px;
-  margin-bottom: 3em;
 }
 
 /* BLOC TYPE  */

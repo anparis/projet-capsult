@@ -40,7 +40,7 @@ class Capsule
   #[ORM\Column]
   private ?bool $open = null;
 
-  #[ORM\Column(type: Types::BOOLEAN, nullable:true)]
+  #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
   private ?bool $explore = null;
 
   #[ORM\Column]
@@ -66,6 +66,10 @@ class Capsule
 
   #[ORM\OneToMany(mappedBy: 'capsule', targetEntity: Connection::class, orphanRemoval: false)]
   private Collection $connections;
+
+  #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'capsules_liked')]
+  #[ORM\JoinTable(name: "user_capsule_like")]
+  private Collection $likes;
 
   public function __construct()
   {
@@ -201,29 +205,29 @@ class Capsule
    */
   public function getConnections(): Collection
   {
-      return $this->connections;
+    return $this->connections;
   }
 
   public function addConnection(Connection $connection): self
   {
-      if (!$this->connections->contains($connection)) {
-          $this->connections->add($connection);
-          $connection->setCapsule($this);
-      }
+    if (!$this->connections->contains($connection)) {
+      $this->connections->add($connection);
+      $connection->setCapsule($this);
+    }
 
-      return $this;
+    return $this;
   }
 
   public function removeConnection(Connection $connection): self
   {
-      if ($this->connections->removeElement($connection)) {
-          // set the owning side to null (unless already changed)
-          if ($connection->getCapsule() === $this) {
-              $connection->setCapsule(null);
-          }
+    if ($this->connections->removeElement($connection)) {
+      // set the owning side to null (unless already changed)
+      if ($connection->getCapsule() === $this) {
+        $connection->setCapsule(null);
       }
+    }
 
-      return $this;
+    return $this;
   }
 
   public function getExplore()
@@ -238,4 +242,28 @@ class Capsule
     return $this;
   }
 
+  public function getLikes(): Collection
+  {
+    return $this->likes;
+  }
+
+  public function addLike(User $like): self
+  {
+    if (!$this->likes->contains($like)) {
+      $this->likes->add($like);
+    }
+    return $this;
+  }
+
+  public function removelike(User $like): self
+  {
+    $this->likes->removeElement($like);
+     
+    return $this;
+  }
+
+  public function isLikedByUser(User $user):bool
+  {
+    return $this->likes->contains($user);
+  }
 }

@@ -60,7 +60,7 @@ class CapsuleController extends AbstractController
 
     //sorting the array by descending date
     usort($blocsConnected, function ($a, $b) {
-      return $a['date'] < $b['date'];
+      return $a['date'] > $b['date'];
     });
 
     return $this->render('capsule/index.html.twig', [

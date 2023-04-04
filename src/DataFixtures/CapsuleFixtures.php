@@ -38,6 +38,7 @@ class CapsuleFixtures extends Fixture implements DependentFixtureInterface
       $capsule->setStatus('open');
     }
     $capsule->setUser($user);
+    $capsule->setCollaboration(0);
 
     $manager->persist($capsule);
   }

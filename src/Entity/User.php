@@ -46,14 +46,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\OneToMany(mappedBy: 'user', targetEntity: Capsule::class)]
   private Collection $capsules;
 
-  #[ORM\ManyToMany(targetEntity: Capsule::class)]
-  #[ORM\JoinTable(name: "user_capsule_follow")]
-  private Collection $capsules_followed;
+  #[ORM\ManyToMany(targetEntity: Capsule::class, mappedBy: 'likes')]
+  private Collection $capsules_liked;
 
   public function __construct()
   {
     $this->capsules = new ArrayCollection();
-    $this->capsules_followed = new ArrayCollection();
+    $this->capsules_liked = new ArrayCollection();
   }
 
   public function getId(): ?int
@@ -170,24 +169,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   /**
    * @return Collection<int, Capsule>
    */
-  public function getCapsulesFollow(): Collection
+  public function getCapsulesLiked(): Collection
   {
-      return $this->capsules_followed;
-  }
-
-  public function addCapsulesFollow(Capsule $capsulesFollowed): self
-  {
-      if (!$this->capsules_followed->contains($capsulesFollowed)) {
-          $this->capsules_followed->add($capsulesFollowed);
-      }
-
-      return $this;
-  }
-
-  public function removeCapsulesFollow(Capsule $capsulesFollow): self
-  {
-      $this->capsules_followed->removeElement($capsulesFollow);
-
-      return $this;
+      return $this->capsules_liked;
   }
 }
