@@ -28,7 +28,12 @@
       <strong>Description</strong>
       <p>{{bloc.description}}</p>
     {% endif %}
-    
+  
+
+  {% if app.user is same as (capsule.user) %}
+    {{include('bloc/_delete_form.html.twig')}}
+  {% endif %}
+
   </div>
 
   <hr>

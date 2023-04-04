@@ -69,21 +69,12 @@ class Capsule
 
   public function __construct()
   {
-    // $slugger = new AsciiSlugger();
     $this->blocs = new ArrayCollection();
     $this->created_at = new \DateTimeImmutable();
     $this->updated_at = $this->created_at;
     $this->collaboration = 0;
     $this->connections = new ArrayCollection();
-    // $this->slug = $slugger->slug($this->title)->lower();
   }
-
-  // #[ORM\PrePersist]
-  // #[ORM\PreUpdate]
-  // public function updateSlug(): void
-  // {
-  //   $this->setSlug($slugger->slug($this->title)->lower());
-  // }
 
   public function getId(): ?int
   {
@@ -246,4 +237,5 @@ class Capsule
 
     return $this;
   }
+
 }
