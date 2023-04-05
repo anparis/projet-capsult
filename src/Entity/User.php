@@ -173,4 +173,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   {
       return $this->capsules_liked;
   }
+
+  public function addCapsuleLiked(Capsule $capsule): self
+  {
+    if (!$this->capsules_liked->contains($capsule)) {
+      $capsule->addLike($this);
+      $this->capsules_liked->add($capsule);
+    }
+    return $this;
+  }
 }

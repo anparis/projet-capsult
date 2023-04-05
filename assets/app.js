@@ -18,8 +18,9 @@ import './bootstrap';
 // Tout ce qui se trouve dans cet EventListener va être effectué quand le DOM aura fini de charger
 document.addEventListener('DOMContentLoaded', () => {
   const likeElement = document.querySelector('a[data-action="like"]');
+  const listCapsules = document.querySelector('ul[class="list"]');
 
-  if(likeElement){
-    new Like(likeElement);
+  if(likeElement && listCapsules){
+    new Like(likeElement, listCapsules);
   }
 })

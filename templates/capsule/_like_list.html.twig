@@ -1,0 +1,11 @@
+{% if app.user %}
+
+<button class="" data-action="likes">likes</button>
+    <ul class="list">
+    {% for capsuleLiked  in app.user.capsulesLiked %}
+      <li>
+        <a href="{{path('capsule_index', {'slug_user':capsuleLiked.user.slug, 'slug_capsule':capsuleLiked.slug})}}">{{capsuleLiked.title}}</a>
+      </li>
+    {% endfor %}
+    </ul>
+{% endif %}
