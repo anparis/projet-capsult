@@ -10,9 +10,7 @@ use App\Entity\Trait\UpdatedAtTrait;
 use App\Repository\CapsuleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Gedmo\Mapping\Annotation\Slug;
 
 #[ORM\Entity(repositoryClass: CapsuleRepository::class)]

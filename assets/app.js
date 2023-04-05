@@ -12,15 +12,21 @@ import './styles/sakura.css'
 
 //Js
 import Like from './javascript/like.js';
+import Status from './javascript/status.js';
 // start the Stimulus application
 import './bootstrap';
 
 // Tout ce qui se trouve dans cet EventListener va être effectué quand le DOM aura fini de charger
 document.addEventListener('DOMContentLoaded', () => {
   const likeElement = document.querySelector('a[data-action="like"]');
-  const listCapsules = document.querySelector('ul[class="list"]');
+  const statusElement = document.querySelector('a[data-action="status"]');
 
-  if(likeElement && listCapsules){
-    new Like(likeElement, listCapsules);
+  
+  if(likeElement){
+    new Like(likeElement);
+  }
+  
+  if(statusElement){
+    new Status(statusElement);
   }
 })

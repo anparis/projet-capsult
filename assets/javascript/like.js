@@ -1,11 +1,10 @@
 import axios from "axios";
 
 export default class Like{
-  constructor(likeElement, listCapsules){
+  constructor(likeElement){
     this.likeElement = likeElement;
-    this.listCapsules = listCapsules;
 
-    if(this.likeElement && this.listCapsules){
+    if(this.likeElement){
       this.init();
     }
   }

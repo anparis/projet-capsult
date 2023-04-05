@@ -46,13 +46,12 @@ class CapsuleController extends AbstractController
     } else {
       foreach ($capsule->getConnections() as $connection) {
         //I associate a key with a connected bloc and his connection date
-        if($connection->getBloc()->getCapsule()){
+        if ($connection->getBloc()->getCapsule()) {
           if ($connection->getBloc()->getCapsule()->getId() === $connection->getCapsule()->getId())
             $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getBloc()->getUpdatedAt()];
           else
             $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getCreatedAt()];
-        }
-        else
+        } else
           $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getCreatedAt()];
       }
     }
@@ -119,10 +118,8 @@ class CapsuleController extends AbstractController
           $link->setUrl($textarea);
           $link->setBloc($bloc);
           $lr->save($link, true);
-          // $knpSnappyImage->generate($safeTextArea, 'uploads/bloc_img/test.png');
         }
-      }
-      else{
+      } else {
         return new Response(
           'Erreur de formulaire'
         );
@@ -188,34 +185,54 @@ class CapsuleController extends AbstractController
     ]);
   }
 
-  // Redirect to capsule details view
+  // Show the capsules details
   #[Route('/{id}/show', name: 'capsule_show', methods: ['GET', 'POST'])]
   public function showCapsule(Capsule $capsule): Response
   {
-      return $this->render(
-        'capsule/show.html.twig',
-        [
-          'capsule' => $capsule,
-        ]
-      );
+    return $this->render(
+      'capsule/show.html.twig',
+      [
+        'capsule' => $capsule,
+      ]
+    );
   }
 
   // #[Route('/{slug}/{id}/delete-capsule', name: 'app_capsule_delete', methods: ['POST'])]
-  // #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
-  // #[ParamConverter('capsule', options: ['mapping' => ['id' => 'id']])]
   #[Security("is_granted('ROLE_USER') and user === capsule.getUser()")]
   public function deleteCapsule(Request $request, string $slug, Capsule $capsule, CapsuleRepository $capsuleRepository, ConnectionRepository $connectionRepository): Response
   {
-      if ($this->isCsrfTokenValid('delete'.$capsule->getId(), $request->request->get('_token'))) {
-        foreach($capsule->getConnections() as $connection){
-          $connectionRepository->remove($connection, true);
-        }
-  
-        $capsuleRepository->remove($capsule, true);
+    if ($this->isCsrfTokenValid('delete' . $capsule->getId(), $request->request->get('_token'))) {
+      foreach ($capsule->getConnections() as $connection) {
+        $connectionRepository->remove($connection, true);
       }
+      $capsuleRepository->remove($capsule, true);
+    }
 
-      return $this->redirectToRoute('profile_index', [
-        'slug' => $slug
+    return $this->redirectToRoute('profile_index', [
+      'slug' => $slug
+    ]);
+  }
+
+  // Update the status of the Capsule
+  #[Route('/status/capsule/{id}', name: 'capsule_status')]
+  public function capsuleStatus(Capsule $capsule, EntityManagerInterface $entityManager): Response
+  {
+    if ($capsule->isOpen()) {
+      $capsule->setStatus('sealed');
+      $entityManager->flush();
+
+      return $this->json([
+        'message' => 'La capsule est scellée',
+        'status_fr' => 'scellée'
       ]);
+    }
+
+    $capsule->setStatus('open');
+    $entityManager->flush();
+
+    return $this->json([
+      'message' => 'La capsule est ouverte',
+      'status_fr' => 'ouverte'
+    ]);
   }
 }
