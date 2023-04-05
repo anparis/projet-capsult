@@ -12,12 +12,12 @@ profile_index:
 profile_add_capsule:
     path: /{id}/add_capsule
     controller: App\Controller\ProfileController::addCapsule
-capsule_index:
-    path: /{slug_user}/{slug_capsule}/delete-capsule
-    controller: App\Controller\CapsuleController::index
 app_capsule_delete:
-  path: /{slug}/{id}
+  path: /{slug}/{id}/delete-capsule
   controller: App\Controller\CapsuleController::deleteCapsule
+capsule_index:
+    path: /{slug_user}/{slug_capsule}
+    controller: App\Controller\CapsuleController::index
 user_capsule_list:
     path: /ajax_request
     defaults: { _controller: App\Controller\CapsuleController::index }

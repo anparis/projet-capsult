@@ -48,7 +48,7 @@ class CapsuleController extends AbstractController
         //I associate a key with a connected bloc and his connection date
         if($connection->getBloc()->getCapsule()){
           if ($connection->getBloc()->getCapsule()->getId() === $connection->getCapsule()->getId())
-            $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getBloc()->getCreatedAt()];
+            $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getBloc()->getUpdatedAt()];
           else
             $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getCreatedAt()];
         }
@@ -59,8 +59,9 @@ class CapsuleController extends AbstractController
 
     //sorting the array by descending date
     usort($blocsConnected, function ($a, $b) {
-      return $a['date'] > $b['date'];
+      return $a['date'] < $b['date'];
     });
+
 
     return $this->render('capsule/index.html.twig', [
       'capsule' => $capsule,

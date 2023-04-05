@@ -17,7 +17,7 @@
 				<div class="capsule brsd">
 					<a href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
           <p>{{(capsule.connections | length)}} blocs - 
-            {{capsule.updatedat}}
+            {{capsule.updatedAtFormatted}}
           </p>
 				</div>
 			{% endfor %}

@@ -9,9 +9,9 @@ trait CreatedAtTrait
   #[ORM\Column(type: 'datetime_immutable')]
   private ?\DateTimeImmutable $created_at = null;
 
-  public function getCreatedAt(): string
+  public function getCreatedAt(): \DateTimeImmutable
   {
-    return $this->created_at->format('d/m/Y');
+    return $this->created_at;
   }
 
   public function setCreatedAt(\DateTimeImmutable $created_at): self
@@ -19,5 +19,10 @@ trait CreatedAtTrait
     $this->created_at = $created_at;
 
     return $this;
+  }
+
+  public function getCreatedAtFormatted(): string
+  {
+    return $this->created_at->format('d/m/Y');
   }
 }

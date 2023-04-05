@@ -22,7 +22,6 @@ class Bloc
   #[ORM\Column]
   private ?int $id = null;
 
-  #[Assert\NotBlank]
   #[ORM\Column(length: 100, nullable: true)]
   private ?string $title = null;
 
