@@ -34,7 +34,6 @@ class CapsuleController extends AbstractController
     $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug' => $slug_capsule]);
     $user = $entityManager->getRepository(User::class)->findOneBy(['slug' => $slug_user]);
 
-    // $blocCol = $capsule->getBlocs()->isEmpty();
     $connectedBlocCol = $capsule->getConnections()->isEmpty();
 
     if ($connectedBlocCol) {
@@ -200,17 +199,17 @@ class CapsuleController extends AbstractController
       );
   }
 
-  #[Route('/{slug}/{id}', name: 'app_capsule_delete', methods: ['POST'])]
+  // #[Route('/{slug}/{id}/delete-capsule', name: 'app_capsule_delete', methods: ['POST'])]
+  // #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
+  // #[ParamConverter('capsule', options: ['mapping' => ['id' => 'id']])]
   #[Security("is_granted('ROLE_USER') and user === capsule.getUser()")]
-  public function delete(Request $request, string $slug, Capsule $capsule, CapsuleRepository $capsuleRepository, ConnectionRepository $connectionRepository): Response
+  public function deleteCapsule(Request $request, string $slug, Capsule $capsule, CapsuleRepository $capsuleRepository, ConnectionRepository $connectionRepository): Response
   {
       if ($this->isCsrfTokenValid('delete'.$capsule->getId(), $request->request->get('_token'))) {
         foreach($capsule->getConnections() as $connection){
           $connectionRepository->remove($connection, true);
         }
-        foreach($capsule->getBlocs() as $bloc){
-          $capsule->removeBloc($bloc);
-        }
+  
         $capsuleRepository->remove($capsule, true);
       }
 

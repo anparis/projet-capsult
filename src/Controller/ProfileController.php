@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ProfileController extends AbstractController
 {
@@ -29,14 +30,13 @@ class ProfileController extends AbstractController
 
   // #[Route('/add_capsule/{id}', name: 'profile_add_capsule', methods: ['POST'])]
   #[Security("is_granted('ROLE_USER') and user === current_user")]
-  public function addCapsule(User $current_user, SluggerInterface $sluger, Request $request, CapsuleRepository $capsuleRepository): Response
+  public function addCapsule(User $current_user, Request $request, CapsuleRepository $capsuleRepository): Response
   {
     $capsule = new Capsule();
     $form = $this->createForm(CapsuleType::class, $capsule);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      // $capsule->setSlug($sluger->slug($form->get('title')->getData())->lower());
       ($form->get('title')->getData() == 'open') ? $capsule->setOpen(1) : $capsule->setOpen(0);
       $capsule->setUser($current_user);
 
