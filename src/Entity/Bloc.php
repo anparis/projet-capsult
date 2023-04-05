@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BlocRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Bloc
 {
   use CreatedAtTrait;
