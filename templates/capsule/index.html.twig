@@ -56,8 +56,9 @@
 							  </div>
 								{% endif %}
 								{% if bloc['bloc'].type is same as ("Lien") %}
-							  <div class="bloc-img">
+							  <div class="bloc-url">
 									<p>{{bloc['bloc'].lien.url}}</p>
+                  <img src="{{ bloc['bloc'].lien.nomFichier }}" alt="">
 							  </div>
 								{% endif %}
                 {% if app.user %}

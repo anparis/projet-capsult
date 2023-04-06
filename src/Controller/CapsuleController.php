@@ -6,6 +6,7 @@ use App\Entity\Bloc;
 use App\Entity\Lien;
 use App\Entity\User;
 use App\Entity\Image;
+use SimpleXMLElement;
 use App\Entity\Capsule;
 use App\Form\CapsuleType;
 use App\Entity\Connection;
@@ -18,11 +19,11 @@ use App\Repository\CapsuleRepository;
 use App\Repository\ConnectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -116,6 +117,10 @@ class CapsuleController extends AbstractController
           $bloc->setType('Lien');
           $link = new Lien();
           $link->setUrl($textarea);
+          $file = json_decode(file_get_contents("https://iframe.ly/api/oembed?url=$textarea&api_key=4e6fb13787561fe9d031a0"));
+          if(isset($file->thumbnail_url)){
+            $link->setThumb($file->thumbnail_url);
+          }
           $link->setBloc($bloc);
           $lr->save($link, true);
         }
@@ -235,4 +240,6 @@ class CapsuleController extends AbstractController
       'status_fr' => 'ouverte'
     ]);
   }
+
+
 }

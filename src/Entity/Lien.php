@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\LienRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\LienRepository;
 
 #[ORM\Entity(repositoryClass: LienRepository::class)]
 class Lien
@@ -17,7 +18,10 @@ class Lien
     private ?string $url = null;
 
     #[ORM\Column(length: 150, nullable: true)]
-    private ?string $nom_fichier = null;
+    private ?string $thumb = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $html = null;
     
     #[ORM\OneToOne(inversedBy: 'lien', cascade: ['persist', 'remove'])]
     private ?Bloc $bloc = null;
@@ -39,14 +43,14 @@ class Lien
         return $this;
     }
 
-    public function getNomFichier(): ?string
+    public function getThumb(): ?string
     {
-        return $this->nom_fichier;
+        return $this->thumb;
     }
 
-    public function setNomFichier(string $nom_fichier): self
+    public function setThumb(string $thumb): self
     {
-        $this->nom_fichier = $nom_fichier;
+        $this->thumb = $thumb;
 
         return $this;
     }
@@ -69,6 +73,19 @@ class Lien
         }
 
         $this->bloc = $bloc;
+
+        return $this;
+    }
+
+    public function getHtml()
+    {
+        return $this->html;
+    }
+
+
+    public function setHtml($html):self
+    {
+        $this->html = $html;
 
         return $this;
     }

@@ -1,0 +1,5 @@
+{% if bloc.type is same as ('Lien') %}
+      <a href="{{bloc.lien.url}}" target="_blank">{{bloc.lien.url}}</a>
+      <br>
+      <img src="{{bloc.lien.thumb}}" alt="">
+  {% endif %}

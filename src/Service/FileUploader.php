@@ -13,8 +13,7 @@ class FileUploader
   public function __construct(
     private string $targetDirectory,
     private RequestStackContext $requestStackContext
-  ) {
-  }
+  ){}
 
   public function upload(UploadedFile $file)
   {
