@@ -121,6 +121,9 @@ class CapsuleController extends AbstractController
           if(isset($file->thumbnail_url)){
             $link->setThumb($file->thumbnail_url);
           }
+          if(isset($file->html)){
+            $link->setHtml($file->html);
+          }
           $link->setBloc($bloc);
           $lr->save($link, true);
         }

@@ -11,32 +11,31 @@
 /* GENERIC PROPERTIES */
 /*  */
 
-.fss{
+.fss {
   font-size: small;
 }
 
-.brsl{
+.brsl {
   border: 1px solid var(--bloc-color);
 }
 
-.brsd{
+.brsd {
   border: 1px solid var(--dark-color);
   border-radius: 5px;
   width: fit-content;
 }
 
-.m-a{
-  margin:auto;
+.m-a {
+  margin: auto;
 }
 
-.hidden{
+.hidden {
   display: none;
 }
 
 /*  */
 /* CAPSULE */
 /*  */
-
 
 /*  */
 /* BLOC */
@@ -79,7 +78,7 @@ a.connection-container {
   justify-content: center;
 }
 
-.bloc-img img{
+.bloc-img img {
   border-radius: 5px;
 }
 
@@ -94,6 +93,49 @@ a.connection-container {
   overflow: hidden;
   text-align: left;
   border-radius: 5px;
+}
+
+/* BLOC LINK */
+
+.bloc-link {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.bloc-link img {
+  max-width: 315px;
+  max-height: 300px;
+}
+
+/* BLOC LINK ARROW*/
+.bloc-url {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+}
+
+button.inline-btn {
+  position: relative;
+  height: 17px;
+  vertical-align: top;
+  width: 20px;
+}
+
+.arrow-icon {
+  position: absolute;
+    left: 5px;
+    top: 3.5px;
 }
 
 /* BLOC AJOUT */
@@ -114,7 +156,6 @@ a.connection-container {
   justify-content: center;
   text-align: center;
 }
-
 
 /*  */
 /* MEDIA QUERIES */
@@ -144,4 +185,3 @@ a.connection-container {
 /* 
   SVG
  */
-

@@ -40,6 +40,15 @@
         {% if blocs %}
 				{% for key, bloc in blocs %}
 					<div class="bloc-item">
+            {% if bloc['bloc'].lien %}
+            <span class="bloc-url">
+            <a class="url-wrap" href="{{ bloc['bloc'].lien.url }}" target="_blank">
+            <button class="inline-btn">
+              <img class="arrow-icon" src="{{asset('/logos/arrow-icon.svg')}}">
+            </button>
+            </a>
+            </span>
+            {% endif %}
             {% if bloc['bloc'].capsule.user == app.user %}
             <a href="{{path('app_bloc_edit', {'bloc_id':bloc['bloc'].id, 'capsule_slug':capsule.slug })}}" class="connection-container">
             {% else %}
@@ -56,9 +65,8 @@
 							  </div>
 								{% endif %}
 								{% if bloc['bloc'].type is same as ("Lien") %}
-							  <div class="bloc-url">
-									<p>{{bloc['bloc'].lien.url}}</p>
-                  <img src="{{ bloc['bloc'].lien.nomFichier }}" alt="">
+							  <div class="bloc-link">
+                  <img class="link-thumb" src="{{ bloc['bloc'].lien.thumb }}" alt="link thumb">
 							  </div>
 								{% endif %}
                 {% if app.user %}
