@@ -14,14 +14,24 @@
 		<hr>
 		<div class="capsule-list">
 			{% for capsule in capsules %}
-        {% if capsule.status %}
-        {% endif %}
-				<div class="capsule brsd">
+        {% if app.user is same as capsule.user %}
+        <div class="capsule brsd">
 					<a href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
           <p>{{(capsule.connections | length)}} blocs - 
             {{capsule.updatedAtFormatted}}
           </p>
 				</div>
+        {% else %}
+          {% if capsule.isopen %}
+            <div class="capsule brsd">
+              <a href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
+              <p>{{(capsule.connections | length)}} blocs - 
+                {{capsule.updatedAtFormatted}}
+              </p>
+            </div>
+          {% endif %}
+        {% endif %}
+				
         
 			{% endfor %}
 		</div>

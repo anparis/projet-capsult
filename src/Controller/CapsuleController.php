@@ -224,8 +224,9 @@ class CapsuleController extends AbstractController
     ]);
   }
 
-  // Update the status of the Capsule
+  // Update the status of the Capsule (sealed or open)
   #[Route('/status/capsule/{id}', name: 'capsule_status')]
+  #[Security("is_granted('ROLE_USER') and user === capsule.getUser()")]
   public function capsuleStatus(Capsule $capsule, EntityManagerInterface $entityManager): Response
   {
     if ($capsule->isOpen()) {
