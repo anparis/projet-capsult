@@ -20,10 +20,14 @@
 	<main>
     {{ include ('capsule/_like_list.html.twig')}}
     {{ include ('capsule/_status.html.twig')}}
+
+    <br><br>
+    <button class="" data-action="likes">explorer</button>
+    {{ include ('capsule/_explore.html.twig')}}
 		<div class="box-constraint">
 			<div class="bloc-container">
         {% if app.user is same as (user) %}
-				<div class="bloc-item">
+				<div class="bloc-item afs">
 					<div class="addBlock">
 						<form id="ab-form" action="{{path('capsule_add_bloc', {'id':capsule.id})}}" method="POST" enctype="multipart/form-data">
 							<div class="ab-text">
@@ -71,6 +75,7 @@
                   <img class="link-thumb" src="{{ bloc['bloc'].lien.thumb }}" alt="link thumb" loading="lazy">
 							  </div>
 								{% endif %}
+						    </a>
                 {% if app.user %}
                   <a href="{{path('capsules_connection', {'user_slug':app.user.slug,'capsule_slug':capsule.slug, 'id':bloc['bloc'].id})}}">-> Connecter</a>
                 {% else %}
@@ -85,7 +90,6 @@
                 {% else %}
                   <p>connecté par {{app.user.username}}</p>
                 {% endif %}
-						</a>
 					</div>
 				{% endfor %}
         {% endif %}

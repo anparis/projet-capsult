@@ -30,8 +30,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class CapsuleController extends AbstractController
 {
   // #[Route('/{slug_user}/{slug_capsule}', name: 'capsule_index', methods: ['GET'])]
-  public function index(string $slug_user, string $slug_capsule, EntityManagerInterface $entityManager, BlocRepository $blocRepository, CapsuleRepository $capsuleRepository): Response
+  public function index(string $slug_user, string $slug_capsule, EntityManagerInterface $entityManager, CapsuleRepository $capsuleRepository): Response
   {
+
     $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug' => $slug_capsule]);
     $user = $entityManager->getRepository(User::class)->findOneBy(['slug' => $slug_user]);
 
@@ -68,6 +69,7 @@ class CapsuleController extends AbstractController
       'user' => $user,
       'capsules' => $user->getCapsules(),
       'blocs' => $blocsConnected,
+      'explorable_capsules' => $capsuleRepository->findExplorableCapsules()
     ]);
   }
 
@@ -248,5 +250,25 @@ class CapsuleController extends AbstractController
     ]);
   }
 
+  // Add or remove the Capsule exploration
+  #[Route('/explore/capsule/{id}', name: 'capsule_explore')]
+  #[Security("is_granted('ROLE_USER') and user === capsule.getUser()")]
+  public function capsuleExplore(Capsule $capsule, EntityManagerInterface $entityManager): Response
+  {
+    if ($capsule->getExplore()) {
+      $capsule->setExplore(0);
+      $entityManager->flush();
 
+      return $this->json([
+        'message' => 'La capsule est de retour sur terre U+1F30D'
+      ]);
+    }
+
+    $capsule->setExplore(1);
+    $entityManager->flush();
+
+    return $this->json([
+      'message' => 'La capsule est dans l\'espace U+1F680',
+    ]);
+  }
 }

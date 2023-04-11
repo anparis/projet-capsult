@@ -1,0 +1,9 @@
+{% if app.user %}
+    <ul class="listExplore">
+    {% for key, capsule in explorable_capsules %}
+      <li>
+        <a href="#">{{ capsule.slug }}</a>
+      </li>
+    {% endfor %}
+    </ul>
+{% endif %}

@@ -19,13 +19,10 @@ export default class Like{
     const url = this.href;
 
     axios.get(url).then(res => {
-      console.log(res.data);
       const heartFilled = this.querySelector('svg.filled');
       const heartUnFilled = this.querySelector('svg.unfilled');
 
-      const list = document.querySelector('ul.list');
-      
-      $("ul.list").load(window.location.href + " ul.list > *");
+      $("ul.listOfLikes").load(window.location.href + " ul.listOfLikes > *");
       
       heartFilled.classList.toggle('hidden');
       heartUnFilled.classList.toggle('hidden');

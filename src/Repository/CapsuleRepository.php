@@ -39,6 +39,18 @@ class CapsuleRepository extends ServiceEntityRepository
         }
     }
 
+  /* Custom DQL query
+  Allows to get all Capsules that are explorable */
+  public function findExplorableCapsules()
+  {
+    return $this->createQueryBuilder('c')
+          ->andWhere('c.explore = 0')
+          ->orderBy('c.updated_at', 'DESC')
+          ->getQuery()
+          //getResult gives back an array of Capsules
+          ->getResult();
+  }
+
 //    /**
 //     * @return Capsule[] Returns an array of Capsule objects
 //     */

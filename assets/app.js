@@ -13,6 +13,7 @@ import './styles/sakura.css'
 //Js
 import Like from './javascript/like.js';
 import Status from './javascript/status.js';
+import Explore from './javascript/explore.js';
 // start the Stimulus application
 import './bootstrap';
 
@@ -20,13 +21,17 @@ import './bootstrap';
 document.addEventListener('DOMContentLoaded', () => {
   const likeElement = document.querySelector('a[data-action="like"]');
   const statusElement = document.querySelector('a[data-action="status"]');
+  const exploreElement = document.querySelector('a[data-action="explore"]');
 
-  
   if(likeElement){
     new Like(likeElement);
   }
   
   if(statusElement){
     new Status(statusElement);
+  }
+
+  if(exploreElement){
+    new Explore(exploreElement)
   }
 })
