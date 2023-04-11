@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export default class Status{
-  constructor(statusElement){
+export default class Status {
+  constructor(statusElement) {
     this.statusElement = statusElement;
 
-    if(this.statusElement){
+    if (this.statusElement) {
       this.init();
     }
   }
@@ -19,14 +19,26 @@ export default class Status{
     const url = this.href;
     console.log(url);
 
-    axios.get(url).then(res => {
-      const sealed = this.querySelector('svg.sealed');
-      const open = this.querySelector('svg.open');
-      const span = this.querySelector('span.status');
-      
-      span.innerHTML = res.data.status_fr;
-      sealed.classList.toggle('hidden');
-      open.classList.toggle('hidden');
-    })
+    $.ajax({
+      type: 'GET',
+      url: url,
+      dataType: 'json',
+      success: (data) => {
+        const sealed = this.querySelector('svg.sealed');
+        const open = this.querySelector('svg.open');
+        const span = this.querySelector('span.status');
+
+        span.innerHTML = data.status_fr;
+        sealed.classList.toggle('hidden');
+        open.classList.toggle('hidden');
+      },
+      error: () => {
+        swal(
+          'Oops...',
+          errMsg.responseJSON.body,
+          'error'
+        )
+      }
+    });
   }
 }

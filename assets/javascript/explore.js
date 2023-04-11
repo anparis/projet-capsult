@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export default class Explore{
-  constructor(exploreElement){
+export default class Explore {
+  constructor(exploreElement) {
     this.exploreElement = exploreElement;
-    if(this.exploreElement){
+    if (this.exploreElement) {
       this.init();
     }
   }
@@ -19,14 +19,25 @@ export default class Explore{
     const url = this.href;
     console.log(url);
 
+    $.ajax({
+      type: 'GET',
+      url: url,
+      dataType: 'json',
+      success: () => {
+        const spanExplore = this.querySelector('span.explore');
+        const spanWithdraw = this.querySelector('span.withdraw-explore');
 
-    axios.get(url).then(res => {
-      const spanExplore = this.querySelector('span.explore');
-      const spanWithdraw = this.querySelector('span.withdraw-explore');
-
-      $("ul.listExplore").load(window.location.href + " ul.listExplore > *");
-      spanExplore.classList.toggle('hidden');
-      spanWithdraw.classList.toggle('hidden');
-    })
+        $("ul.listExplore").load(window.location.href + " ul.listExplore > *");
+        spanExplore.classList.toggle('hidden');
+        spanWithdraw.classList.toggle('hidden');
+      },
+      error: () => {
+        swal(
+          'Oops...',
+          errMsg.responseJSON.body,
+          'error'
+        )
+      }
+    });
   }
 }

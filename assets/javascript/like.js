@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export default class Like{
-  constructor(likeElement){
+export default class Like {
+  constructor(likeElement) {
     this.likeElement = likeElement;
 
-    if(this.likeElement){
+    if (this.likeElement) {
       this.init();
     }
   }
@@ -18,14 +18,26 @@ export default class Like{
     event.preventDefault();
     const url = this.href;
 
-    axios.get(url).then(res => {
-      const heartFilled = this.querySelector('svg.filled');
-      const heartUnFilled = this.querySelector('svg.unfilled');
+    $.ajax({
+      type: 'GET',
+      url: url,
+      dataType: 'json',
+      success: () => {
+        const heartFilled = this.querySelector('svg.filled');
+        const heartUnFilled = this.querySelector('svg.unfilled');
 
-      $("ul.listOfLikes").load(window.location.href + " ul.listOfLikes > *");
-      
-      heartFilled.classList.toggle('hidden');
-      heartUnFilled.classList.toggle('hidden');
-    })
+        $("ul.listOfLikes").load(window.location.href + " ul.listOfLikes > *");
+
+        heartFilled.classList.toggle('hidden');
+        heartUnFilled.classList.toggle('hidden');
+      },
+      error: function (errMsg) {
+        swal(
+          'Oops...',
+          errMsg.responseJSON.body,
+          'error'
+        )
+      }
+    });
   }
 }
