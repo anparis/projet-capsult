@@ -213,6 +213,9 @@ class CapsuleController extends AbstractController
       foreach ($capsule->getConnections() as $connection) {
         $connectionRepository->remove($connection, true);
       }
+      foreach ($capsule->getBlocs() as $bloc){
+        $capsule->removeBloc($bloc);
+      }
       $capsuleRepository->remove($capsule, true);
     }
 

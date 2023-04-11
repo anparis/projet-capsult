@@ -49,24 +49,26 @@
             </a>
             </span>
             {% endif %}
-            {% if bloc['bloc'].capsule.user == app.user %}
+  
+            
+            {% if not bloc['bloc'].capsule %}
+						<a href="{{path('app_bloc_show', {'bloc_id':bloc['bloc'].id, 'capsule_slug':capsule.slug })}}" class="connection-container">
+            {% elseif bloc['bloc'].capsule.user == app.user %}
             <a href="{{path('app_bloc_edit', {'bloc_id':bloc['bloc'].id, 'capsule_slug':capsule.slug })}}" class="connection-container">
             {% else %}
 						<a href="{{path('app_bloc_show', {'bloc_id':bloc['bloc'].id, 'capsule_slug':capsule.slug })}}" class="connection-container">
             {% endif %}
 								{% if bloc['bloc'].content | escape %}
 							  <div class="bloc-txt">
-									<p>{{ bloc['bloc'].content}}</p>
+									<p>{{ bloc['bloc'].content|striptags|length > 300 ? bloc['bloc'].content|striptags|slice(0,300) ~ '...' : bloc['bloc'].content|striptags }}</p>
 							  </div>
-								{% endif %}
-								{% if bloc['bloc'].type is same as ("Image") %}
+								{% elseif bloc['bloc'].type is same as ("Image") %}
 							  <div class="bloc-img">
-									<img src="{{ asset('/uploads/'~bloc['bloc'].image.nomFichier) | imagine_filter('my_thumb') }}" alt="#">
+									<img src="{{ asset('/uploads/'~bloc['bloc'].image.nomFichier) | imagine_filter('my_thumb') }}" alt="#" loading="lazy">
 							  </div>
-								{% endif %}
-								{% if bloc['bloc'].type is same as ("Lien") %}
+								{% else %}
 							  <div class="bloc-link">
-                  <img class="link-thumb" src="{{ bloc['bloc'].lien.thumb }}" alt="link thumb">
+                  <img class="link-thumb" src="{{ bloc['bloc'].lien.thumb }}" alt="link thumb" loading="lazy">
 							  </div>
 								{% endif %}
                 {% if app.user %}
