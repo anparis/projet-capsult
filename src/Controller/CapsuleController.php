@@ -73,7 +73,7 @@ class CapsuleController extends AbstractController
     ]);
   }
 
-  #[Route('/add_bloc/{id}', name: 'capsule_add_bloc', methods: ['POST'])]
+  #[Route('/add_bloc/{id}', name: 'capsule_add_bloc')]
   #[Security("is_granted('ROLE_USER') and user === capsule.getUser()")]
   public function addBloc(Capsule $capsule, Request $request, BlocRepository $br, ImageRepository $ir, LienRepository $lr, ConnectionRepository $cr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
   {
