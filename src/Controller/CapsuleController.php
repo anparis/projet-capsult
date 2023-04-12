@@ -207,6 +207,34 @@ class CapsuleController extends AbstractController
     );
   }
 
+  // #[Route('/add_capsule/{id}', name: 'add_capsule', methods: ['POST'])]
+  #[Security("is_granted('ROLE_USER') and user === current_capsule.getUser()")]
+  public function addCapsule(Capsule $current_capsule, Request $request, CapsuleRepository $capsuleRepository): Response
+  {
+    $user = $this->getUser();
+    $capsule = new Capsule();
+    $form = $this->createForm(CapsuleType::class, $capsule);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      ($form->get('title')->getData() == 'open') ? $capsule->setOpen(1) : $capsule->setOpen(0);
+      $capsule->setUser($user);
+
+      $capsuleRepository->save($capsule, true);
+
+      return $this->redirectToRoute('capsule_index', [
+        'slug_user' => $user->getSlug(),
+        'slug_capsule' => $current_capsule->getSlug()
+      ]);
+    }
+
+    return $this->render('capsule/add.html.twig', [
+      'form' => $form,
+      'user' => $user,
+      'capsule' => $current_capsule
+    ]);
+  }
+
   // #[Route('/{slug}/{id}/delete-capsule', name: 'app_capsule_delete', methods: ['POST'])]
   #[Security("is_granted('ROLE_USER') and user === capsule.getUser()")]
   public function deleteCapsule(Request $request, string $slug, Capsule $capsule, CapsuleRepository $capsuleRepository, ConnectionRepository $connectionRepository): Response

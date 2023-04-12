@@ -3,9 +3,11 @@
 {% block title %}New Capsule{% endblock %}
 
 {% block body %}
-    {# {% if condition %} #}
+    {% if capsule %}
+      <a href="{{path('capsule_index', {'slug_user':user.slug, 'slug_capsule':capsule.slug})}}"><- Mes capsules</a>
+    {% else %}
       <a href="{{path('profile_index', {'slug':user.slug})}}"><- Mes capsules</a>
-    {# {% endif %} #}
+    {% endif %}
     <hr>
 
     {{ include('capsule/_form.html.twig') }}

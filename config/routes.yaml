@@ -6,11 +6,14 @@ controllers:
 app_login:
     path: /login
     controller: App\Controller\SecurityController::login
+add_capsule:
+    path: /{id}/add_capsule
+    controller: App\Controller\CapsuleController::addCapsule
 profile_index:
     path: /{slug}
     controller: App\Controller\ProfileController::index
 profile_add_capsule:
-    path: /{id}/add_capsule
+    path: /{id}/profile_add_capsule
     controller: App\Controller\ProfileController::addCapsule
 app_capsule_delete:
   path: /{slug}/{id}/delete-capsule

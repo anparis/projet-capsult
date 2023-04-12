@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bloc index
+{% block meta %}
+<meta
+  name="description"
+  content="{{app.user.slug}}'s capsule">
 {% endblock %}
+
+{% block title %}Capsule index{% endblock %}
 
 {% block body %}
   <div class="brsd m-a">
@@ -10,8 +15,12 @@
     {% else %}
       <a href="{{path('capsule_show',{'id':capsule.id})}}">/{{capsule.title}}</a>
     {% endif %}
-    <br>
+    
   </div>
+  {% if app.user is same as (user) %}
+		<a href="{{path('add_capsule', {'id':capsule.id})}}">+ Ajouter une capsule</a>
+  {% endif %}
+  <br>
   {{ include ('capsule/_like.html.twig')}}
   <br>
   <a href="{{path('profile_index',{'slug':user.slug})}}"><- capsules</a>
