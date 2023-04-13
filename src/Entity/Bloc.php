@@ -48,6 +48,9 @@ class Bloc
   #[ORM\OneToMany(mappedBy: 'bloc', targetEntity: Connection::class)]
   private Collection $connections;
 
+  #[ORM\ManyToOne(inversedBy: 'blocs')]
+  private ?User $user = null;
+
   public function __construct()
   {
     $this->created_at = new \DateTimeImmutable();
@@ -171,6 +174,18 @@ class Bloc
               $connection->setBloc(null);
           }
       }
+
+      return $this;
+  }
+
+  public function getUser(): ?User
+  {
+      return $this->user;
+  }
+
+  public function setUser(?User $user): self
+  {
+      $this->user = $user;
 
       return $this;
   }

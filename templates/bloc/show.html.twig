@@ -14,15 +14,14 @@
   <div class="bloc-display">
     {% if bloc.type is same as ('Texte') %}
       <p>{{bloc.content}}</p>
+    {% elseif bloc.type is same as ('Image') %}
+      <img src="{{ asset('/uploads/'~bloc.image.nomFichier)}}" alt="" loading="lazy">        
     {% endif %}
-    {% if bloc.type is same as ('Image') %}
-      <img src="{{ asset('/uploads/'~bloc.image.nomFichier)}}" alt="" loading="lazy">
-    {% endif %}
-    
-    {% if bloc.title %}
-      <strong>Titre</strong>
-      <p>{{bloc.title}}</p>
-    {% endif %}
+    {{ include('bloc/_link.html.twig') }}
+
+    <p class="bloc-title" >
+      {{bloc.title ? bloc.title : '--'}}
+    </p>
 
     {% if bloc.description %}
       <strong>Description</strong>

@@ -43,7 +43,7 @@
     {{ include ('capsule/_explore.html.twig')}}
 		<div class="box-constraint">
 			<div class="bloc-container">
-        {% if app.user is same as (user) %}
+        {% if app.user is same as (user) or app.user in capsule.collaborators %}
 				<div class="bloc-item afs">
 					<div class="addBlock">
 						<form id="ab-form" action="{{path('capsule_add_bloc', {'id':capsule.id})}}" method="POST" enctype="multipart/form-data">
@@ -74,7 +74,7 @@
             
             {% if not bloc['bloc'].capsule %}
 						<a href="{{path('app_bloc_show', {'bloc_id':bloc['bloc'].id, 'capsule_slug':capsule.slug })}}" class="connection-container">
-            {% elseif bloc['bloc'].capsule.user == app.user %}
+            {% elseif bloc['bloc'].capsule.user == app.user or app.user in capsule.collaborators %}
             <a href="{{path('app_bloc_edit', {'bloc_id':bloc['bloc'].id, 'capsule_slug':capsule.slug })}}" class="connection-container">
             {% else %}
 						<a href="{{path('app_bloc_show', {'bloc_id':bloc['bloc'].id, 'capsule_slug':capsule.slug })}}" class="connection-container">
@@ -100,9 +100,9 @@
                 {% endif %}
                 {% if bloc['bloc'].capsule %}
                   {% if capsule.user.id == bloc['bloc'].capsule.user.id %}
-                    <p>ajouté par {{user.username}}</p>
+                    <p>ajouté par {{capsule.user.username}}</p>
                   {% else %}
-                    <p>connecté par {{user.username}}</p>
+                    <p>connecté par {{capsule.user.username}}</p>
                   {% endif %}
                 {% else %}
                   <p>connecté par {{app.user.username}}</p>

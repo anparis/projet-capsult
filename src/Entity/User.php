@@ -52,11 +52,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\ManyToMany(targetEntity: Capsule::class, mappedBy: 'collaborators')]
   private Collection $capsules_collabs;
 
+  #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bloc::class)]
+  private Collection $blocs;
+
   public function __construct()
   {
     $this->capsules = new ArrayCollection();
     $this->capsules_liked = new ArrayCollection();
     $this->capsules_collabs = new ArrayCollection();
+    $this->blocs = new ArrayCollection();
   }
 
   public function getId(): ?int
@@ -209,6 +213,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   {
       if ($this->capsules_collabs->removeElement($capsulesCollab)) {
           $capsulesCollab->removeCollaborator($this);
+      }
+
+      return $this;
+  }
+
+  /**
+   * @return Collection<int, Bloc>
+   */
+  public function getBlocs(): Collection
+  {
+      return $this->blocs;
+  }
+
+  public function addBloc(Bloc $bloc): self
+  {
+      if (!$this->blocs->contains($bloc)) {
+          $this->blocs->add($bloc);
+          $bloc->setUser($this);
+      }
+
+      return $this;
+  }
+
+  public function removeBloc(Bloc $bloc): self
+  {
+      if ($this->blocs->removeElement($bloc)) {
+          // set the owning side to null (unless already changed)
+          if ($bloc->getUser() === $this) {
+              $bloc->setUser(null);
+          }
       }
 
       return $this;

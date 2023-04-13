@@ -294,4 +294,9 @@ class Capsule
 
       return $this;
   }
+
+  public function isUserCollaborator(User $user):bool
+  {
+    return $this->collaborators->contains($user);
+  }
 }

@@ -45,7 +45,7 @@ class BlocController extends AbstractController
   #[Route('/{bloc_id}/{capsule_slug}/edit', name: 'app_bloc_edit', methods: ['GET', 'POST'])]
   #[ParamConverter('bloc', options: ['mapping' => ['bloc_id' => 'id']])]
   #[ParamConverter('capsule', options: ['mapping' => ['capsule_slug' => 'slug']])]
-  #[Security("is_granted('ROLE_USER') and user === bloc.getCapsule().getUser()")]
+  #[Security("is_granted('ROLE_USER') and (user === bloc.getCapsule().getUser() or capsule.isUserCollaborator(user))")]
   public function editBloc(Bloc $bloc, Capsule $capsule, Request $request, BlocRepository $blocRepository): Response
   {
     $form = $this->createForm(BlocType::class, $bloc);
@@ -79,7 +79,6 @@ class BlocController extends AbstractController
   #[ParamConverter('capsule', options: ['mapping' => ['capsule_slug' => 'slug']])]
   public function showBloc(Bloc $bloc, Capsule $capsule): Response
   {
-
     return $this->render('bloc/show.html.twig', [
       'bloc' => $bloc,
       'capsule' => $capsule
