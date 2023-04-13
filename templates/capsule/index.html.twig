@@ -15,16 +15,24 @@
     {% else %}
       <a href="{{path('capsule_show',{'id':capsule.id})}}">/{{capsule.title}}</a>
     {% endif %}
-    
   </div>
   {% if app.user is same as (user) %}
-		<a href="{{path('add_capsule', {'id':capsule.id})}}">+ Ajouter une capsule</a>
+		<a href="{{path('add_capsule', {'id':capsule.id})}}">
+    <button class="add-btn">
+      + Ajouter une capsule
+    </button>
+    </a>
   {% endif %}
+  <br>
+  <p>Collaborateurs :
+  {% for collaborator in capsule.collaborators %}
+    {{collaborator.slug}}
+  {% endfor %}
+  </p>
   <br>
   {{ include ('capsule/_like.html.twig')}}
   <br>
   <a href="{{path('profile_index',{'slug':user.slug})}}"><- capsules</a>
-  <hr>
   <br>
 	<main>
     {{ include ('capsule/_like_list.html.twig')}}

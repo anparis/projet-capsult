@@ -1,6 +1,8 @@
 :root {
-  --bloc-color: hsl(0, 0%, 83%);
+  --bloc-color: #d4d4d4;
   --dark-color: hsl(0, 0%, 13%);
+  --add-color: hsl(105, 72%, 77%);
+  --btn-color: #e1e1e1;
 }
 
 * {
@@ -35,6 +37,13 @@
 
 .afs{
   align-self: flex-start;
+}
+
+/*  */
+/* BUTTON */
+/*  */
+.add-btn{
+  background-color: var(--add-color);
 }
 
 /*  */

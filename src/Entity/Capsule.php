@@ -69,13 +69,18 @@ class Capsule
   #[ORM\JoinTable(name: "user_capsule_like")]
   private Collection $likes;
 
+  #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'capsules_collabs')]
+  #[ORM\JoinTable(name: "collaboration")]
+  private Collection $collaborators;
+
   public function __construct()
   {
     $this->blocs = new ArrayCollection();
     $this->created_at = new \DateTimeImmutable();
     $this->updated_at = $this->created_at;
-    $this->collaboration = 0;
     $this->connections = new ArrayCollection();
+    $this->collaborators = new ArrayCollection();
+    $this->collaboration = 0;
   }
 
   public function getId(): ?int
@@ -135,11 +140,12 @@ class Capsule
   {
     return $this->collaboration;
   }
-
-  public function setCollaboration(bool $collaboration): self
+  
+  // public function setCollaboration(bool $collaboration): self
+  public function setCollaboration(): self
   {
-    $this->collaboration = $collaboration;
-
+    // $this->collaboration = $collaboration;
+    $this->collaborators ? $this->collaboration = 1 : $this->collaboration = 0;
     return $this;
   }
 
@@ -263,5 +269,29 @@ class Capsule
   public function isLikedByUser(User $user):bool
   {
     return $this->likes->contains($user);
+  }
+
+  /**
+   * @return Collection<int, User>
+   */
+  public function getCollaborators(): Collection
+  {
+      return $this->collaborators;
+  }
+
+  public function addCollaborator(User $collaborator): self
+  {
+      if (!$this->collaborators->contains($collaborator)) {
+          $this->collaborators->add($collaborator);
+      }
+
+      return $this;
+  }
+
+  public function removeCollaborator(User $collaborator): self
+  {
+      $this->collaborators->removeElement($collaborator);
+
+      return $this;
   }
 }

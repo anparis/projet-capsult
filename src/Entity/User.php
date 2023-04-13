@@ -49,10 +49,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\ManyToMany(targetEntity: Capsule::class, mappedBy: 'likes')]
   private Collection $capsules_liked;
 
+  #[ORM\ManyToMany(targetEntity: Capsule::class, mappedBy: 'collaborators')]
+  private Collection $capsules_collabs;
+
   public function __construct()
   {
     $this->capsules = new ArrayCollection();
     $this->capsules_liked = new ArrayCollection();
+    $this->capsules_collabs = new ArrayCollection();
   }
 
   public function getId(): ?int
@@ -181,5 +185,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
       $this->capsules_liked->add($capsule);
     }
     return $this;
+  }
+
+  /**
+   * @return Collection<int, Capsule>
+   */
+  public function getCapsulesCollabs(): Collection
+  {
+      return $this->capsules_collabs;
+  }
+
+  public function addCapsulesCollab(Capsule $capsulesCollab): self
+  {
+      if (!$this->capsules_collabs->contains($capsulesCollab)) {
+          $this->capsules_collabs->add($capsulesCollab);
+          $capsulesCollab->addCollaborator($this);
+      }
+
+      return $this;
+  }
+
+  public function removeCapsulesCollab(Capsule $capsulesCollab): self
+  {
+      if ($this->capsules_collabs->removeElement($capsulesCollab)) {
+          $capsulesCollab->removeCollaborator($this);
+      }
+
+      return $this;
   }
 }

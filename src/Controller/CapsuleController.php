@@ -32,7 +32,6 @@ class CapsuleController extends AbstractController
   // #[Route('/{slug_user}/{slug_capsule}', name: 'capsule_index', methods: ['GET'])]
   public function index(string $slug_user, string $slug_capsule, EntityManagerInterface $entityManager, CapsuleRepository $capsuleRepository): Response
   {
-
     $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug' => $slug_capsule]);
     $user = $entityManager->getRepository(User::class)->findOneBy(['slug' => $slug_user]);
 
@@ -43,7 +42,8 @@ class CapsuleController extends AbstractController
         'capsule' => $capsule,
         'user' => $user,
         'capsules' => $user->getCapsules(),
-        'blocs' => null
+        'blocs' => null,
+        'explorable_capsules' => $capsuleRepository->findExplorableCapsules()
       ]);
     } else {
       foreach ($capsule->getConnections() as $connection) {
@@ -62,7 +62,6 @@ class CapsuleController extends AbstractController
     usort($blocsConnected, function ($a, $b) {
       return $a['date'] < $b['date'];
     });
-
 
     return $this->render('capsule/index.html.twig', [
       'capsule' => $capsule,
