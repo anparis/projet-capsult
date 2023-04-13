@@ -87,6 +87,7 @@ class CapsuleController extends AbstractController
 
     if ($this->isCsrfTokenValid('add-bloc', $submittedToken) && $post->has('submit')) {
       $bloc = new Bloc();
+      $bloc->setUser($this->getUser());
       $bloc->setCapsule($capsule);
       if ($imgFile && !$textarea) {
         //calling validation service to check if user upload is an image 

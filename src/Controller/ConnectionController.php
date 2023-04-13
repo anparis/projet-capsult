@@ -42,7 +42,7 @@ class ConnectionController extends AbstractController
   #[ParamConverter('user', options: ['mapping' => ['user_id' => 'id']])]
   #[ParamConverter('capsule', options: ['mapping' => ['capsule_id' => 'id']])]
   #[ParamConverter('bloc', options: ['mapping' => ['bloc_id' => 'id']])]
-  #[Security("is_granted('ROLE_USER') and user === capsule.getUser()")]
+  #[Security("is_granted('ROLE_USER') and (user === capsule.getUser() or capsule.isUserCollaborator(user))")]
   public function delete(User $user,Capsule $capsule, Request $request, Bloc $bloc, ConnectionRepository $connectionRepository): Response
   {
     if ($this->isCsrfTokenValid('delete' . $bloc->getId(), $request->request->get('_token'))) {

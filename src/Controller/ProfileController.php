@@ -21,25 +21,31 @@ class ProfileController extends AbstractController
   // #[Route('/{slug}', name: 'profile_index')]
   public function index(User $user = null, EntityManagerInterface $entityManager): Response
   {
-    $capsules = $entityManager->getRepository(Capsule::class)->findBy(['user' => $user->getId()], ['updated_at' => 'DESC']);
-    foreach($capsules as $capsule){
-      $allCapsules[] = $capsule;
+    if ($user == null) {
+      return $this->redirectToRoute('app_home');
     }
-    foreach($user->getCapsulesCollabs() as $capsule){
-      $allCapsules[] = $capsule;
+    $capsules = $entityManager->getRepository(Capsule::class)->findBy(['user' => $user->getId()], ['updated_at' => 'DESC']);
+
+    if (!empty($capsules)) {
+      foreach ($capsules as $capsule) {
+        $allCapsules[] = $capsule;
+      }
+      foreach ($user->getCapsulesCollabs() as $capsule) {
+        $allCapsules[] = $capsule;
+      }
+      usort($allCapsules, function ($a, $b) {
+        return $a->getUpdatedAt() < $b->getUpdatedAt();
+      });
     }
 
-    usort($allCapsules, function ($a, $b) {
-      return $a->getUpdatedAt() < $b->getUpdatedAt();
-    });
 
     return $this->render('profile/index.html.twig', [
       'user' => $user,
-      'capsules' => $allCapsules
+      'capsules' => $capsules ? $allCapsules : null
     ]);
   }
 
-  
+
 
   // #[Route('/add_capsule/{id}', name: 'profile_add_capsule', methods: ['POST'])]
   #[Security("is_granted('ROLE_USER') and user === current_user")]

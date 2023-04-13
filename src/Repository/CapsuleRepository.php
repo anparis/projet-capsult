@@ -44,7 +44,7 @@ class CapsuleRepository extends ServiceEntityRepository
   public function findExplorableCapsules()
   {
     return $this->createQueryBuilder('c')
-          ->andWhere('c.explore = 0')
+          ->andWhere('c.explore = 1')
           ->orderBy('c.updated_at', 'DESC')
           ->getQuery()
           //getResult gives back an array of Capsules

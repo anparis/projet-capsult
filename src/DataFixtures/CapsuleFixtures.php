@@ -32,6 +32,7 @@ class CapsuleFixtures extends Fixture implements DependentFixtureInterface
     $capsule->setTitle($title);
     $capsule->setSlug($this->sluger->slug($capsule->getTitle())->lower());
     $capsule->setOpen($open);
+    $capsule->setExplore(0);
     if ($capsule->isOpen()) {
       $capsule->setStatus('sealed');
     } else {
