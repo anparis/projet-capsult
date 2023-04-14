@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
   use SlugTrait;
-  
+
   #[ORM\Id]
   #[ORM\GeneratedValue]
   #[ORM\Column]
@@ -36,6 +36,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column(length: 150, unique: true)]
   #[Slug(fields: ['username'])]
   private ?string $slug = null;
+
+  #[ORM\Column(type: 'boolean')]
+  private $is_verified = false;
 
   /**
    * @var string The hashed password
@@ -179,7 +182,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
    */
   public function getCapsulesLiked(): Collection
   {
-      return $this->capsules_liked;
+    return $this->capsules_liked;
   }
 
   public function addCapsuleLiked(Capsule $capsule): self
@@ -196,26 +199,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
    */
   public function getCapsulesCollabs(): Collection
   {
-      return $this->capsules_collabs;
+    return $this->capsules_collabs;
   }
 
   public function addCapsulesCollab(Capsule $capsulesCollab): self
   {
-      if (!$this->capsules_collabs->contains($capsulesCollab)) {
-          $this->capsules_collabs->add($capsulesCollab);
-          $capsulesCollab->addCollaborator($this);
-      }
+    if (!$this->capsules_collabs->contains($capsulesCollab)) {
+      $this->capsules_collabs->add($capsulesCollab);
+      $capsulesCollab->addCollaborator($this);
+    }
 
-      return $this;
+    return $this;
   }
 
   public function removeCapsulesCollab(Capsule $capsulesCollab): self
   {
-      if ($this->capsules_collabs->removeElement($capsulesCollab)) {
-          $capsulesCollab->removeCollaborator($this);
-      }
+    if ($this->capsules_collabs->removeElement($capsulesCollab)) {
+      $capsulesCollab->removeCollaborator($this);
+    }
 
-      return $this;
+    return $this;
   }
 
   /**
@@ -223,28 +226,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
    */
   public function getBlocs(): Collection
   {
-      return $this->blocs;
+    return $this->blocs;
   }
 
   public function addBloc(Bloc $bloc): self
   {
-      if (!$this->blocs->contains($bloc)) {
-          $this->blocs->add($bloc);
-          $bloc->setUser($this);
-      }
+    if (!$this->blocs->contains($bloc)) {
+      $this->blocs->add($bloc);
+      $bloc->setUser($this);
+    }
 
-      return $this;
+    return $this;
   }
 
   public function removeBloc(Bloc $bloc): self
   {
-      if ($this->blocs->removeElement($bloc)) {
-          // set the owning side to null (unless already changed)
-          if ($bloc->getUser() === $this) {
-              $bloc->setUser(null);
-          }
+    if ($this->blocs->removeElement($bloc)) {
+      // set the owning side to null (unless already changed)
+      if ($bloc->getUser() === $this) {
+        $bloc->setUser(null);
       }
+    }
 
-      return $this;
+    return $this;
+  }
+
+  public function getIsVerified(): ?bool
+  {
+    return $this->is_verified;
+  }
+
+  public function setIsVerified(bool $is_verified): self
+  {
+    $this->is_verified = $is_verified;
+
+    return $this;
   }
 }

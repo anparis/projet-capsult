@@ -3,6 +3,9 @@
 {% block title %}Capsule Collaborators{% endblock %}
 
 {% block body %}
-  <h2>Envoyer une invitation :</h2>
-  
+  <h2>Indiquer l'email d'un collaborateur pour lui envoyer une invitation :</h2>
+  <form action="{{path('email')}}" method="POST">
+    <input type="email" name="email">
+    <button type="submit" name="submit">Inviter</button>
+  </form>
 {% endblock %}

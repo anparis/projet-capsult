@@ -18,13 +18,16 @@ class BlocType extends AbstractType
   {
     $builder
       ->add('title', TextType::class,[
-        'required'   => false
+        'required'   => false,
+        'label' => 'Titre'
       ])
       ->add('description', TextareaType::class, [
-        'required'   => false
+        'required'   => false,
+        'label' => 'Description'
       ])
       ->add('submit', SubmitType::class, [
-        'attr' => ['class' => 'btn']
+        'attr' => ['class' => 'btn'],
+        'label' => 'Ajouter'
       ]);
     $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
       $bloc = $event->getData();
