@@ -14,6 +14,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            user_checker: App\Security\UserVerified
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\UserAuthenticator
@@ -26,7 +27,9 @@ security:
                 # where to redirect after logout
                 target: app_home
             entry_point: 'form_login'
-
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800 #1 week in second 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 

@@ -20,7 +20,7 @@ export default class Explore {
     console.log(url);
 
     $.ajax({
-      type: 'GET',
+      type: 'POST',
       url: url,
       dataType: 'json',
       success: () => {

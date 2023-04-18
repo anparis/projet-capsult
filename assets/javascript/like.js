@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export default class Like {
   constructor(likeElement) {
     this.likeElement = likeElement;
@@ -19,13 +17,14 @@ export default class Like {
     const url = this.href;
 
     $.ajax({
-      type: 'GET',
+      type: 'POST',
       url: url,
       dataType: 'json',
       success: () => {
         const heartFilled = this.querySelector('svg.filled');
         const heartUnFilled = this.querySelector('svg.unfilled');
-
+        
+        // triggers the load of the list of likes
         $("ul.listOfLikes").load(window.location.href + " ul.listOfLikes > *");
 
         heartFilled.classList.toggle('hidden');

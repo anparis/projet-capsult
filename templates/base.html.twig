@@ -16,6 +16,16 @@
 
 	</head>
 	<body>
+    {% if app.user and app.user.isVerified == false %}
+      <div class="alert alert-warning alert-dismissible" role="alert">
+        <div class="alert-message">
+          <strong>Votre compte n'est pas vérifié</strong>, 
+          <a href="{{ path('resend_verif') }}">renvoyer le lien d'activation</a>
+        </div>
+      </div>
+    {% endif %}
+    {{ include('partials/_flash.html.twig') }}
+
 		{{ include('partials/_nav.html.twig') }}
 		{% block body %}{% endblock %}
     <br>

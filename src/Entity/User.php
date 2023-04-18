@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Un compte avec cet e-mail existe déjà')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
   use SlugTrait;
@@ -40,9 +40,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column(type: 'boolean')]
   private $is_verified = false;
 
-  /**
-   * @var string The hashed password
-   */
   #[ORM\Column]
   private ?string $password = null;
 
@@ -60,6 +57,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
   public function __construct()
   {
+    $this->is_verified = false;
     $this->capsules = new ArrayCollection();
     $this->capsules_liked = new ArrayCollection();
     $this->capsules_collabs = new ArrayCollection();
