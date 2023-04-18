@@ -89,7 +89,13 @@
 							  </div>
 								{% else %}
 							  <div class="bloc-link">
-                  <img class="link-thumb" src="{{ bloc['bloc'].lien.thumb }}" alt="link thumb" loading="lazy">
+                  {% if bloc['bloc'].lien.thumb %}
+                    <img class="link-thumb" src="{{ bloc['bloc'].lien.thumb }}" alt="link thumb" loading="lazy">
+                  {% else %}
+                  <img src="{{bloc['bloc'].lien.url}}" alt="">
+                    
+                  {% endif %}
+                  
 							  </div>
 								{% endif %}
 						    </a>
