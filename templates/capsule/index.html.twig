@@ -81,7 +81,7 @@
             {% endif %}
 								{% if bloc['bloc'].content | escape %}
 							  <div class="bloc-txt">
-									<p>{{ bloc['bloc'].content|striptags|length > 300 ? bloc['bloc'].content|striptags|slice(0,300) ~ '...' : bloc['bloc'].content|striptags }}</p>
+									<p>{{ bloc['bloc'].content|striptags|length > 300 ? bloc['bloc'].content|striptags|slice(0,300) ~ '...' : bloc['bloc'].content }}</p>
 							  </div>
 								{% elseif bloc['bloc'].type is same as ("Image") %}
 							  <div class="bloc-img">

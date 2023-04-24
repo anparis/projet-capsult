@@ -58,15 +58,8 @@
 }
 
 .bloc-container {
-  /* display: flex;
-  flex-flow: row wrap;
-  margin-left: -10px;
-  margin-right: -10px;
-  align-items: center; */
-
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(335px, max-content));
-  /* grid-gap: 16px; */
   padding: initial;
   justify-content: center;
 }
@@ -181,8 +174,12 @@ button.inline-btn {
 /* MEDIA QUERIES */
 /*  */
 
+
+/* @container (min-width: 312px){
+
+} */
 @media (min-width: 1800px) {
-  .box-constraint {
+  body {
     max-width: 1760px;
   }
-}
+} 

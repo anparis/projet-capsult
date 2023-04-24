@@ -72,87 +72,6 @@ class CapsuleController extends AbstractController
     ]);
   }
 
-  #[Route('/add_bloc/{id}', name: 'capsule_add_bloc')]
-  #[Security("is_granted('ROLE_USER') and (user === capsule.getUser() or capsule.isUserCollaborator(user))")]
-  public function addBloc(Capsule $capsule, Request $request, BlocRepository $br, ImageRepository $ir, LienRepository $lr, ConnectionRepository $cr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
-  {
-    $post = $request->request;
-
-    $textarea = $post->get('txt_input');
-    /** @var UploadedFile $imgFile */
-    $imgFile = $request->files->get('image');
-
-    //get csrf token generated on form
-    $submittedToken = $request->request->get('token');
-
-    if ($this->isCsrfTokenValid('add-bloc', $submittedToken) && $post->has('submit')) {
-      $bloc = new Bloc();
-      $bloc->setUser($this->getUser());
-      $bloc->setCapsule($capsule);
-      if ($imgFile && !$textarea) {
-        //calling validation service to check if user upload is an image 
-        $imgViolation = $validation->validateImage($imgFile, $validator);
-        if ($imgViolation) {
-          return new Response(
-            '<h1>not an Image</h1>'
-          );
-        } else {
-          $bloc->setType('Image');
-          $img = new Image();
-          $fileName = $fileUploader->upload($imgFile);
-          $img->setNomFichier($fileName);
-          $img->setTypeFichier($imgFile->getClientOriginalExtension());
-          $img->setBloc($bloc);
-          $ir->save($img, true);
-        }
-      } elseif ($textarea && !$imgFile) {
-
-        //check if user input is url
-        $urlViolation = $validation->validateUrl($textarea, $validator);
-
-        // user can't submit textarea and upload file in the same time
-        if ($urlViolation) {
-          $bloc->setType('Texte');
-          $bloc->setContent($textarea);
-          $br->save($bloc, true);
-        } else {
-          $bloc->setType('Lien');
-          $link = new Lien();
-          $link->setUrl($textarea);
-          $file = json_decode(file_get_contents("https://iframe.ly/api/oembed?url=$textarea&api_key=4e6fb13787561fe9d031a0"));
-          if(isset($file->thumbnail_url)){
-            $link->setThumb($file->thumbnail_url);
-          }
-          if(isset($file->html)){
-            $link->setHtml($file->html);
-          }
-          $link->setBloc($bloc);
-          $lr->save($link, true);
-        }
-      } else {
-        return new Response(
-          'Erreur de formulaire'
-        );
-      }
-    } else {
-      return new Response(
-        'Erreur de formulaire'
-      );
-    }
-
-    // I finally set a new connection between bloc and capsule
-    $connection = new Connection();
-    $connection->setBloc($bloc);
-    $connection->setCapsule($capsule);
-    $cr->save($connection, true);
-    return $this->redirectToRoute(
-      'capsule_index',
-      [
-        'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
-        'slug_capsule' => $bloc->getCapsule()->getSlug()
-      ]
-    );
-  }
 
   #[Route('/{user_slug}/{capsule_slug}/{id}/capsules-connection', name: 'capsules_connection', methods: ['GET'])]
   #[ParamConverter('bloc', options: ['mapping' => ['id' => 'id']])]
@@ -195,8 +114,8 @@ class CapsuleController extends AbstractController
     ]);
   }
 
-  // Show the capsules details
-  #[Route('/{id}/show', name: 'capsule_show', methods: ['GET', 'POST'])]
+  // Show capsules details
+  #[Route('/{id}/show', name: 'capsule_show', methods: ['GET'])]
   public function showCapsule(Capsule $capsule): Response
   {
     return $this->render(
@@ -207,7 +126,7 @@ class CapsuleController extends AbstractController
     );
   }
 
-  // #[Route('/add_capsule/{id}', name: 'add_capsule', methods: ['POST'])]
+  #[Route('/add_capsule/{id}', name: 'add_capsule', methods: ['GET','POST'])]
   #[Security("is_granted('ROLE_USER') and user === current_capsule.getUser()")]
   public function addCapsule(Capsule $current_capsule, Request $request, CapsuleRepository $capsuleRepository): Response
   {
@@ -215,6 +134,7 @@ class CapsuleController extends AbstractController
     $capsule = new Capsule();
     $form = $this->createForm(CapsuleType::class, $capsule);
     $form->handleRequest($request);
+
 
     if ($form->isSubmitted() && $form->isValid()) {
       ($form->get('title')->getData() == 'open') ? $capsule->setOpen(1) : $capsule->setOpen(0);
@@ -265,7 +185,7 @@ class CapsuleController extends AbstractController
 
       return $this->json([
         'message' => 'La capsule est scellée',
-        'status_fr' => 'scellée'
+        'status_fr' => 'statut > scellée'
       ]);
     }
 
@@ -274,7 +194,7 @@ class CapsuleController extends AbstractController
 
     return $this->json([
       'message' => 'La capsule est ouverte',
-      'status_fr' => 'ouverte'
+      'status_fr' => 'statut > ouverte'
     ]);
   }
 

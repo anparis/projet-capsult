@@ -30,6 +30,7 @@ class Bloc
   private ?string $description = null;
 
   #[ORM\Column(type: Types::TEXT, nullable: true)]
+  #[Assert\Type('string')]
   private ?string $content = null;
 
   #[ORM\Column(length: 20)]
