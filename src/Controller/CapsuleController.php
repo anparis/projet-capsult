@@ -34,9 +34,9 @@ class CapsuleController extends AbstractController
   {
     $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug' => $slug_capsule]);
     $user = $entityManager->getRepository(User::class)->findOneBy(['slug' => $slug_user]);
-
+    //check whether or not capsule possessed blocs
     $connectedBlocCol = $capsule->getConnections()->isEmpty();
-
+    
     if ($connectedBlocCol) {
       return $this->render('capsule/index.html.twig', [
         'capsule' => $capsule,
@@ -46,19 +46,22 @@ class CapsuleController extends AbstractController
         'explorable_capsules' => $capsuleRepository->findExplorableCapsules()
       ]);
     } else {
+      //I associate a key with a connected bloc and his connection date or his date of last update
+      //If creator of bloc same as creator of capsule, date will be the last update date
+      //Else, date will be the date of connection in capsule
       foreach ($capsule->getConnections() as $connection) {
-        //I associate a key with a connected bloc and his connection date
-        if ($connection->getBloc()->getCapsule()) {
-          if ($connection->getBloc()->getCapsule()->getId() === $connection->getCapsule()->getId())
+        //check to verify if bloc has not an anonymous user
+        if ($connection->getBloc()->getUser()) {
+          if ($connection->getBloc()->getUser() === $connection->getCapsule()->getUser()) {
             $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getBloc()->getUpdatedAt()];
-          else
+          } else
             $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getCreatedAt()];
         } else
           $blocsConnected[] = ['bloc' => $connection->getBloc(), 'date' => $connection->getCreatedAt()];
       }
     }
 
-    //sorting the array by descending date
+    //sorting array of object by descending date with usort
     usort($blocsConnected, function ($a, $b) {
       return $a['date'] < $b['date'];
     });
@@ -126,7 +129,7 @@ class CapsuleController extends AbstractController
     );
   }
 
-  #[Route('/add_capsule/{id}', name: 'add_capsule', methods: ['GET','POST'])]
+  #[Route('/add_capsule/{id}', name: 'add_capsule', methods: ['GET', 'POST'])]
   #[Security("is_granted('ROLE_USER') and user === current_capsule.getUser()")]
   public function addCapsule(Capsule $current_capsule, Request $request, CapsuleRepository $capsuleRepository): Response
   {
@@ -163,7 +166,7 @@ class CapsuleController extends AbstractController
       foreach ($capsule->getConnections() as $connection) {
         $connectionRepository->remove($connection, true);
       }
-      foreach ($capsule->getBlocs() as $bloc){
+      foreach ($capsule->getBlocs() as $bloc) {
         $capsule->removeBloc($bloc);
       }
       $capsuleRepository->remove($capsule, true);

@@ -51,7 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
   #[ORM\ManyToMany(targetEntity: Capsule::class, mappedBy: 'collaborators')]
   private Collection $capsules_collabs;
-
+  
   #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bloc::class)]
   private Collection $blocs;
 

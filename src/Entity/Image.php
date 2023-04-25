@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Service\FileUploader;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ImageRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
@@ -15,6 +17,7 @@ class Image
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
+    #[Assert\NotBlank(message: 'Veuillez fournir un nom de fichier.')]
     private ?string $nom_fichier = null;
 
     #[ORM\Column(length: 10)]

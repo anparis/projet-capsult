@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\LienRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: LienRepository::class)]
 class Lien
@@ -15,12 +17,15 @@ class Lien
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'L\'URL ne peut pas être vide.')]
+    #[Assert\Url(message: 'L\'URL "{{ value }}" n\'est pas une URL valide')]
     private ?string $url = null;
 
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $thumb = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Type('string')]
     private ?string $html = null;
     
     #[ORM\OneToOne(inversedBy: 'lien', cascade: ['persist', 'remove'])]

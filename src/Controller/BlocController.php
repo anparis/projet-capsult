@@ -27,7 +27,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 #[Route('/bloc')]
 class BlocController extends AbstractController
 {
-  #[Route('/', name: 'app_bloc_index', methods: ['GET'])]
+  #[Route('/', name: 'app_bloc_index')]
   public function blocIndex(BlocRepository $bl): Response
   {
     return $this->render('bloc/index.html.twig', [
@@ -43,7 +43,7 @@ class BlocController extends AbstractController
     ]);
   }
 
-  #[Route('/add_bloc/{id}', name: 'capsule_add_bloc')]
+  #[Route('/add_bloc/{id}', name: 'capsule_add_bloc',  methods: ['GET', 'POST'])]
   #[Security("is_granted('ROLE_USER') and (user === capsule.getUser() or capsule.isUserCollaborator(user))")]
   public function addBloc(Capsule $capsule, Request $request, BlocRepository $br, ImageRepository $ir, LienRepository $lr, ConnectionRepository $cr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
   {
@@ -62,12 +62,8 @@ class BlocController extends AbstractController
       $bloc->setCapsule($capsule);
       if ($imgFile && !$textarea) {
         //calling validation service to check if user upload is an image 
-        $imgViolation = $validation->validateImage($imgFile, $validator);
-        if ($imgViolation) {
-          return new Response(
-            '<h1>not an Image</h1>'
-          );
-        } else {
+        $valideImg = $validation->validateImage($imgFile, $validator);
+        if ($valideImg) {
           $bloc->setType('Image');
           $img = new Image();
           $fileName = $fileUploader->upload($imgFile);
@@ -75,18 +71,22 @@ class BlocController extends AbstractController
           $img->setTypeFichier($imgFile->getClientOriginalExtension());
           $img->setBloc($bloc);
           $ir->save($img, true);
+        } else {
+          return new Response(
+            '<h1>not an Image</h1>'
+          );
+          
         }
       } elseif ($textarea && !$imgFile) {
-
         //check if user input is url
-        $urlViolation = $validation->validateUrl($textarea, $validator);
-
+        $valideUrl = $validation->validateUrl($textarea, $validator);
+        $valideTxt = $validation->validateText($textarea, $validator);
         // user can't submit textarea and upload file in the same time
-        if ($urlViolation) {
+        if ($valideTxt && !$valideUrl) {
           $bloc->setType('Texte');
           $bloc->setContent($textarea);
           $br->save($bloc, true);
-        } else {
+        } elseif($valideUrl) {
           $bloc->setType('Lien');
           $link = new Lien();
           $link->setUrl($textarea);
@@ -158,11 +158,9 @@ class BlocController extends AbstractController
   }
 
   /**
-   * This controller allow us to edit a bloc
+   * This controller allow us to display a bloc
    * @param Bloc $bloc
-   * @param Request $resquest
    * @param Capsule $capsule
-   * @param BlocRepository $blocRepository
    * @return Response 
   **/
   #[Route('/{bloc_id}/{capsule_slug}/show', name: 'app_bloc_show', methods: ['GET'])]
@@ -176,7 +174,7 @@ class BlocController extends AbstractController
     ]);
   }
   
-  #[Route('/{id}', name: 'app_bloc_delete', methods: ['POST'])]
+  #[Route('/{id}', name: 'app_bloc_delete', methods: ['GET','POST'])]
   #[Security("is_granted('ROLE_USER') and (user === bloc.getCapsule().getUser() or bloc.getCapsule().isUserCollaborator(user))")]
   public function delete(Request $request, Bloc $bloc, BlocRepository $blocRepository): Response
   {

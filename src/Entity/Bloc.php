@@ -24,16 +24,19 @@ class Bloc
   private ?int $id = null;
 
   #[ORM\Column(length: 100, nullable: true)]
+  #[Assert\Length(max: 100)]
   private ?string $title = null;
 
   #[ORM\Column(type: Types::TEXT, nullable: true)]
+  #[Assert\Length(max: 65535)]
   private ?string $description = null;
 
   #[ORM\Column(type: Types::TEXT, nullable: true)]
-  #[Assert\Type('string')]
+  #[Assert\NotBlank]
   private ?string $content = null;
 
   #[ORM\Column(length: 20)]
+  #[Assert\NotBlank]
   private ?string $type = null;
 
   #[ORM\OneToOne(mappedBy: 'bloc', cascade: ['persist', 'remove'])]

@@ -11,6 +11,7 @@ use App\Repository\CapsuleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation\Slug;
 
 #[ORM\Entity(repositoryClass: CapsuleRepository::class)]
@@ -27,6 +28,8 @@ class Capsule
   private ?int $id = null;
 
   #[ORM\Column(length: 100)]
+  #[Assert\NotBlank(message: 'Veuillez entrer un titre s\'il vous plaît.')]
+  #[Assert\Length(max: 100, maxMessage: 'Le titre ne peut pas être plus long que {{ limit }} caractères.')]
   private ?string $title = null;
 
   #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -35,19 +38,20 @@ class Capsule
   #[ORM\Column(length: 150, nullable: true)]
   private ?string $background = null;
 
-  #[ORM\Column]
+  #[ORM\Column(type: Types::BOOLEAN)]
   private ?bool $open = null;
 
   #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
   private ?bool $explore = null;
 
-  #[ORM\Column]
+  #[ORM\Column(type: Types::BOOLEAN)]
   private ?bool $collaboration = null;
 
   #[ORM\Column(length: 10)]
+  #[Assert\NotBlank(message: 'Veuillez choisir un statut.')]
   #[Choice(
     choices: ['sealed', 'open'],
-    message: 'Choose a valid status.',
+    message: 'Choisissez un statut valide.',
   )]
   private ?string $status = null;
 

@@ -7,14 +7,14 @@ use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class Validation
 {
   /**
    * Validate an url input from user
-   * Return true if number of violation>0
+   * Return false if number of violation>0
    */
   public function validateUrl(string $txt, ValidatorInterface $validator): bool
   {
@@ -26,12 +26,12 @@ class Validation
 
     $violation = $validator->validate($input, $constraints);
 
-    return count($violation) > 0 ? 1 : 0;
+    return count($violation) > 0 ? 0 : 1;
   }
 
   /**
    * Check if user upload is a valid Image 
-   * Return true if number of violation>0
+   * Return false if number of violation>0
    */
   public function validateImage(UploadedFile $img, ValidatorInterface $validator): bool
   {
@@ -42,22 +42,22 @@ class Validation
     ]);
 
     $violation = $validator->validate($input, $constraints);
-    return count($violation) > 0 ? 1 : 0;
+    return count($violation) > 0 ? 0 : 1;
   }
 
   /* Validate a text input
-   * Return true if number of violation>0
+   * Return false if number of violation>0
   */
   public function validateText(string $txt, ValidatorInterface $validator): bool
   {
-    $input = ['url' => $txt];
+    $input = ['txt' => $txt];
 
     $constraints = new Collection([
-      'url' => [new TextType(), new NotBlank()],
+      'txt' => [new Assert\Type('string'), new NotBlank()],
     ]);
 
     $violation = $validator->validate($input, $constraints);
 
-    return count($violation) > 0 ? 1 : 0;
+    return count($violation) > 0 ? 0 : 1;
   }
 }
