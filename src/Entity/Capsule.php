@@ -64,6 +64,7 @@ class Capsule
 
   #[ORM\Column(length: 150, unique: true)]
   #[Slug(fields: ['title'])]
+  #[Assert\Regex(pattern: '/^[a-zA-Z0-9]+$/', message: 'format de slug capsule invalide')]
   private ?string $slug = null;
 
   #[ORM\OneToMany(mappedBy: 'capsule', targetEntity: Connection::class, orphanRemoval: false)]

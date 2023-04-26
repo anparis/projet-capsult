@@ -12,6 +12,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Un compte avec cet e-mail existe déjà')]
@@ -35,6 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
   #[ORM\Column(length: 150, unique: true)]
   #[Slug(fields: ['username'])]
+  #[Assert\Regex(pattern: '/^[a-zA-Z0-9]+$/', message: 'format de slug utilisateur invalide')]
   private ?string $slug = null;
 
   #[ORM\Column(type: 'boolean')]

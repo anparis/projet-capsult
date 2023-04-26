@@ -17,6 +17,7 @@
     {% elseif bloc.type is same as ('Image') %}
       <img src="{{ asset('/uploads/'~bloc.image.nomFichier)}}" alt="" loading="lazy">        
     {% endif %}
+    
     {{ include('bloc/_link.html.twig') }}
 
     <p class="bloc-title" >

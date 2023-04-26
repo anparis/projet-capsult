@@ -62,16 +62,15 @@
 				{% for key, bloc in blocs %}
 					<div class="bloc-item">
             {% if bloc['bloc'].lien %}
+            <div class="link-wrapper">
             <span class="bloc-url">
-            <a class="url-wrap" href="{{ bloc['bloc'].lien.url }}" target="_blank">
-            <button class="inline-btn">
-              <img class="arrow-icon" src="{{asset('/logos/arrow-icon.svg')}}">
-            </button>
-            </a>
+              <a class="url-wrap" href="{{ bloc['bloc'].lien.url }}" target="_blank">
+                <button class="inline-btn">
+                  <img class="arrow-icon" src="{{asset('/logos/arrow-icon.svg')}}">
+                </button>
+              </a>
             </span>
             {% endif %}
-  
-            
             {% if not bloc['bloc'].capsule %}
 						<a href="{{path('app_bloc_show', {'bloc_id':bloc['bloc'].id, 'capsule_slug':capsule.slug })}}" class="connection-container">
             {% elseif bloc['bloc'].capsule.user == app.user or app.user in capsule.collaborators %}
@@ -93,12 +92,13 @@
                     <img class="link-thumb" src="{{ bloc['bloc'].lien.thumb }}" alt="link thumb" loading="lazy">
                   {% else %}
                   <img src="{{bloc['bloc'].lien.url}}" alt="">
-                    
                   {% endif %}
-                  
 							  </div>
 								{% endif %}
 						    </a>
+                {% if bloc['bloc'].lien %}
+                </div>
+                {% endif %}
                 {% if app.user %}
                   <a href="{{path('capsules_connection', {'user_slug':app.user.slug,'capsule_slug':capsule.slug, 'id':bloc['bloc'].id})}}">-> Connecter</a>
                 {% else %}

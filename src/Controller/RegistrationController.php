@@ -45,15 +45,14 @@ class RegistrationController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      // encode the plain password
       $user->setSlug($sluger->slug($form->get('username')->getData())->lower());
+      // encode the plain password
       $user->setPassword(
         $userPasswordHasher->hashPassword(
           $user,
           $form->get('plainPassword')->getData()
         )
       );
-
       $entityManager->persist($user);
       $entityManager->flush();
 
@@ -75,7 +74,7 @@ class RegistrationController extends AbstractController
         $authenticator,
         $request
       );
-    }
+    } 
 
     return $this->render('registration/register.html.twig', [
       'registrationForm' => $form->createView(),

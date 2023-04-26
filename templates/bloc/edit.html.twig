@@ -6,24 +6,25 @@
 {% block body %}
 	<a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">back to list</a>
   <br><br>
-  {% if bloc.capsule %}
-	  <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAtFormatted}}</p>
-  {% else %}
-    <p>Bloc orphelin</p>
-  {% endif %}
+  <div class="bloc-display">
+    {% if bloc.capsule %}
+      <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAtFormatted}}</p>
+    {% else %}
+      <p>Bloc orphelin</p>
+    {% endif %}
 
-  {% if bloc.type is same as ('Image') %}
-      <img src="{{ asset('/uploads/'~bloc.image.nomFichier)}}" alt="" loading="lazy">
-  {% endif %}
+    {% if bloc.type is same as ('Image') %}
+        <img src="{{ asset('/uploads/'~bloc.image.nomFichier)}}" alt="" loading="lazy">
+    {% endif %}
 
-  
-	{{ include('bloc/_link.html.twig') }}
-  
-	{{ include('bloc/_form.html.twig') }}
+    
+    {{ include('bloc/_link.html.twig') }}
+    
+    {{ include('bloc/_form.html.twig') }}
 
-	<br>
-	{{ include('bloc/_delete_form.html.twig') }}
-
+    <br>
+    {{ include('bloc/_delete_form.html.twig') }}
+  </div>
   <hr>
 
     {{ include('bloc/_connection_list.html.twig') }}

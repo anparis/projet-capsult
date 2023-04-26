@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ProfileController extends AbstractController
 {
-  // #[Route('/{slug}', name: 'profile_index')]
+  #[Route('/{slug}', name: 'profile_index')]
   public function index(User $user = null, EntityManagerInterface $entityManager): Response
   {
     if ($user == null) {
@@ -27,17 +27,12 @@ class ProfileController extends AbstractController
     $capsules = $entityManager->getRepository(Capsule::class)->findBy(['user' => $user->getId()], ['updated_at' => 'DESC']);
 
     if (!empty($capsules)) {
-      foreach ($capsules as $capsule) {
-        $allCapsules[] = $capsule;
-      }
-      foreach ($user->getCapsulesCollabs() as $capsule) {
-        $allCapsules[] = $capsule;
-      }
+      $allCapsules = array_merge($capsules, $user->getCapsulesCollabs()->toArray());
+
       usort($allCapsules, function ($a, $b) {
         return $a->getUpdatedAt() < $b->getUpdatedAt();
       });
     }
-
 
     return $this->render('profile/index.html.twig', [
       'user' => $user,
@@ -47,7 +42,7 @@ class ProfileController extends AbstractController
 
 
 
-  // #[Route('/add_capsule/{id}', name: 'profile_add_capsule', methods: ['POST'])]
+  #[Route('/add_capsule/{id}', name: 'profile_add_capsule', methods: ['POST'])]
   #[Security("is_granted('ROLE_USER') and user === current_user")]
   public function addCapsule(User $current_user, Request $request, CapsuleRepository $capsuleRepository): Response
   {
