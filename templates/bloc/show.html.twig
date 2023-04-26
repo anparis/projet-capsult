@@ -4,39 +4,38 @@
 
 {% block body %}
   <a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">back to list</a>
-  <br><br>
-  {% if bloc.capsule %}
-	  <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAtFormatted}}</p>
-  {% else %}
-    <p>Bloc orphelin</p>
-  {% endif %}
-  
-  <div class="bloc-display">
-    {% if bloc.type is same as ('Texte') %}
-      <p>{{bloc.content}}</p>
-    {% elseif bloc.type is same as ('Image') %}
-      <img src="{{ asset('/uploads/'~bloc.image.nomFichier)}}" alt="" loading="lazy">        
-    {% endif %}
-    
-    {{ include('bloc/_link.html.twig') }}
+<div class="bloc-detail-view">
+  <div class="split-pane">
+    <div class="left-pane">
+      {% if bloc.type is same as ('Texte') %}
+        <p>{{bloc.content}}</p>
+      {% elseif bloc.type is same as ('Image') %}
+        <img src="{{ asset('/uploads/'~bloc.image.nomFichier)}}" alt="" loading="lazy">        
+      {% endif %}
 
+      {{ include('bloc/_link.html.twig') }}
+    </div>
+    
+    <div class="right-pane">
     <p class="bloc-title" >
       {{bloc.title ? bloc.title : '--'}}
     </p>
 
     {% if bloc.description %}
       <strong>Description</strong>
-      <p>{{bloc.description}}</p>
+       <p class="bloc-description" >
+      {{bloc.description ? bloc.description : '--'}}
+    </p>
     {% endif %}
+
+    {% if bloc.capsule %}
+      <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAtFormatted}}</p>
+      {% else %}
+        <p>Bloc orphelin</p>
+      {% endif %}
   
-
-  {% if app.user is same as (capsule.user) %}
-    {{include('bloc/_delete_form.html.twig')}}
-  {% endif %}
-
-  </div>
-
-  <hr>
     {{ include('bloc/_connection_list.html.twig') }}
-
+    </div>
+  </div>
+  </div>
 {% endblock %}

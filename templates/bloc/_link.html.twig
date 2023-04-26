@@ -1,5 +1,6 @@
 {% if bloc.type is same as ('Lien') %}
-      <a href="{{bloc.lien.url}}" target="_blank">{{bloc.lien.url}}</a>
-      <br>
-      {{ bloc.lien.html | raw }}
-  {% endif %}
+  <div class="link-bloc">
+	<a href="{{bloc.lien.url}}" target="_blank">{{bloc.lien.url}}</a>
+	{{ bloc.lien.html | raw }}
+  </div>
+{% endif %}

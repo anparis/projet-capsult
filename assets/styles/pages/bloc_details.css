@@ -1,5 +1,19 @@
 /* EDIT AND SHOW BLOCS */
 
+/* BLOC DETAIL WRAPPER */
+.bloc-detail-view{
+  background-color: var(--btn-color);
+  border-radius: 5px;
+  height: fit-content;
+  margin: 0 3px;
+  padding: 10px 3px;
+}
+
+
+/* LIST OF CONNECTION */
+.connection-list{
+  width: 90%;
+}
 
 /* FORM with textarea edit */
 .form-inner-access{
@@ -50,23 +64,18 @@
   justify-content: center;
 }
 
-.bloc-display{
+.link-bloc{
   display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
+  flex-direction: column;
+  width: 100%;
 }
 
-.bloc-display img{
-  margin-bottom: 10px;
-}
 
 
 /* RIGHT PANE */
 .right-pane{
   flex: 1 1 10em;
-  margin-left: 20px;
+  margin-left: 3vw;
 }
 
 

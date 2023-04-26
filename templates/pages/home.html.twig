@@ -2,7 +2,11 @@
 
 {% block title %}Page d'accueil du site Capsult
 {% endblock %}
+
 {% block body %}
+{{ include('partials/_nav.html.twig') }}
+
   <h1>Bienvenue sur Capsult</h1>
+		{{ include('partials/_footer.html.twig') }}
 
 {% endblock %}

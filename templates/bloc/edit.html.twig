@@ -4,28 +4,24 @@
 {% endblock %}
 
 {% block body %}
-	    <a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">Retour à la Capsule</a>
+	<a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">Retour à la Capsule</a>
+ <div class="bloc-detail-view">
 
   {% if not bloc.content %}
   <div class="split-pane">
-  <div class="left-pane">
-      <div class="bloc-display">
-  {% endif %}
-
+    <div class="left-pane">
+      {{ include('bloc/_link.html.twig') }}
       {% if bloc.type is same as ('Image') %}
           <img src="{{ asset('/uploads/'~bloc.image.nomFichier)}}" alt="" loading="lazy">
       {% endif %}
-      {{ include('bloc/_link.html.twig') }}
-  {% if not bloc.content %}
-      </div>
     </div>
   {% endif %}
+  
     {% if not bloc.content %}
     <div class="right-pane">
     {% endif %}
       {{ include('bloc/_form.html.twig') }}
-  {% if not bloc.content %}
-
+    {% if not bloc.content %}
        {% if bloc.capsule %}
       <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAtFormatted}}</p>
       {% else %}
@@ -35,5 +31,5 @@
     </div>
   </div>
   {% endif %}
-
+</div>
 {% endblock %}

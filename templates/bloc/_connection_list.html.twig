@@ -1,5 +1,7 @@
 <div class="connection-list">
-  <p>apparaît dans {{bloc.connections | length }} capsules : </p>
+  <br>
+  <p>Apparaît dans {{bloc.connections | length }} capsules : </p>
+  <hr>
 	{% for connection in bloc.connections %}
     <p> 
       <a href="{{path('capsule_index', {'slug_user': connection.capsule.user.slug, 'slug_capsule': connection.capsule.slug})}}">
