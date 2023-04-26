@@ -26,11 +26,8 @@
 		{% endif %}
 		{{ include('partials/_flash.html.twig') }}
 
-		{{ include('partials/_nav.html.twig') }}
 		{% block body %}{% endblock %}
 		<br>
-
-		{{ include('partials/_footer.html.twig') }}
 
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}

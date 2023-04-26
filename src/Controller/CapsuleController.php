@@ -25,18 +25,23 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class CapsuleController extends AbstractController
 {
-  // #[Route('/{slug_user}/{slug_capsule}', name: 'capsule_index', methods: ['GET'])]
-  public function index(string $slug_user, string $slug_capsule, EntityManagerInterface $entityManager, CapsuleRepository $capsuleRepository): Response
+  #[Route('/{slug_user}/{slug_capsule}', name: 'capsule_index', methods: ['GET'])]
+  #[ParamConverter('user', options: ['mapping' => ['slug_user' => 'slug']])]
+  #[ParamConverter('capsule', options: ['mapping' => ['slug_capsule' => 'slug']])]
+  public function index(User $user, Capsule $capsule, CapsuleRepository $capsuleRepository): Response
   {
-    $capsule = $entityManager->getRepository(Capsule::class)->findOneBy(['slug' => $slug_capsule]);
-    $user = $entityManager->getRepository(User::class)->findOneBy(['slug' => $slug_user]);
-    //check whether or not capsule possessed blocs
+    // Check wether capsule user match user or user match a collaborator in capsule collaborator
+    if ($capsule->getUser() !== $user and !$capsule->getCollaborators()->contains($user)) {
+      throw new NotFoundHttpException('Capsule not found');
+    }
+    // Check whether or not capsule possessed blocs
     $connectedBlocCol = $capsule->getConnections()->isEmpty();
-    
+
     if ($connectedBlocCol) {
       return $this->render('capsule/index.html.twig', [
         'capsule' => $capsule,

@@ -21,7 +21,7 @@ class ProfileController extends AbstractController
   #[Route('/{slug}', name: 'profile_index')]
   public function index(User $user = null, EntityManagerInterface $entityManager): Response
   {
-    if ($user == null) {
+    if (!$user) {
       return $this->redirectToRoute('app_home');
     }
     $capsules = $entityManager->getRepository(Capsule::class)->findBy(['user' => $user->getId()], ['updated_at' => 'DESC']);

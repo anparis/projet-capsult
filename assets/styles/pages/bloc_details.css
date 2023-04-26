@@ -1,0 +1,72 @@
+/* EDIT AND SHOW BLOCS */
+
+
+/* FORM with textarea edit */
+.form-inner-access{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.form-inner-access > div:first-child{
+  flex-wrap: wrap;
+  display: flex;
+  flex: 1 1 23em;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+}
+
+.bloc-edit-textarea{
+  min-height: 200px;
+  height: 100%;
+  margin: 0 10px;
+}
+
+.margin{
+  flex: 1 1 10em;
+}
+
+
+/* FORM EDIT without textarea edit */
+.split-pane{
+  display: flex;
+  flex-flow: row wrap;
+  margin-top: 20px;
+}
+
+/* LEFT PANE */
+.left-pane{
+  flex-wrap: wrap;
+  display: flex;
+  width: 100%;
+  height: auto;
+  flex: 1 1 23em;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+}
+
+.bloc-display{
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+}
+
+.bloc-display img{
+  margin-bottom: 10px;
+}
+
+
+/* RIGHT PANE */
+.right-pane{
+  flex: 1 1 10em;
+  margin-left: 20px;
+}
+
+

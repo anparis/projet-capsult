@@ -27,7 +27,7 @@ class BlocType extends AbstractType
       ])
       ->add('submit', SubmitType::class, [
         'attr' => ['class' => 'btn'],
-        'label' => 'Ajouter'
+        'label' => 'Sauvegarder l\'édition'
       ]);
     $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
       $bloc = $event->getData();
@@ -35,7 +35,6 @@ class BlocType extends AbstractType
       // checks if the Bloc content is null
       // If no data is passed to the form, the data is "null".
       if ($bloc->getContent()) {
-
         $form->add('content', TextareaType::class, [
           'label' => false
         ]);
