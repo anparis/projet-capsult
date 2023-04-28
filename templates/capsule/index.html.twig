@@ -9,7 +9,7 @@
 {% block title %}Capsule index{% endblock %}
 
 {% block body %}
-  <div class="brsd m-a">
+  <div class="br-r5 m-a">
     {% if app.user is same as (user) %}
       <a href="{{path('capsule_edit',{'id':capsule.id})}}">/{{capsule.title}}</a>
     {% else %}
@@ -49,7 +49,7 @@
 						<form id="ab-form" action="{{path('capsule_add_bloc', {'id':capsule.id})}}" method="POST" enctype="multipart/form-data">
 							<div class="ab-text">
 								Collez un lien URL, écrivez directement du texte ou choisissez une image
-								<input class="fss" type="file" name="image">
+								<input class="font-s" type="file" name="image">
 							</div>
 							<textarea class="ab-textarea" name="txt_input" class="addBlock-textarea"></textarea>
 							<input type="hidden" name="token" value="{{ csrf_token('add-bloc') }}"/>
@@ -84,14 +84,16 @@
 							  </div>
 								{% elseif bloc['bloc'].type is same as ("Image") %}
 							  <div class="bloc-img">
-									<img src="{{ asset('/uploads/'~bloc['bloc'].image.nomFichier) | imagine_filter('my_thumb') }}" alt="#" loading="lazy">
+									<img src="{{ uploaded_asset(bloc['bloc'].image.nomFichier) | imagine_filter('my_thumb') }}" alt="{{ bloc['bloc'].title ? loc['bloc'].title : 'uploaded image'}}" loading="lazy">
 							  </div>
 								{% else %}
 							  <div class="bloc-link">
                   {% if bloc['bloc'].lien.thumb %}
                     <img class="link-thumb" src="{{ bloc['bloc'].lien.thumb }}" alt="link thumb" loading="lazy">
+                  {% elseif bloc['bloc'].lien.url matches "/\.(jpg|jpeg|gif|png|tiff|bmp)$/" %}
+                    <img src="{{bloc['bloc'].lien.url}}" alt="">
                   {% else %}
-                  <img src="{{bloc['bloc'].lien.url}}" alt="">
+                      <p>{{bloc['bloc'].lien.url}}</p>
                   {% endif %}
 							  </div>
 								{% endif %}
@@ -116,7 +118,6 @@
 					</div>
 				{% endfor %}
         {% endif %}
-
 			</div>
 		</div>
 	</main>

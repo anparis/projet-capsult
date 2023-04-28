@@ -120,13 +120,16 @@ button.inline-btn {
 }
 
 #ab-form {
-  box-sizing: border-box;
   position: relative;
   -webkit-box-align: center;
   align-items: center;
   -webkit-box-pack: center;
   justify-content: center;
   text-align: center;
+}
+
+#ab-form .ab-textarea{
+  height: 100px;
 }
 
 /*  */

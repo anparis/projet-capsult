@@ -10,7 +10,7 @@
       {% if bloc.type is same as ('Texte') %}
         <p>{{bloc.content}}</p>
       {% elseif bloc.type is same as ('Image') %}
-        <img src="{{ asset('/uploads/'~bloc.image.nomFichier)}}" alt="" loading="lazy">        
+        <img src="{{ asset( uploaded_asset(bloc.image.nomFichier) )}}" alt="" loading="lazy">        
       {% endif %}
 
       {{ include('bloc/_link.html.twig') }}

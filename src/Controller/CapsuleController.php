@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,6 +31,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class CapsuleController extends AbstractController
 {
+  
   #[Route('/{slug_user}/{slug_capsule}', name: 'capsule_index', methods: ['GET'])]
   #[ParamConverter('user', options: ['mapping' => ['slug_user' => 'slug']])]
   #[ParamConverter('capsule', options: ['mapping' => ['slug_capsule' => 'slug']])]

@@ -11,6 +11,7 @@ use App\Form\BlocType;
 use App\Entity\Capsule;
 use App\Entity\Connection;
 use App\Service\Validation;
+use App\Service\EmbedService;
 use App\Service\FileUploader;
 use App\Repository\BlocRepository;
 use App\Repository\LienRepository;
@@ -19,33 +20,21 @@ use App\Repository\ConnectionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 #[Route('/bloc')]
 class BlocController extends AbstractController
 {
-  #[Route('/', name: 'app_bloc_index')]
-  public function blocIndex(BlocRepository $bl): Response
-  {
-    return $this->render('bloc/index.html.twig', [
-      'blocs' => $bl->findAll()
-    ]);
-  }
-
-  #[Route('/{id}', name: 'app_bloc_show', methods: ['GET'])]
-  public function show(Bloc $bloc): Response
-  {
-    return $this->render('bloc/show.html.twig', [
-      'bloc' => $bloc,
-    ]);
-  }
-
   #[Route('/add_bloc/{id}', name: 'capsule_add_bloc',  methods: ['GET', 'POST'])]
-  #[Security("is_granted('ROLE_USER') and (user === capsule.getUser() or capsule.isUserCollaborator(user))")]
-  public function addBloc(Capsule $capsule, Request $request, BlocRepository $br, ImageRepository $ir, LienRepository $lr, ConnectionRepository $cr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader): Response
+  #[Security("user === capsule.getUser() or capsule.isUserCollaborator(user)")]
+  #[IsGranted('ROLE_USER')]
+  public function addBloc(Capsule $capsule, Request $request, BlocRepository $br, ImageRepository $ir, LienRepository $lr, ConnectionRepository $cr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader, EmbedService $embedService): Response
   {
     $post = $request->request;
 
@@ -54,7 +43,7 @@ class BlocController extends AbstractController
     $imgFile = $request->files->get('image');
 
     //get csrf token generated on form
-    $submittedToken = $request->request->get('token');
+    $submittedToken = $post->get('token');
 
     if ($this->isCsrfTokenValid('add-bloc', $submittedToken) && $post->has('submit')) {
       $bloc = new Bloc();
@@ -75,7 +64,6 @@ class BlocController extends AbstractController
           return new Response(
             '<h1>not an Image</h1>'
           );
-          
         }
       } elseif ($textarea && !$imgFile) {
         //check if user input is url
@@ -86,15 +74,15 @@ class BlocController extends AbstractController
           $bloc->setType('Texte');
           $bloc->setContent($textarea);
           $br->save($bloc, true);
-        } elseif($valideUrl) {
+        } elseif ($valideUrl) {
           $bloc->setType('Lien');
           $link = new Lien();
           $link->setUrl($textarea);
-          $file = json_decode(file_get_contents("https://iframe.ly/api/oembed?url=$textarea&api_key=4e6fb13787561fe9d031a0"));
-          if(isset($file->thumbnail_url)){
+          $file = $embedService->fetchEmbedData($textarea);
+          if (isset($file->thumbnail_url)){
             $link->setThumb($file->thumbnail_url);
           }
-          if(isset($file->html)){
+          if(isset($file->html)) {
             $link->setHtml($file->html);
           }
           $link->setBloc($bloc);
@@ -102,12 +90,12 @@ class BlocController extends AbstractController
         }
       } else {
         return new Response(
-          'Erreur de formulaire'
+          'Le formulaire est invalide. Veuillez vérifier les informations saisies et réessayer.'
         );
       }
     } else {
       return new Response(
-        'Erreur de formulaire'
+        'Le formulaire est invalide. Veuillez vérifier les informations saisies et réessayer.'
       );
     }
 
@@ -132,7 +120,7 @@ class BlocController extends AbstractController
    * @param Capsule $capsule
    * @param BlocRepository $blocRepository
    * @return Response 
-  **/
+   **/
   #[Route('/{bloc_id}/{capsule_slug}/edit', name: 'app_bloc_edit', methods: ['GET', 'POST'])]
   #[ParamConverter('bloc', options: ['mapping' => ['bloc_id' => 'id']])]
   #[ParamConverter('capsule', options: ['mapping' => ['capsule_slug' => 'slug']])]
@@ -162,7 +150,7 @@ class BlocController extends AbstractController
    * @param Bloc $bloc
    * @param Capsule $capsule
    * @return Response 
-  **/
+   **/
   #[Route('/{bloc_id}/{capsule_slug}/show', name: 'app_bloc_show', methods: ['GET'])]
   #[ParamConverter('bloc', options: ['mapping' => ['bloc_id' => 'id']])]
   #[ParamConverter('capsule', options: ['mapping' => ['capsule_slug' => 'slug']])]
@@ -173,21 +161,26 @@ class BlocController extends AbstractController
       'capsule' => $capsule
     ]);
   }
-  
-  #[Route('/{id}', name: 'app_bloc_delete', methods: ['GET','POST'])]
-  #[Security("is_granted('ROLE_USER') and (user === bloc.getCapsule().getUser() or bloc.getCapsule().isUserCollaborator(user))")]
+
+  #[Route('/{id}', name: 'app_bloc_delete', methods: ['GET', 'POST'])]
+  #[Security("is_granted('ROLE_USER')")]
   public function delete(Request $request, Bloc $bloc, BlocRepository $blocRepository): Response
   {
-    if ($this->isCsrfTokenValid('delete' . $bloc->getId(), $request->request->get('_token'))) {
-      $blocRepository->remove($bloc, true);
-    }
+    if ($this->getUser() === $bloc->getCapsule() || $bloc->getCapsule()->isUserCollaborator($this->getUser())) {
 
-    return $this->redirectToRoute(
-      'capsule_index',
-      [
-        'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
-        'slug_capsule' => $bloc->getCapsule()->getSlug()
-      ]
-    );
+      if ($this->isCsrfTokenValid('delete' . $bloc->getId(), $request->request->get('_token'))) {
+        $blocRepository->remove($bloc, true);
+      }
+
+      return $this->redirectToRoute(
+        'capsule_index',
+        [
+          'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
+          'slug_capsule' => $bloc->getCapsule()->getSlug()
+        ]
+      );
+    } else {
+      throw new AccessDeniedHttpException('Accès non autorisé');
+    }
   }
 }

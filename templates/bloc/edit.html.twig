@@ -6,7 +6,6 @@
 {% block body %}
 	<a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">Retour à la Capsule</a>
  <div class="bloc-detail-view">
-
   {% if not bloc.content %}
   <div class="split-pane">
     <div class="left-pane">

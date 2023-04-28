@@ -5,17 +5,17 @@
 
 {% block body %}
 
-	<div class="example-wrapper">
+	<div class="profile-wrapper m-a">
 		<h1>
 			{{ user.username }}</h1>
-    {% if app.user is same as (user) %}
+    {% if app.user is same as user %}
 		<a href="{{path('profile_add_capsule', {'id':user.id})}}">+ Ajouter une capsule</a>
     {% endif %}
 		<hr>
-		<div class="capsule-list">
+		<div class="capsule-list flex-r">
 			{% for capsule in capsules %}
         {% if app.user is same as capsule.user or app.user in capsule.collaborators %}
-        <div class="capsule brsd {{capsule.collaboration ? "collab" : ""}}">
+        <div class="capsule br-r5 mg-5 pd-5 {{capsule.collaboration ? "collab" : ""}}">
 					<a href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
           <br>
           <span>{{(capsule.connections | length)}} blocs - 
@@ -26,7 +26,7 @@
 				</div>
         {% else %}
           {% if capsule.isopen %}
-            <div class="capsule brsd">
+            <div class="capsule br-r5 mg-5">
               <a href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
               <p>{{(capsule.connections | length)}} blocs - 
                 {{capsule.updatedAtFormatted}}

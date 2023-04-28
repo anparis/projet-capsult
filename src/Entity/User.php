@@ -27,12 +27,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   private ?int $id = null;
 
   #[ORM\Column(length: 180, unique: true)]
+  #[Assert\NotBlank(message: 'L\'email ne peut pas être vide.')]
+  #[Assert\Email(message: 'L\'email {{ value }} n\'est pas valide.')]
   private ?string $email = null;
 
-  #[ORM\Column(length: 50)]
+  #[ORM\Column(type: "string", length: 50)]
+  #[Assert\Length(min: 3, max:50, minMessage:"Le nom d'utilisateur doit faire au moins {{ limit }} caractères.", maxMessage:"Le nom d'utilisateur ne peut pas dépasser {{ limit }} caractères.")]
   private ?string $username = null;
 
-  #[ORM\Column]
+  #[ORM\Column(type: "json")]
   private array $roles = [];
 
   #[ORM\Column(length: 150, unique: true)]

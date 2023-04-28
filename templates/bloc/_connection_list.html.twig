@@ -1,12 +1,16 @@
-<div class="connection-list">
-  <br>
-  <p>Apparaît dans {{bloc.connections | length }} capsules : </p>
-  <hr>
-	{% for connection in bloc.connections %}
-    <p> 
-      <a href="{{path('capsule_index', {'slug_user': connection.capsule.user.slug, 'slug_capsule': connection.capsule.slug})}}">
-        {{ connection.capsule.title }} (par {{connection.capsule.user.username}})
-      </a>
-    </p>
-  {% endfor %}
+<div class="connection-list-wrapper">
+	<br>
+	<p>Apparaît dans
+		{{bloc.connections | length }}
+		capsules :
+	</p>
+	<hr>
+	<div class="connection-list">
+		{% for connection in bloc.connections %}
+			<a class="mg-5 pd-5 br-r5 flex-r gap-10" href="{{path('capsule_index', {'slug_user': connection.capsule.user.slug, 'slug_capsule': connection.capsule.slug})}}">
+				<span>{{ connection.capsule.title }}</span>
+			  <span>par {{connection.capsule.user.username}}</span>
+			</a>
+		{% endfor %}
+	</div>
 </div>

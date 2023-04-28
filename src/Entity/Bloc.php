@@ -24,11 +24,9 @@ class Bloc
   private ?int $id = null;
 
   #[ORM\Column(length: 100, nullable: true)]
-  #[Assert\Length(max: 100)]
   private ?string $title = null;
 
   #[ORM\Column(type: Types::TEXT, nullable: true)]
-  #[Assert\Length(max: 65535)]
   private ?string $description = null;
 
   #[ORM\Column(type: Types::TEXT, nullable: true)]

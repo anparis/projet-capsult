@@ -4,15 +4,18 @@
 .bloc-detail-view{
   background-color: var(--btn-color);
   border-radius: 5px;
-  height: fit-content;
+  height: 100%;
   margin: 0 3px;
   padding: 10px 3px;
 }
 
-
 /* LIST OF CONNECTION */
-.connection-list{
+.connection-list-wrapper{
   width: 90%;
+}
+.connection-list{
+  display: flex;
+  flex-direction: column;
 }
 
 /* FORM with textarea edit */
@@ -48,7 +51,6 @@
 .split-pane{
   display: flex;
   flex-flow: row wrap;
-  margin-top: 20px;
 }
 
 /* LEFT PANE */
@@ -56,10 +58,8 @@
   flex-wrap: wrap;
   display: flex;
   width: 100%;
-  height: auto;
+  height: fit-content;
   flex: 1 1 23em;
-  -webkit-box-align: center;
-  align-items: center;
   -webkit-box-pack: center;
   justify-content: center;
 }
