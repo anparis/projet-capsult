@@ -3,27 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Bloc;
-use App\Entity\Lien;
 use App\Entity\User;
-use App\Entity\Image;
-use SimpleXMLElement;
 use App\Entity\Capsule;
 use App\Form\CapsuleType;
-use App\Entity\Connection;
-use App\Service\Validation;
-use App\Service\FileUploader;
-use App\Repository\BlocRepository;
-use App\Repository\LienRepository;
-use App\Repository\ImageRepository;
 use App\Repository\CapsuleRepository;
 use App\Repository\ConnectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -35,12 +23,13 @@ class CapsuleController extends AbstractController
   #[Route('/{slug_user}/{slug_capsule}', name: 'capsule_index', methods: ['GET'])]
   #[ParamConverter('user', options: ['mapping' => ['slug_user' => 'slug']])]
   #[ParamConverter('capsule', options: ['mapping' => ['slug_capsule' => 'slug']])]
-  public function index(User $user, Capsule $capsule, CapsuleRepository $capsuleRepository): Response
+  public function index(User $user=null, Capsule $capsule=null, CapsuleRepository $capsuleRepository): Response
   {
     // Check wether capsule user match user or user match a collaborator in capsule collaborator
-    if ($capsule->getUser() !== $user and !$capsule->getCollaborators()->contains($user)) {
-      throw new NotFoundHttpException('Capsule not found');
+    if (!$user || !$capsule || ($capsule->getUser() !== $user and !$capsule->getCollaborators()->contains($user))) {
+      throw new NotFoundHttpException('Capsule non trouvée');
     }
+
     // Check whether or not capsule possessed blocs
     $connectedBlocCol = $capsule->getConnections()->isEmpty();
 
@@ -136,7 +125,7 @@ class CapsuleController extends AbstractController
     );
   }
 
-  #[Route('/add_capsule/{id}', name: 'add_capsule', methods: ['GET', 'POST'])]
+  #[Route('/add_capsule/{id}', name: 'add_capsule', methods: ['POST'])]
   #[Security("is_granted('ROLE_USER') and user === current_capsule.getUser()")]
   public function addCapsule(Capsule $current_capsule, Request $request, CapsuleRepository $capsuleRepository): Response
   {
@@ -147,7 +136,7 @@ class CapsuleController extends AbstractController
 
 
     if ($form->isSubmitted() && $form->isValid()) {
-      ($form->get('title')->getData() == 'open') ? $capsule->setOpen(1) : $capsule->setOpen(0);
+      ($form->get('status')->getData() === 'open') ? $capsule->setOpen(1) : $capsule->setOpen(0);
       $capsule->setUser($user);
 
       $capsuleRepository->save($capsule, true);
@@ -165,7 +154,7 @@ class CapsuleController extends AbstractController
     ]);
   }
 
-  // #[Route('/{slug}/{id}/delete-capsule', name: 'app_capsule_delete', methods: ['POST'])]
+  #[Route('/{slug}/{id}/delete-capsule', name: 'app_capsule_delete', methods: ['POST'])]
   #[Security("is_granted('ROLE_USER') and user === capsule.getUser()")]
   public function deleteCapsule(Request $request, string $slug, Capsule $capsule, CapsuleRepository $capsuleRepository, ConnectionRepository $connectionRepository): Response
   {

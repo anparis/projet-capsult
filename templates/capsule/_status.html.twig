@@ -1,12 +1,10 @@
 {% if app.user and app.user is same as capsule.user %}
   <a href="{{path('capsule_status', {'id':capsule.id})}}" data-action="status">
 {% endif %}
-    <svg class="{{ capsule.isopen ? 'hidden open' : 'sealed'}}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5S7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"/></svg>
-    <svg class="{{ capsule.isopen ? 'sealed' : 'hidden open'}}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17 8V7c0-2.757-2.243-5-5-5S7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2H9V7c0-1.654 1.346-3 3-3s3 1.346 3 3v1h2z"/></svg>
+    <svg class="lock {{ capsule.isopen ? 'hidden open' : 'sealed'}}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5S7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"/></svg>
+    <svg class="lock {{ capsule.isopen ? 'sealed' : 'hidden open'}}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17 8V7c0-2.757-2.243-5-5-5S7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2H9V7c0-1.654 1.346-3 3-3s3 1.346 3 3v1h2z"/></svg>
     <span class="status">{{ capsule.isopen ? 'statut > ouverte' : 'statut > scellée' }}</span>
-
-    <br>
-    <dialog class="privacy-picker" close> 
+    {# <dialog class="privacy-picker" close> 
       <section>
         <ul>
           <li>
@@ -29,8 +27,7 @@
           </li>
         </ul>
       </section>
-    </dialog>
-    <br>
+    </dialog> #}
 {% if app.user and app.user is same as capsule.user %}
   </a>
 {% endif %}

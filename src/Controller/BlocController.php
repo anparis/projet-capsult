@@ -16,6 +16,7 @@ use App\Service\FileUploader;
 use App\Repository\BlocRepository;
 use App\Repository\LienRepository;
 use App\Repository\ImageRepository;
+use Symfony\Component\Form\FormError;
 use App\Repository\ConnectionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,14 +25,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 #[Route('/bloc')]
 class BlocController extends AbstractController
 {
-  #[Route('/add_bloc/{id}', name: 'capsule_add_bloc',  methods: ['GET', 'POST'])]
+  #[Route('/add_bloc/{id}', name: 'capsule_add_bloc',  methods: ['POST'])]
   #[Security("user === capsule.getUser() or capsule.isUserCollaborator(user)")]
   #[IsGranted('ROLE_USER')]
   public function addBloc(Capsule $capsule, Request $request, BlocRepository $br, ImageRepository $ir, LienRepository $lr, ConnectionRepository $cr, Validation $validation, ValidatorInterface $validator, FileUploader $fileUploader, EmbedService $embedService): Response
@@ -61,15 +62,13 @@ class BlocController extends AbstractController
           $img->setBloc($bloc);
           $ir->save($img, true);
         } else {
-          return new Response(
-            '<h1>not an Image</h1>'
-          );
+          throw new BadRequestHttpException('Le fichier envoyé n\'est pas une image valide.');
         }
       } elseif ($textarea && !$imgFile) {
         //check if user input is url
         $valideUrl = $validation->validateUrl($textarea, $validator);
         $valideTxt = $validation->validateText($textarea, $validator);
-        // user can't submit textarea and upload file in the same time
+
         if ($valideTxt && !$valideUrl) {
           $bloc->setType('Texte');
           $bloc->setContent($textarea);
@@ -79,24 +78,32 @@ class BlocController extends AbstractController
           $link = new Lien();
           $link->setUrl($textarea);
           $file = $embedService->fetchEmbedData($textarea);
-          if (isset($file->thumbnail_url)){
+          if (isset($file->thumbnail_url)) {
             $link->setThumb($file->thumbnail_url);
           }
-          if(isset($file->html)) {
+          if (isset($file->html)) {
             $link->setHtml($file->html);
           }
           $link->setBloc($bloc);
           $lr->save($link, true);
+        }else{
+          throw new BadRequestHttpException('Les données soumises ne sont pas valides.');
         }
       } else {
-        return new Response(
-          'Le formulaire est invalide. Veuillez vérifier les informations saisies et réessayer.'
+        $this->addFlash(
+          'error',
+          'Le formulaire est invalide. Vous ne pouvez utiliser qu\'un seul champ dans ce formulaire.'
+        );
+        return $this->redirectToRoute(
+          'capsule_index',
+          [
+            'slug_user' => $bloc->getCapsule()->getUser()->getSlug(),
+            'slug_capsule' => $bloc->getCapsule()->getSlug()
+          ]
         );
       }
     } else {
-      return new Response(
-        'Le formulaire est invalide. Veuillez vérifier les informations saisies et réessayer.'
-      );
+      throw new BadRequestHttpException('Token CSRF non valide ou soumission du formulaire non détectée.');
     }
 
     // I finally set a new connection between bloc and capsule

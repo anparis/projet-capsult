@@ -2,6 +2,10 @@
   padding: 10px 20px;
 }
 
+.capsule{
+  justify-content: space-evenly;
+}
+
 @media (min-width: 1300px){
   .profile-wrapper{
     max-width: 1260px;

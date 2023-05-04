@@ -1,6 +1,5 @@
 {% if app.user %}
-
-<button class="" data-action="likes">likes</button>
+  <div class="like-wrapper">
     <ul class="listOfLikes">
     {% for capsuleLiked  in app.user.capsulesLiked %}
       <li>
@@ -8,4 +7,6 @@
       </li>
     {% endfor %}
     </ul>
+  <button class="favorite l-btn br-black control-color" data-action="likes">favoris</button>
+    </div>
 {% endif %}

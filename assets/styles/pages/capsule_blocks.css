@@ -1,6 +1,117 @@
+main {
+  position: relative;
+}
+
 /*  */
-/* CAPSULE */
+/* TOP BAR */
 /*  */
+.site-logo {
+  width: 40px;
+  margin: 10px;
+}
+
+.top-bar {
+  margin: auto;
+}
+
+.controls-wrapper {
+  /* margin: 15px 10px 10px 18%; */
+}
+
+/*  */
+/* EXPLORE */
+/*  */
+.explore-control{
+  position: relative;
+}
+
+.explore-wrapper {
+  z-index: 99;
+  position: absolute;
+  right: 5%;
+  top: calc(100% - 8px);
+  width: 300px;
+  border: 1px solid var(--primary-border);
+}
+
+a.explorable{
+  background-color: var(--light-color);
+  gap: 30px;
+}
+
+.explorable-status{
+  width: 80%;
+}
+
+.listExplore{
+  background-color: var(--light-color);
+  margin-top: 30px;
+}
+
+.listExplore > li:hover,
+a.explorable:hover{
+  background-color: var(--gray-1);
+  box-shadow: var(--hover-shadow);
+}
+
+
+/*  */
+/* USER */
+/*  */
+.user {
+  padding: 4px;
+  background-color: var(--user-avatar);
+  color: dark;
+  position: relative;
+  order: -1;
+}
+
+/*  */
+/* LIKE */
+/*  */
+.like-wrapper {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  margin: 0 0 20px 20px;
+}
+
+.listOfLikes {
+  display: none;
+}
+
+/*  */
+/* STATUS */
+/*  */
+.status{
+  display: none;
+}
+
+/*  */
+/* DETAILS */
+/*  */
+svg.rotate{
+  transform: rotate(180deg);
+}
+
+/*  */
+/* MIDDLE DETAILS */
+/*  */
+.btn-details{
+  display: block;
+  margin: 20px auto;
+}
+
+.description {
+  max-width: 600px;
+}
+
+/*  */
+/* NAV BTN */
+/*  */
+.nav-btn{
+  margin: 20px 10px;
+}
 
 /*  */
 /* BLOC */
@@ -17,9 +128,12 @@
 }
 
 .bloc-item {
-  /* width: 315px; */
   position: relative;
-  margin: 0px 10px 40px;
+  margin: 0px 10px 35px;
+}
+
+.bloc-connection-wrapper {
+  background-color: var(--bloc-color);
 }
 
 a.connection-container {
@@ -28,7 +142,8 @@ a.connection-container {
   text-decoration: none;
   user-select: none;
   width: 315px;
-  height: fit-content;
+  height: 100%;
+  border-bottom: 1px solid var(--gray-2);
 }
 
 /* BLOC TYPE  */
@@ -49,12 +164,11 @@ a.connection-container {
 
 /* BLOC TEXTE */
 .bloc-txt {
-  background-color: var(--bloc-color);
   padding-top: 0.65em;
   padding-left: 0.75em;
   padding-right: 0.75em;
   width: 100%;
-  height: 310px;
+  height: 315px;
   overflow: hidden;
   text-align: left;
   border-radius: 5px;
@@ -62,11 +176,11 @@ a.connection-container {
 
 /* BLOC LINK */
 
-.link-wrapper{
-  height: fit-content;
+.link-wrapper {
   border-radius: 5px;
-  border: 1px solid black;
-  background-color: var(--bloc-color);
+  height: 315px;
+  display: flex;
+  flex-direction: column;
 }
 
 .bloc-link {
@@ -82,7 +196,8 @@ a.connection-container {
 
 .bloc-link img {
   max-width: 315px;
-  max-height: 285.88px;
+  max-height: 275.88px;
+  padding: 4px;
 }
 
 /* BLOC LINK ARROW*/
@@ -97,17 +212,23 @@ a.connection-container {
   -ms-flex-pack: justify;
 }
 
+a.url-wrap {
+  padding: 10px 10px 0 0;
+}
+
 button.inline-btn {
   position: relative;
-  height: 17px;
+  height: 29px;
   vertical-align: top;
-  width: 20px;
+  width: 36px;
+  background-color: var(--gray-1);
 }
 
 .arrow-icon {
   position: absolute;
-  left: 5px;
-  top: 3.5px;
+  left: 8px;
+  top: 5px;
+  width: 20px;
 }
 
 /* BLOC AJOUT */
@@ -128,7 +249,7 @@ button.inline-btn {
   text-align: center;
 }
 
-#ab-form .ab-textarea{
+#ab-form .ab-textarea {
   height: 100px;
 }
 
@@ -136,12 +257,36 @@ button.inline-btn {
 /* MEDIA QUERIES */
 /*  */
 
+@media (min-width: 450px){
+  a.add-btn{
+    order: inherit;
+  }
+  
+  div.user{
+    order: inherit;
+  }
+}
 
-/* @container (min-width: 312px){
+@media (min-width: 600px){
+  div.explore-control{
+    display: flex;
+  }
+}
 
-} */
+@media (min-width: 800px){
+  div.controls-wrapper{
+    margin: 15px 10px 10px 18%;
+  }
+}
+
+@media (min-width: 1700px) {
+  .top-bar {
+    max-width: 1650px;
+  }
+}
+
 @media (min-width: 1800px) {
   body {
     max-width: 1760px;
   }
-} 
+}

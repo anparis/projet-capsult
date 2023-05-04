@@ -4,7 +4,6 @@
 {% endblock %}
 
 {% block body %}
-
 	<div class="profile-wrapper m-a">
 		<h1>
 			{{ user.username }}</h1>
@@ -15,8 +14,10 @@
 		<div class="capsule-list flex-r">
 			{% for capsule in capsules %}
         {% if app.user is same as capsule.user or app.user in capsule.collaborators %}
-        <div class="capsule br-r5 mg-5 pd-5 {{capsule.collaboration ? "collab" : ""}}">
+        <div class="capsule br-r5 mg-5 pd-5 br-black {{capsule.collaboration ? "collab" : ""}}">
 					<a href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
+          {{ include ('capsule/_status.html.twig')}}
+
           <br>
           <span>{{(capsule.connections | length)}} blocs - 
             {{capsule.updatedAtFormatted}}
@@ -26,7 +27,7 @@
 				</div>
         {% else %}
           {% if capsule.isopen %}
-            <div class="capsule br-r5 mg-5">
+            <div class="capsule br-r5 mg-5 pd-5 br-black">
               <a href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
               <p>{{(capsule.connections | length)}} blocs - 
                 {{capsule.updatedAtFormatted}}

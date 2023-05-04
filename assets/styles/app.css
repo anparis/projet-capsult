@@ -3,11 +3,21 @@
 @import url(pages/profile.css);
 
 :root {
-  --bloc-color: #d4d4d4;
+  --bloc-color: #F1F1F1;
+  --gray-1: #E1E1E1;
+  --gray-2: #D9D9D9;
+  --light-color: #ffffff;
   --dark-color: hsl(0, 0%, 13%);
   --add-color: hsl(105, 72%, 77%);
-  --btn-color: #e1e1e1;
+  --info-color: #AFB7FA;
+  --like-color: #C64B47;
   --danger-color: #C9403C;
+  --user-avatar: #ff8080;
+  --registration-color: #FFC0C0;
+  --demarcation-color: #1D7484;
+  --primary-border: rgba(255,255,255,0.3);
+  --heavy-shadow: rgba(0,0,0,0.25);
+  --hover-shadow: 3px 3px 0 var(--heavy-shadow);
 }
 
 * {
@@ -22,8 +32,40 @@
   font-size: small;
 }
 
+.font-l {
+  font-size:large;
+}
+
 .br {
-  border: 1px solid var(--bloc-color);
+  border: 1px solid var(--dark-color);
+}
+
+.width-fc{
+  width: fit-content;
+}
+
+.width-100{
+  width: 100%;
+}
+
+.height-fc{
+  height: fit-content;
+}
+
+.br-r5 {
+  border-radius: 5px;
+}
+
+.br-round {
+  border-radius: 50px;
+}
+
+.inherit{
+  display: inherit;
+}
+
+.bg-gray2{
+  background-color: var(--gray-2);
 }
 
 /* FLEX */
@@ -37,8 +79,29 @@
   flex-direction: column;
 }
 
+.flex-center{
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-ac{
+  align-items: center;
+}
+
 .flex-jc{
   justify-content: center;
+}
+
+.afs {
+  align-self: flex-start;
+}
+
+.jc-sb{
+  justify-content: space-between;
+}
+
+.f-2{
+  flex: 2;
 }
 
 
@@ -51,14 +114,12 @@
   padding: 5px;
 }
 
-.mg-5{
-  margin: 5px;
+.pd-10{
+  padding: 5px;
 }
 
-.br-r5 {
-  border: 1px solid var(--dark-color);
-  border-radius: 5px;
-  width: fit-content;
+.mg-5{
+  margin: 5px;
 }
 
 .m-a {
@@ -69,18 +130,32 @@
   display: none;
 }
 
-.afs {
-  align-self: flex-start;
-}
 
 /*  */
 /* BUTTON */
 /*  */
+
+.l-btn{
+  padding: 5px 30px;
+}
+
 .add-btn {
   background-color: var(--add-color);
+  white-space: nowrap;
+  order: -2;
 }
 
 .d-btn{
   background-color: var(--danger-color);
 }
 
+.br-black{
+  border: 1px solid var(--dark-color);
+}
+
+/*  */
+/* CONTROLS */
+/*  */
+.control-color{
+  background-color: var(--gray-2);
+}

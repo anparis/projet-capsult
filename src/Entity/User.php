@@ -32,7 +32,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   private ?string $email = null;
 
   #[ORM\Column(type: "string", length: 50)]
-  #[Assert\Length(min: 3, max:50, minMessage:"Le nom d'utilisateur doit faire au moins {{ limit }} caractères.", maxMessage:"Le nom d'utilisateur ne peut pas dépasser {{ limit }} caractères.")]
+  #[Assert\Length(min: 3, max: 50, minMessage: "Le nom d'utilisateur doit faire au moins {{ limit }} caractères.", maxMessage: "Le nom d'utilisateur ne peut pas dépasser {{ limit }} caractères.")]
   private ?string $username = null;
 
   #[ORM\Column(type: "json")]
@@ -57,7 +57,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
   #[ORM\ManyToMany(targetEntity: Capsule::class, mappedBy: 'collaborators')]
   private Collection $capsules_collabs;
-  
+
   #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bloc::class)]
   private Collection $blocs;
 
@@ -98,6 +98,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     return $this;
   }
+
+  //Function that return the first 2 intials of username
+  public function getInitials()
+  {
+    $initials = '';
+    $words = explode(' ', $this->username);
+    if (count($words) >= 2) {
+      foreach ($words as $word) {
+        $initials .= strtoupper($word[0]);
+        if (strlen($initials) == 2) {
+          break;
+        }
+      }
+    }else{
+      $initials = strtoupper(substr($this->username, 0, 2));
+    }
+
+    return $initials;
+  }
+
   /**
    * A visual identifier that represents this user.
    *

@@ -25,8 +25,9 @@ services:
     App\Service\FileUploader:
         arguments:
             $targetDirectory: '%uploads_directory%'
+
     App\Service\EmbedService:
         arguments:
-            $apiKey: '%env(4e6fb13787561fe9d031a0)%'
+            $apiKey: '%env(API_KEY)%'
       
     Symfony\Component\Asset\Context\RequestStackContext: '@assets.context'

@@ -1,8 +1,13 @@
 {% if app.user %}
-    <ul class="listExplore">
+    <ul class="listExplore br-r5 pd-5">
     {% for key, capsule in explorable_capsules %}
-      <li>
-        <a href="#">{{ capsule.slug }}</a>
+      <li class="pd-10">
+        <a class="gap-10 flex-r flex-ac" href="{{ path('capsule_index', {'slug_user': capsule.user.slug, 'slug_capsule': capsule.slug}) }}">
+          <div class="user br-round width-fc">
+               <span>{{ capsule.user.initials }}</span>
+          </div>
+          {{ capsule.slug }}
+        </a>
       </li>
     {% endfor %}
     </ul>

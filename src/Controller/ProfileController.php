@@ -49,7 +49,8 @@ class ProfileController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      ($form->get('title')->getData() == 'open') ? $capsule->setOpen(1) : $capsule->setOpen(0);
+      ($form->get('status')->getData() == 'open') ? $capsule->setOpen(1) : $capsule->setOpen(0);
+
       $capsule->setUser($current_user);
 
       $capsuleRepository->save($capsule, true);
