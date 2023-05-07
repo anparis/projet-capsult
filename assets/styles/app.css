@@ -5,6 +5,7 @@
 @import url(pages/footer.css);
 @import url(pages/home.css);
 @import url(pages/form.css);
+@import url(pages/explorable_capsules.css);
 
 :root {
   --bloc-color: #F1F1F1;
@@ -12,7 +13,7 @@
   --gray-2: #D9D9D9;
   --light-color: #ffffff;
   --dark-color: #4f3416;
-  --light-brown: #e3d5c5;
+  --light-brown: #f8ede1;
   --add-color: hsl(105, 72%, 77%);
   --info-color: #AFB7FA;
   --like-color: #C64B47;
@@ -24,6 +25,8 @@
   --heavy-shadow: rgba(0,0,0,0.25);
   --hover-shadow: 3px 3px 0 var(--heavy-shadow);
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro&display=swap');
 
 * {
   box-sizing: border-box;
@@ -61,6 +64,10 @@
   border-radius: 5px;
 }
 
+.br-r10 {
+  border-radius: 10px;
+}
+
 .br-round {
   border-radius: 50px;
 }
@@ -77,7 +84,15 @@
   text-align: center;
 }
 
+/* Inline block */
+.d-ib{
+  display: inline-block;
+}
+
 /* FLEX */
+.flex{
+  display: flex;
+}
 .flex-r{
   display: flex;
   flex-flow: row wrap;
@@ -124,7 +139,7 @@
 }
 
 .pd-10{
-  padding: 5px;
+  padding: 10px;
 }
 
 .mg-5{
@@ -168,3 +183,4 @@
 .control-color{
   background-color: var(--gray-2);
 }
+

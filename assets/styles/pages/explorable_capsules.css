@@ -1,0 +1,24 @@
+main#explorable-index{
+  max-width: 800px;
+  margin: auto;
+}
+
+.open-capsules-list{
+  margin: 5% 0;
+}
+
+.explore-pagination{
+  margin: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+}
+
+.pagination > *{
+  padding: 5px;
+}
+
+.current{
+  font-weight: 600;
+} 

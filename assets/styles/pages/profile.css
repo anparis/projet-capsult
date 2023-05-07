@@ -4,7 +4,7 @@
 
 .capsule-list{
   gap: 10%;
-  margin: 5% 0;
+  margin: 10px 0;
 }
 
 .capsule-list h2{
@@ -14,11 +14,12 @@
 
 .capsule{
   background-color: var(--light-brown);
+  padding: 20px;
 }
 
 .capsule-title{
   font-size: 1.6em;
-  padding-right: 10px;
+  /* padding-right: 10px; */
 }
 
 .capsule-group{

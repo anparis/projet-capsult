@@ -5,17 +5,8 @@ main {
 /*  */
 /* TOP BAR */
 /*  */
-.site-logo {
-  width: 40px;
-  margin: 10px;
-}
-
 .top-bar {
   margin: auto;
-}
-
-.controls-wrapper {
-  /* margin: 15px 10px 10px 18%; */
 }
 
 /*  */
@@ -28,7 +19,6 @@ main {
 .explore-wrapper {
   z-index: 99;
   position: absolute;
-  right: 5%;
   top: calc(100% - 8px);
   width: 300px;
   border: 1px solid var(--primary-border);
@@ -98,7 +88,7 @@ svg.rotate{
 /* MIDDLE DETAILS */
 /*  */
 .btn-details{
-  display: block;
+  display: none;
   margin: 20px auto;
 }
 
@@ -275,7 +265,7 @@ button.inline-btn {
 
 @media (min-width: 800px){
   div.controls-wrapper{
-    margin: 15px 10px 10px 18%;
+    margin: 15px 10px 10px 10px;
   }
 }
 

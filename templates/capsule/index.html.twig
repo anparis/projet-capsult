@@ -10,47 +10,42 @@
 
 {% block body %}
   <section class="top-bar flex-r">
-  <a href="{{path('app_home')}}">
-    <img class="site-logo" src="{{asset('/logos/site-logo.svg')}}" alt="Logo du site, logo style pixel représentant une capsule avec un livre à l'intérieur">
-    </a>
     <div class="controls-wrapper flex-r jc-sb f-2 flex-center">
-    <div class="explore-control hidden">
+      <div class="explore-control hidden">
         <button class="explore-btn br l-btn control-color" data-action="explore">explorer</button>
         {{ include ('capsule/_explore.html.twig')}}
-    </div>
-      <div class="capsule inherit control-color">
-        {% if app.user is same as (user) %}
-        <a class="br-r5 br l-btn height-fc" href="{{path('capsule_edit',{'id':capsule.id})}}">
+      </div>
+      <div class="inherit control-color">
+          {% if app.user is same as (user) %}
+          <a class="title br-r5 br l-btn height-fc" href="{{path('capsule_edit',{'id':capsule.id})}}">
+              /{{capsule.title}}
+          </a>
+          {% else %}
+          <a class="br-r5 br l-btn height-fc" href="{{path('capsule_show',{'id':capsule.id})}}">
             /{{capsule.title}}
-        </a>
-        {% else %}
-        <a class="br-r5 br l-btn height-fc" href="{{path('capsule_show',{'id':capsule.id})}}">
-          /{{capsule.title}}
+          </a>
+          {% endif %}
+        </div>
+        {% if app.user is same as (user) %}
+        <a class="add-btn l-btn br-black br-r5 height-fc" href="{{path('add_capsule', {'id':capsule.id})}}">
+          <div class="plus-sign">
+          </div>
+            + Nouvelle capsule
         </a>
         {% endif %}
-    
+        {# <div class="user br-round height-fc">
+        <span>{{ user.initials }}</span>
+        </div> #}
       </div>
-
-      {% if app.user is same as (user) %}
-      <a class="add-btn l-btn br-black br-r5 height-fc" href="{{path('add_capsule', {'id':capsule.id})}}">
-        <div class="plus-sign">
-        </div>
-          + Nouvelle capsule
-      </a>
-      {% endif %}
-    <div class="user br-round height-fc">
-     <span>{{ user.initials }}</span>
-    </div>
-    </div>
     </section>
 
     <button class="btn-details l-btn br-black br-r5 ">
       Détails
-    <svg class="rotate" width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12.9993 1L7 10.0921L1.00075 1L12.9993 1Z" fill="#D9D9D9" stroke="black"/>
-    </svg>
+      <svg class="rotate" width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12.9993 1L7 10.0921L1.00075 1L12.9993 1Z" fill="#D9D9D9" stroke="black"/>
+      </svg>
     </button>
-    <section class="middle-info hidden flex-c flex-center">
+    <section class="middle-info flex-c flex-center">
       <div class="middle-info-top flex-r flex-center gap-10">
       {% if capsule.connections %}
       {{ include ('capsule/_status.html.twig')}}
@@ -71,11 +66,6 @@
     <a class="l-btn br-black br-r5" href="{{path('profile_index',{'slug':user.slug})}}">Retour Profil</a>
   </div>
 	<div class="box-constraint">
-  {# <p>Collaborateurs :
-  {% for collaborator in capsule.collaborators %}
-    {{collaborator.slug}}
-  {% endfor %}
-  </p> #}
     <main>
         <div class="bloc-container">
           {% if app.user is same as (user) or app.user in capsule.collaborators %}

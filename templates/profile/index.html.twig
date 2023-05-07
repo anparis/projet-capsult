@@ -4,12 +4,12 @@
 {% endblock %}
 
 {% block body %}
-	{{ include('partials/_nav.html.twig') }}
 	<div class="profile-wrapper m-a">
 		<h1>Les capsules de {{ user.username }}</h1>
     {% if app.user is same as user %}
-		<a href="{{path('profile_add_capsule', {'id':user.id})}}">+ Ajouter une capsule</a>
-    {{ include('profile/_delete_form.html.twig')}}
+		<a class="add-btn l-btn br-black br-r5 height-fc flex width-fc" href="{{path('profile_add_capsule', {'id':user.id})}}">+ Ajouter une capsule</a>
+    <br>
+    {# {{ include('profile/_delete_form.html.twig')}} #}
     {% endif %}
 		<hr>
 		<div class="capsule-list flex-r flex-jc">
@@ -66,6 +66,7 @@
     <div class="capsule-collaboration">
       <h2>Vos capsules en collaboration</h2>
       <div class="capsule-group">
+      {% if app.user.capsulescollabs is not empty %}
       {% for capsule in app.user.capsulescollabs %}
         <div class="capsule br-r5 mg-5 pd-5 br-black {{capsule.collaboration ? "collab" : ""}}">
           <a class="capsule-title" href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
@@ -76,12 +77,13 @@
           <span>créateur : {{capsule.user.username}}</span>
         </div>
       {% endfor %}
+      {% else %}
+        <p>Vous n'avez collaboré avec aucun utilisateur.</p>
+      {% endif %}
     </div>
     {% endif %}
     </div>
 		</div>
 	</div>
-
-  {{ include('partials/_footer.html.twig') }}
 
 {% endblock %}

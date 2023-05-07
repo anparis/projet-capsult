@@ -1,17 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-<h2>Bienvenue sur l'espace explorable</h2>
-
-{% for capsule in explorable_capsules %}
-  <div class="capsule br-r5 mg-5 pd-5 br-black {{capsule.collaboration ? "collab" : ""}}">
-    <a class="capsule-title" href="{{path('capsule_index', {'slug_user' : capsule.user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
-    {{ include ('capsule/_status.html.twig')}}
-    <br>
-    <span>{{(capsule.connections | length)}} blocs - {{capsule.updatedAtFormatted}}</span>
-    <br>
-    <span>créateur : {{capsule.user.username}}</span>
-  </div>
-{% endfor %}
+  <main id="explorable-index">
+    <h1>Bienvenue sur l'espace explorable</h1>
+    <section class="open-capsules-list">
+      <ul class="flex-r flex-center gap-10">
+      {% for capsule in explorable_capsules %}
+      <li class="capsule br-r5 mg-5 br-black {{capsule.collaboration ? " collab" : " "}}">
+          <div class="flex-r gap-5">
+            <a href="{{path('capsule_index', {'slug_user' : capsule.user.slug,'slug_capsule' : capsule.slug})}}">
+              <h2 class="capsule-title">{{capsule.title}}</h2>
+              <p class="capsule-meta d-ib br-r10 br-black pd-5">{{(capsule.connections | length)}} blocs</p>
+              <p class="capsule-meta d-ib br-r10 br-black pd-5"> {{capsule.updatedAtFormatted}}</p>
+            </a>
+            {{ include ('capsule/_status.html.twig')}}
+          </div>
+          <a href="{{path('profile_index', {'slug':app.user.slug})}}">{{capsule.user.username}}</a>
+      </li>
+      {% endfor %}
+      </ul>
+    </section>
+    <div class="explore-pagination">
+    {{ knp_pagination_render(explorable_capsules)}}
+    </div>
+  </main>
 {% endblock %}

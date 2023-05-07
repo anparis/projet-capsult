@@ -9,6 +9,7 @@ use App\Form\CapsuleType;
 use App\Repository\CapsuleRepository;
 use App\Repository\ConnectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -196,15 +197,16 @@ class CapsuleController extends AbstractController
     ]);
   }
 
+  //Render the list of all capsules that are public and set to explore by user
   #[Route('/explore/capsules', name: 'app_explore')]
-  public function capsules(CapsuleRepository $capsuleRepository): Response
+  public function capsules(CapsuleRepository $capsuleRepository, PaginatorInterface $paginator, Request $request): Response
   {
-    
+    $explorableCapules = $capsuleRepository->findExplorableCapsules();
+
     return $this->render('capsule/list_explorable_capsules.html.twig', [
-      'explorable_capsules' => $capsuleRepository->findExplorableCapsules()
+      'explorable_capsules' => $paginator->paginate($explorableCapules, $request->query->getInt('page',1), 5)
     ]);
   }
-
 
   // Add or remove the Capsule exploration
   #[Route('/explore/capsule/{id}', name: 'capsule_explore')]

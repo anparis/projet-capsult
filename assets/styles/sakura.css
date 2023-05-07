@@ -16,8 +16,10 @@ body {
   line-height: 1.618;
   /* color: #4a4a4a; */
   margin: auto;
-  background-color: #f9f9f9;
+  background-color: #fff9f4;
+
 }
+
 
 @media (max-width: 684px) {
   body {
@@ -36,8 +38,7 @@ h4,
 h5,
 h6 {
   line-height: 1.1;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-family: 'Crimson Pro', serif;
   font-weight: 700;
   margin-top: 3rem;
   margin-bottom: 1.5rem;
@@ -45,6 +46,13 @@ h6 {
   word-wrap: break-word;
   -ms-word-break: break-all;
   word-break: break-word;
+}
+
+/*  */
+/* FONT FAMILY */
+/*  */
+a.capsule-title{
+  font-family: 'Crimson Pro', serif;
 }
 
 h1 {
@@ -236,7 +244,6 @@ input {
   color: #4a4a4a;
   padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */
   margin-bottom: 10px;
-  /* background-color: #f1f1f1; */
   border: 1px solid #f1f1f1;
   border-radius: 4px;
   box-shadow: none;
