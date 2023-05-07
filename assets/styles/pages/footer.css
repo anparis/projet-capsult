@@ -1,0 +1,36 @@
+footer {
+  background-color: var(--dark-color);
+  color: var(--gray-1);
+  text-align: center;
+  padding: 3% 10%;
+  width: 100%;
+  overflow: hidden;
+}
+
+footer > * {
+  margin-bottom: 15px;
+}
+.terms a:visited {
+  color: var(--gray-2);
+}
+footer .icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3%;
+}
+footer .icons a {
+  border-radius: 30px;
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  width: 30px;
+  font-size: 15px;
+  text-align: center;
+  border: 1.5px solid var(--gray-2);
+}
+footer p.terms {
+  display: flex;
+  justify-content: center;
+  gap: 3%;
+}

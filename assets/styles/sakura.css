@@ -14,8 +14,8 @@ html {
 body {
   font-size: 1.8rem;
   line-height: 1.618;
-  margin: auto;
   /* color: #4a4a4a; */
+  margin: auto;
   background-color: #f9f9f9;
 }
 
@@ -100,7 +100,6 @@ a:hover {
 }
 
 ul {
-  margin-top: 0px;
   padding: 0;
   list-style: none;
 }

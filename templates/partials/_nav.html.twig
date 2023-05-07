@@ -1,21 +1,37 @@
-<nav>
-	<ul>
-		{% if app.user %}
-			<li>
-				<a href="{{path('app_logout')}}">Se déconnecter</a>
-			</li>
-		{% else %}
-			<li>
-				<a href="{{path('app_register')}}">S'inscrire</a>
-			</li>
-			<li>
-				<a href="{{path('app_login')}}">Se connecter</a>
-			</li>
-			<li>
-				<a href="#">À propos</a>
-			</li>
-
-		{% endif %}
-
+<header class="header">
+	<nav class="navbar">
+		<a href="{{path('app_home')}}" class="nav-logo">
+    <img id="logo" src="{{asset('/logos/site-logo.svg')}}" alt="Logo du site, logo style pixel représentant une capsule avec un livre à l'intérieur"</img>
+	</a>
+	<ul class="nav-menu">
+  <li class="nav-item">
+			<a href="{{path('app_explore')}}" id="nav-link">Explorer les capsules</a>
+		</li>
+    {% if app.user %}
+    <li class="nav-item">
+			<a href="{{path('profile_index', {'slug':app.user.slug})}}" id="nav-link">Profil</a>
+		</li>
+    <li class="nav-item">
+      <a href="{{path('app_logout')}}" id="nav-link">Se déconnecter</a>
+    </li>
+    {% else %}
+		<li class="nav-item">
+			<a href="{{path('app_register')}}" id="nav-link">S'inscrire</a>
+		</li>
+		<li class="nav-item">
+			<a href="{{path('app_login')}}" id="nav-link">Se connecter</a>
+		</li>
+		<li class="nav-item">
+			<a href="#" id="nav-link">À propos</a>
+		</li>
+		<li class="nav-item">
+			<a href="#" id="nav-link">Contact</a>
+		</li>
+    {% endif %} 
 	</ul>
-</nav>
+	<div class="hamburger">
+		<span class="bar"></span>
+		<span class="bar"></span>
+		<span class="bar"></span>
+	</div>
+</nav></header>

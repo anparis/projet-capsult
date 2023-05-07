@@ -2,12 +2,32 @@
   padding: 10px 20px;
 }
 
+.capsule-list{
+  gap: 10%;
+  margin: 5% 0;
+}
+
+.capsule-list h2{
+  font-size: 1.4em;
+  font-weight: 400;
+}
+
 .capsule{
-  justify-content: space-evenly;
+  background-color: var(--light-brown);
+}
+
+.capsule-title{
+  font-size: 1.6em;
+  padding-right: 10px;
+}
+
+.capsule-group{
+  display: flex;
+  flex-direction: column;
 }
 
 @media (min-width: 1300px){
   .profile-wrapper{
-    max-width: 1260px;
+    max-width: 1360px;
   }
 }

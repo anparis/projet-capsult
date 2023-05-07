@@ -23,20 +23,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const likeHidden = document.querySelector('button.favorite');
   const exploreHidden = document.querySelector('button.explore-btn');
   const detailsElement = document.querySelector('button.btn-details');
+  // const hamburger = document.querySelector(".hamburger");
+  // const navMenu = document.querySelector(".nav-menu");
+  // const navLink = document.querySelectorAll(".nav-link");
 
-  if(likeElement){
+  if (likeElement) {
     new Like(likeElement);
   }
-  
-  if(statusElement){
+
+  if (statusElement) {
     new Status(statusElement);
   }
 
-  if(exploreElement){
+  if (exploreElement) {
     new Explore(exploreElement)
   }
 
-  if(likeHidden){
+  if (likeHidden) {
     const listOfLikes = document.querySelector(".listOfLikes");
 
     document.addEventListener('click', (event) => {
@@ -47,12 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    likeHidden.addEventListener('click', function() {
+    likeHidden.addEventListener('click', function () {
       listOfLikes.style.display = 'block';
     });
   }
 
-  if(exploreHidden){
+  if (exploreHidden) {
     const exploreWrapper = document.querySelector(".explore-wrapper");
 
     document.addEventListener('click', (event) => {
@@ -63,12 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    exploreHidden.addEventListener('click', function() {
+    exploreHidden.addEventListener('click', function () {
       exploreWrapper.style.display = 'block';
     });
   }
 
-  if(detailsElement){
+  if (detailsElement) {
     const middleInfo = document.querySelector(".middle-info");
     const svg = document.querySelector("svg.rotate");
     let isRotated = true;
@@ -85,6 +88,20 @@ document.addEventListener('DOMContentLoaded', () => {
         isRotated = true;
       }
     });
+  }
 
+  if(hamburger){
+    const mobileMenu = () => {
+      hamburger.classList.toggle("active")
+      navMenu.classList.toggle("active")
+    }
+  
+    const closeMenu = () => {
+      hamburger.classList.remove("active")
+      navMenu.classList.remove("active")
+    }
+
+    hamburger.addEventListener("click", mobileMenu);
+    navLink.forEach((l) => l.addEventListener("click", closeMenu));
   }
 })

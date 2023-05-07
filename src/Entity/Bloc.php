@@ -30,7 +30,7 @@ class Bloc
   private ?string $description = null;
 
   #[ORM\Column(type: Types::TEXT, nullable: true)]
-  #[Assert\NotBlank]
+  // #[Assert\NotBlank]
   private ?string $content = null;
 
   #[ORM\Column(length: 20)]
@@ -44,13 +44,14 @@ class Bloc
   private ?Image $image = null;
 
   #[ORM\ManyToOne(inversedBy: 'blocs')]
-  #[ORM\JoinColumn(nullable: true)]
+  #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
   private ?Capsule $capsule = null;
 
   #[ORM\OneToMany(mappedBy: 'bloc', targetEntity: Connection::class)]
   private Collection $connections;
 
   #[ORM\ManyToOne(inversedBy: 'blocs')]
+  #[ORM\JoinColumn(nullable: true)]
   private ?User $user = null;
 
   public function __construct()

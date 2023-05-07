@@ -7,6 +7,8 @@ use App\Entity\Capsule;
 use App\Form\CapsuleType;
 use Doctrine\ORM\EntityManager;
 use App\Repository\CapsuleRepository;
+use App\Repository\ConnectionRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,4 +68,29 @@ class ProfileController extends AbstractController
       'capsule' => null
     ]);
   }
+
+  #[Route('/{id}/delete-user', name: 'app_user_delete', methods: ['POST'])]
+  #[Security("is_granted('ROLE_USER') and user === user")]
+  public function deleteUser(Request $request, User $user, UserRepository $userRepository, ConnectionRepository $connectionRepository): Response
+  {
+    if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+      
+      foreach ($user->getBlocs() as $bloc) {
+        $user->removeBloc($bloc);
+      }
+
+      $userRepository->remove($user, true);
+
+      $request->getSession()->invalidate();
+      $this->container->get('security.token_storage')->setToken(null);
+
+      return $this->redirectToRoute('app_home');
+    }
+  
+    return $this->redirectToRoute('profile_index', [
+      'slug' => $this->getUser()->getSlug(),
+    ]);
+  }
+
 }
+

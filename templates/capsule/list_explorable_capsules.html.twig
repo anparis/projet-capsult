@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h2>Bienvenue sur l'espace explorable</h2>
+
+{% for capsule in explorable_capsules %}
+  <div class="capsule br-r5 mg-5 pd-5 br-black {{capsule.collaboration ? "collab" : ""}}">
+    <a class="capsule-title" href="{{path('capsule_index', {'slug_user' : capsule.user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
+    {{ include ('capsule/_status.html.twig')}}
+    <br>
+    <span>{{(capsule.connections | length)}} blocs - {{capsule.updatedAtFormatted}}</span>
+    <br>
+    <span>créateur : {{capsule.user.username}}</span>
+  </div>
+{% endfor %}
+{% endblock %}

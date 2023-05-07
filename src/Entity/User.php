@@ -218,6 +218,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     return $this;
   }
 
+  public function removeCapsulesLiked(Capsule $capsuleLiked): self
+  {
+    if ($this->capsules_liked->removeElement($capsuleLiked)) {
+      $capsuleLiked->removeCollaborator($this);
+    }
+
+    return $this;
+  }
+
   /**
    * @return Collection<int, Capsule>
    */

@@ -97,7 +97,6 @@ class CapsuleController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       $capsuleRepository->save($capsule, true);
-
       return $this->redirectToRoute(
         'capsule_index',
         [
@@ -196,6 +195,16 @@ class CapsuleController extends AbstractController
       'status_fr' => 'statut > ouverte'
     ]);
   }
+
+  #[Route('/explore/capsules', name: 'app_explore')]
+  public function capsules(CapsuleRepository $capsuleRepository): Response
+  {
+    
+    return $this->render('capsule/list_explorable_capsules.html.twig', [
+      'explorable_capsules' => $capsuleRepository->findExplorableCapsules()
+    ]);
+  }
+
 
   // Add or remove the Capsule exploration
   #[Route('/explore/capsule/{id}', name: 'capsule_explore')]

@@ -1,13 +1,18 @@
 @import url(pages/bloc_details.css);
 @import url(pages/capsule_blocks.css);
 @import url(pages/profile.css);
+@import url(pages/header.css);
+@import url(pages/footer.css);
+@import url(pages/home.css);
+@import url(pages/form.css);
 
 :root {
   --bloc-color: #F1F1F1;
   --gray-1: #E1E1E1;
   --gray-2: #D9D9D9;
   --light-color: #ffffff;
-  --dark-color: hsl(0, 0%, 13%);
+  --dark-color: #4f3416;
+  --light-brown: #e3d5c5;
   --add-color: hsl(105, 72%, 77%);
   --info-color: #AFB7FA;
   --like-color: #C64B47;
@@ -66,6 +71,10 @@
 
 .bg-gray2{
   background-color: var(--gray-2);
+}
+
+.ta-center{
+  text-align: center;
 }
 
 /* FLEX */

@@ -10,10 +10,10 @@
 
 {% block body %}
   <section class="top-bar flex-r">
+  <a href="{{path('app_home')}}">
     <img class="site-logo" src="{{asset('/logos/site-logo.svg')}}" alt="Logo du site, logo style pixel représentant une capsule avec un livre à l'intérieur">
-
+    </a>
     <div class="controls-wrapper flex-r jc-sb f-2 flex-center">
-
     <div class="explore-control hidden">
         <button class="explore-btn br l-btn control-color" data-action="explore">explorer</button>
         {{ include ('capsule/_explore.html.twig')}}
@@ -120,7 +120,7 @@
                 </div>
                 {% elseif bloc['bloc'].type is same as ("Image") %}
                 <div class="bloc-img">
-                  <img src="{{ uploaded_asset(bloc['bloc'].image.nomFichier) | imagine_filter('my_thumb') }}" alt="{{ bloc['bloc'].title ? loc['bloc'].title : 'uploaded image'}}" loading="lazy">
+                  <img src="{{ uploaded_asset(bloc['bloc'].image.nomFichier) | imagine_filter('my_thumb') }}" alt="{{ bloc['bloc'].title ? bloc['bloc'].title : 'uploaded image'}}" loading="lazy">
                 </div>
                 {% else %}
                 <div class="bloc-link">

@@ -3,7 +3,8 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-
+	{{ include('partials/_nav.html.twig') }}
+<main id="login">
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -26,4 +27,5 @@
         Se connecter
     </button>
 </form>
+</main>
 {% endblock %}

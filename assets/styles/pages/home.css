@@ -1,0 +1,156 @@
+
+/*  */
+/* first section */
+/*  */
+.landing-page_description {
+  gap: 30px;
+  padding: 0 3% 80px 3%;
+}
+
+@media (min-width:900px){
+  .landing-page_description {
+    height: 80vh;
+    padding: 0 3%;
+  }
+  div.left{
+    width: 50%;
+  }
+  .landing-page_description{
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.landing-page_description a#connection-btn {
+  background-color: rgb(65, 147, 185);
+  color: white;
+  cursor: pointer;
+  padding: 10px 1.2rem;
+  border-radius: 2rem;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+}
+
+.left{
+  width: 100%;
+}
+
+.picture{
+  flex: 1 1 400px;
+}
+
+#hourglass{
+  border-radius: 5px;
+}
+
+/*  */
+/* second section */
+/*  */
+.products-features{
+  padding-bottom: 80px;
+}
+
+.products-features .card-container > * {
+  min-width: 315px;
+  max-width: 315px;
+  height: 315px;
+  aspect-ratio: 1 / 1;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  margin: 10px;
+  transition: all 0.4s ease-out 0s;
+  border-radius: 6px;
+  font-size: 1.3em;
+  text-align: center;
+}
+
+.card-container .bloc-texte{
+  padding: 30px;
+}
+
+.card-container .bloc-image{
+  border-radius: 6px;
+  background: url(../../../public/img/blade_runner_2049.jpeg) center;
+  background-size: cover;
+}
+
+.bloc-image p{
+  color: white;
+}
+
+.card-container .bloc-lien img{
+  border-radius: 6px;
+  width: 70%;
+}
+
+.card-container > *:hover {
+  transform: translateY(-10px);
+}
+
+.bloc-lien p{
+  margin: inherit;
+}
+
+
+/*  */
+/* third section */
+/*  */
+.get-started {
+  position: relative;
+  padding: 120px 0px;
+  color: var(--light-color);
+}
+
+.get-started::before {
+  content: "";
+  background: url(../../../public/img/plate-6-preview.jpeg) no-repeat fixed
+    center;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  filter: brightness(50%);
+  z-index: -1;
+}
+
+.get-started .text-started a.start-button {
+  background-color: transparent;
+  border: 1px solid white;
+  color: inherit;
+  padding: 10px 30px;
+}
+
+/*  */
+/* fourth section */
+/*  */
+.clients{
+  margin: 40px 0;
+}
+.swiper{
+  width: 100%;
+}
+
+.img-icon{
+  margin: auto;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.swiper-slide figure {
+  margin-bottom: 30px;
+}
+.swiper-slide img {
+  border-radius: 50%;
+}
+
+#pagination{
+  position: relative;
+}
