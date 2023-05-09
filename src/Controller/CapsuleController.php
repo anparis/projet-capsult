@@ -6,8 +6,10 @@ use App\Entity\Bloc;
 use App\Entity\User;
 use App\Entity\Capsule;
 use App\Form\CapsuleType;
+use App\Repository\BlocRepository;
 use App\Repository\CapsuleRepository;
 use App\Repository\ConnectionRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,11 +79,10 @@ class CapsuleController extends AbstractController
   #[ParamConverter('bloc', options: ['mapping' => ['id' => 'id']])]
   #[ParamConverter('user', options: ['mapping' => ['user_slug' => 'slug']])]
   #[ParamConverter('capsule', options: ['mapping' => ['capsule_slug' => 'slug']])]
-  public function userConnections(Bloc $bloc, User $user, Capsule $capsule): Response
+  public function userConnections(Bloc $bloc, User $user, Capsule $capsule, CapsuleRepository $cr): Response
   {
-
     return $this->render('connection/index.html.twig', [
-      'capsules' => $user->getCapsules(),
+      'capsules' => $cr->getNonConnectedCapsules($bloc, $user),
       'current_capsule' => $capsule,
       'bloc' => $bloc,
       'user' => $user

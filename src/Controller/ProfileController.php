@@ -21,12 +21,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class ProfileController extends AbstractController
 {
   #[Route('/{slug}', name: 'profile_index')]
-  public function index(User $user = null, EntityManagerInterface $entityManager): Response
+  public function index(User $user = null, CapsuleRepository $cr): Response
   {
     if (!$user) {
       return $this->redirectToRoute('app_home');
     }
-    $capsules = $entityManager->getRepository(Capsule::class)->findBy(['user' => $user->getId()], ['updated_at' => 'DESC']);
+    $capsules = $cr->findBy(['user' => $user->getId()], ['updated_at' => 'DESC']);
 
     if (!empty($capsules)) {
       $allCapsules = array_merge($capsules, $user->getCapsulesCollabs()->toArray());
@@ -38,7 +38,9 @@ class ProfileController extends AbstractController
 
     return $this->render('profile/index.html.twig', [
       'user' => $user,
-      'capsules' => $capsules ? $allCapsules : null
+      'capsules' => $capsules ? $allCapsules : null,
+      'sealedCapsules' => empty($cr->findSealedCapsules()) ? 0 : 1,
+      'openCapsules' => empty($cr->findPublicCapsules()) ? 0 : 1
     ]);
   }
 

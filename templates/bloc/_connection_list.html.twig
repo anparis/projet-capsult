@@ -5,12 +5,14 @@
 		capsules :
 	</p>
 	<hr>
-	<div class="connection-list">
+	<ul class="connection-list">
 		{% for connection in bloc.connections %}
+    <li>
 			<a class="mg-5 pd-5 br-r5 flex-r gap-10" href="{{path('capsule_index', {'slug_user': connection.capsule.user.slug, 'slug_capsule': connection.capsule.slug})}}">
 				<span>{{ connection.capsule.title }}</span>
 			  <span>par {{connection.capsule.user.username}}</span>
 			</a>
+    </li>
 		{% endfor %}
-	</div>
+	</ul>
 </div>

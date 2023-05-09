@@ -12,77 +12,99 @@
     {# {{ include('profile/_delete_form.html.twig')}} #}
     {% endif %}
 		<hr>
-		<div class="capsule-list flex-r flex-jc">
+		<div class="capsule-list flex-r">
       <div class="capsule-public">
-       {% if app.user is same as user %}
-		  <h2>Vos capsules publiques</h2>
-      {% else %}
-      <h2>Capsules publiques</h2>
-      {% endif %}
-      <div class="capsule-group">
-			{% for capsule in capsules %}
-        {% if capsule.isopen %}
-        {% if app.user is same as capsule.user or app.user in capsule.collaborators %}
-        <div class="capsule br-r5 mg-5 pd-5 br-black {{capsule.collaboration ? "collab" : ""}}">
-					<a class="capsule-title" href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
-          {{ include ('capsule/_status.html.twig')}}
-          <br>
-          <span>{{(capsule.connections | length)}} blocs - 
-            {{capsule.updatedAtFormatted}}
-          </span>
-          <br>
-          <span>créateur : {{capsule.user.username}}</span>
-				</div>
+        {% if app.user is same as user %}
+        <h2>Vos capsules publiques</h2>
         {% else %}
-          <div class="capsule br-r5 mg-5 pd-5 br-black">
-            <a class="capsule-title" href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
-            <p>{{(capsule.connections | length)}} blocs - {{capsule.updatedAtFormatted}}</p>
-          </div>
+        <h2>Capsules publiques</h2>
         {% endif %}
+        {% if openCapsules %}
+        <ul class="capsule-group flex-c flex-ac">
+        {% for capsule in capsules %}
+          {% if capsule.isopen %}
+            {% if app.user is same as capsule.user or app.user in capsule.collaborators %}
+            <li class="capsule br-r5 mg-10 br-black {{capsule.collaboration ? " collab" : " "}}">
+              <div class="flex-r gap-5">
+                <a href="{{path('capsule_index', {'slug_user' : capsule.user.slug,'slug_capsule' : capsule.slug})}}">
+                  <h2 class="capsule-title">{{capsule.title}}</h2>
+                  <p>par {{capsule.user.username}}</p>
+                  <p class="capsule-meta d-ib br-r10 br-black pd-5">{{(capsule.connections | length)}} blocs</p>
+                  <p class="capsule-meta d-ib br-r10 br-black pd-5"> {{capsule.updatedAtFormatted}}</p>
+                </a>
+                {{ include ('capsule/_status.html.twig')}}
+              </div>
+            </li>
+            {% else %}
+            <li class="capsule br-r5 mg-10 br-black {{capsule.collaboration ? " collab" : " "}}">
+              <div class="flex-r gap-5">
+                <a href="{{path('capsule_index', {'slug_user' : capsule.user.slug,'slug_capsule' : capsule.slug})}}">
+                  <h2 class="capsule-title">{{capsule.title}}</h2>
+                  <p>par {{capsule.user.username}}</p>
+                  <p class="capsule-meta d-ib br-r10 br-black pd-5">{{(capsule.connections | length)}} blocs</p>
+                  <p class="capsule-meta d-ib br-r10 br-black pd-5"> {{capsule.updatedAtFormatted}}</p>
+                </a>
+              </div>
+            </li>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        </ul>
+        {% else %}
+        <p>--</p>
         {% endif %}
-			{% endfor %}
       </div>
-    </div>
-    {% if app.user is same as user %}
-    <div class="capsule-private">
-      <h2>Vos capsules privées</h2>
-      <div class="capsule-group">
-      {% for capsule in capsules %}
-      {% if capsule.isopen == false %}
-        {% if app.user is same as capsule.user %}
-        <div class="capsule br-r5 mg-5 pd-5 br-black {{capsule.collaboration ? "collab" : ""}}">
-          <a class="capsule-title" href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
-          {{ include ('capsule/_status.html.twig')}}
-          <br>
-          <span>{{(capsule.connections | length)}} blocs - {{capsule.updatedAtFormatted}}</span>
-          <br>
-          <span>créateur : {{capsule.user.username}}</span>
-        </div>
-        {% endif %}
-      {% endif %}
-      {% endfor %}
-      </div>
-    </div>
-    <div class="capsule-collaboration">
-      <h2>Vos capsules en collaboration</h2>
-      <div class="capsule-group">
-      {% if app.user.capsulescollabs is not empty %}
-      {% for capsule in app.user.capsulescollabs %}
-        <div class="capsule br-r5 mg-5 pd-5 br-black {{capsule.collaboration ? "collab" : ""}}">
-          <a class="capsule-title" href="{{path('capsule_index', {'slug_user' : user.slug,'slug_capsule' : capsule.slug})}}">{{capsule.title}}</a>
-          {{ include ('capsule/_status.html.twig')}}
-          <br>
-          <span>{{(capsule.connections | length)}} blocs - {{capsule.updatedAtFormatted}}</span>
-          <br>
-          <span>créateur : {{capsule.user.username}}</span>
-        </div>
-      {% endfor %}
+      {% if app.user is same as user %}
+      <div class="capsule-private">
+        <h2>Vos capsules privées</h2>
+          <ul class="capsule-group flex-c flex-ac">
+          {% if sealedCapsules %}
+            {% for capsule in capsules %}
+              {% if capsule.isopen == false %}
+                {% if app.user is same as capsule.user %}
+                  <li class="capsule br-r5 mg-10 br-black width-fc {{capsule.collaboration ? " collab" : " "}}">
+                    <div class="flex-r gap-5">
+                      <a href="{{path('capsule_index', {'slug_user' : capsule.user.slug,'slug_capsule' : capsule.slug})}}">
+                        <h2 class="capsule-title">{{capsule.title}}</h2>
+                        <p>par {{capsule.user.username}}</p>
+                        <p class="capsule-meta d-ib br-r10 br-black pd-5">{{(capsule.connections | length)}} blocs</p>
+                        <p class="capsule-meta d-ib br-r10 br-black pd-5"> {{capsule.updatedAtFormatted}}</p>
+                      </a>
+                      {{ include ('capsule/_status.html.twig')}}
+                    </div>
+                  </li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </ul>
       {% else %}
-        <p>Vous n'avez collaboré avec aucun utilisateur.</p>
+      <p>--</p>
       {% endif %}
-    </div>
-    {% endif %}
-    </div>
+      </div>
+      <div class="capsule-collaboration">
+        <h2>Vos capsules en collaboration</h2>
+        <ul class="capsule-group flex-c flex-ac">
+          {% if app.user.capsulescollabs is not empty %}
+          {% for capsule in app.user.capsulescollabs %}
+          <li class="capsule br-r5 mg-10 br-black width-fc {{capsule.collaboration ? " collab" : " "}}">
+            <div class="flex-r gap-5">
+              <a href="{{path('capsule_index', {'slug_user' : capsule.user.slug,'slug_capsule' : capsule.slug})}}">
+                <h2 class="capsule-title">{{capsule.title}}</h2>
+                <p>par {{capsule.user.username}}</p>
+                <p class="capsule-meta d-ib br-r10 br-black pd-5">{{(capsule.connections | length)}} blocs</p>
+                <p class="capsule-meta d-ib br-r10 br-black pd-5"> {{capsule.updatedAtFormatted}}</p>
+              </a>
+              {{ include ('capsule/_status.html.twig')}}
+            </div>
+          </li>
+          {% endfor %}
+          {% else %}
+          <p>Vous n'avez collaboré avec aucun utilisateur.</p>
+          {% endif %}
+        </ul>
+        {% endif %}
+      </div>
+      </div>
 		</div>
 	</div>
 

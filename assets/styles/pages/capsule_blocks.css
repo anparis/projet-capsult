@@ -24,6 +24,10 @@ main {
   border: 1px solid var(--primary-border);
 }
 
+section.explore-wrapper > p{
+  margin: 10px 0;
+}
+
 a.explorable{
   background-color: var(--light-color);
   gap: 30px;
@@ -35,13 +39,13 @@ a.explorable{
 
 .listExplore{
   background-color: var(--light-color);
-  margin-top: 30px;
-}
+  }
 
 .listExplore > li:hover,
 a.explorable:hover{
   background-color: var(--gray-1);
   box-shadow: var(--hover-shadow);
+  border-radius: 5px;
 }
 
 
@@ -134,6 +138,22 @@ a.connection-container {
   width: 315px;
   height: 100%;
   border-bottom: 1px solid var(--gray-2);
+}
+
+a.connection{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+a.connection:hover{
+  background-color: var(--gray-1);
+  border-radius: 0 0 5px 5px;
+}
+
+a.connection img{
+  width: 15px;
 }
 
 /* BLOC TYPE  */

@@ -5,6 +5,7 @@
 .capsule-list{
   gap: 10%;
   margin: 10px 0;
+  justify-content: space-between  ;
 }
 
 .capsule-list h2{

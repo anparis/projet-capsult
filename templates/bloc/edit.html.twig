@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	<a href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">Retour à la Capsule</a>
+	<a class="pd-5 mg-10 flex width-fc br-black br-r5" href="{{ path('capsule_index', {'slug_user':capsule.user.slug, 'slug_capsule':capsule.slug}) }}">{{capsule.title}}</a>
  <div class="bloc-detail-view">
   {% if not bloc.content %}
   <div class="split-pane">
@@ -24,7 +24,7 @@
        {% if bloc.capsule %}
       <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAtFormatted}}</p>
       {% else %}
-        <p>Bloc orphelin</p>
+      <p>Bloc orphelin</p>
       {% endif %}
       {{ include('bloc/_connection_list.html.twig') }}
     </div>

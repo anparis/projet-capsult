@@ -109,7 +109,7 @@
                   <p>{{ bloc['bloc'].content|striptags|length > 300 ? bloc['bloc'].content|striptags|slice(0,300) ~ '...' : bloc['bloc'].content }}</p>
                 </div>
                 {% elseif bloc['bloc'].type is same as ("Image") %}
-                <div class="bloc-img">
+                <div class="bloc-img" referrerpolicy="no-referrer">
                   <img src="{{ uploaded_asset(bloc['bloc'].image.nomFichier) | imagine_filter('my_thumb') }}" alt="{{ bloc['bloc'].title ? bloc['bloc'].title : 'uploaded image'}}" loading="lazy">
                 </div>
                 {% else %}
@@ -127,10 +127,10 @@
                 {% if bloc['bloc'].lien %}
                 </div>
                 {% endif %}
-                  {% if app.user %}
-                  <a class="connection" href="{{path('capsules_connection', {'user_slug':app.user.slug,'capsule_slug':capsule.slug, 'id':bloc['bloc'].id})}}">-> Connecter</a>
-                  {% else %}
-                  <a class="connection" href="{{path('app_register')}}">-> Connecter</a>
+                {% if app.user %}
+                <a class="connection" href="{{path('capsules_connection', {'user_slug':app.user.slug,'capsule_slug':capsule.slug, 'id':bloc['bloc'].id})}}"><img src="{{asset('logos/arrow-icon.svg')}}" alt="Logo flèche"> Connecter</a>
+                {% else %}
+                <a class="connection" href="{{path('app_register')}}"><img src="{{asset('logos/arrow-icon.svg')}}" alt="Logo flèche"> Connecter</a>
                 {% endif %}
                 </div>
                 {% if bloc['bloc'].capsule %}

@@ -23,9 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const likeHidden = document.querySelector('button.favorite');
   const exploreHidden = document.querySelector('button.explore-btn');
   const detailsElement = document.querySelector('button.btn-details');
-  // const hamburger = document.querySelector(".hamburger");
-  // const navMenu = document.querySelector(".nav-menu");
-  // const navLink = document.querySelectorAll(".nav-link");
+  const hamburger = document.querySelector(".hamburger");
+  const navMenu = document.querySelector(".nav-menu");
+  const navLink = document.querySelectorAll(".nav-link");
 
   if (likeElement) {
     new Like(likeElement);
