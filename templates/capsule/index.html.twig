@@ -21,19 +21,15 @@
         {{ include ('capsule/_explore.html.twig')}}
       </div>
       {% endif %}
-          {% if app.user is same as (user) %}
-          <div class="capsule-user">
-            <div class="inherit control-color">
-              <a class="title br-r5 br l-btn height-fc" href="{{path('capsule_edit',{'id':capsule.id})}}">
-                / {{capsule.title}}
-              </a>
-            </div>
+        {% if app.user is same as (user) %}
+        <div class="capsule-user">
+          <div class="inherit control-color">
+            <a class="title br-r5 br l-btn height-fc" href="{{path('capsule_edit',{'id':capsule.id})}}">
+              / {{capsule.title}}
+            </a>
           </div>
-          {% else %}
-          <p class="br-r5 br l-btn height-fc">
-            / {{capsule.title}}
-          </p>
-          {% endif %}
+        </div>        
+        {% endif %}
         {% if app.user is same as (user) %}
         <a class="add-btn l-btn br-black br-r5 height-fc" href="{{path('add_capsule', {'id':capsule.id})}}">
           <div class="plus-sign">
@@ -41,6 +37,7 @@
             + Nouvelle capsule
         </a>
         {% endif %}
+        
       </div>
     </section>
 
@@ -51,6 +48,9 @@
       </svg>
     </button>
     <section class="middle-info flex-c flex-center">
+      <p class="mg-0 br-r5 br pd-5 height-fc mg-5">
+          / {{capsule.title}}
+      </p>
       <p class="br-black br-r5 width-fc pd-5 font-s mg-0">par {{user.username}}</p>
       <div class="middle-info-top flex-r flex-center gap-10">
         {% if capsule.connections %}
