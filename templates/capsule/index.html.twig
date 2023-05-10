@@ -9,7 +9,7 @@
 {% block title %}Capsule index{% endblock %}
 
 {% block body %}
-  <section class="top-bar flex-r">
+  <section class="top-bar flex-r flex-jc">
     {% if app.user %}
     <div class="controls-wrapper flex-r jc-sb f-2 flex-center">
     {% else %}
@@ -22,14 +22,16 @@
       </div>
       {% endif %}
           {% if app.user is same as (user) %}
-          <div class="inherit control-color">
-          <a class="title br-r5 br l-btn height-fc" href="{{path('capsule_edit',{'id':capsule.id})}}">
-              /{{capsule.title}}
-          </a>
+          <div class="capsule-user">
+            <div class="inherit control-color">
+              <a class="title br-r5 br l-btn height-fc" href="{{path('capsule_edit',{'id':capsule.id})}}">
+                / {{capsule.title}}
+              </a>
+            </div>
           </div>
           {% else %}
           <p class="br-r5 br l-btn height-fc">
-            /{{capsule.title}}
+            / {{capsule.title}}
           </p>
           {% endif %}
         {% if app.user is same as (user) %}
@@ -49,14 +51,15 @@
       </svg>
     </button>
     <section class="middle-info flex-c flex-center">
+      <p class="br-black br-r5 width-fc pd-5 font-s mg-0">par {{user.username}}</p>
       <div class="middle-info-top flex-r flex-center gap-10">
-      {% if capsule.connections %}
-      {{ include ('capsule/_status.html.twig')}}
-      <div class="bloc-number br-black br-r5 width-fc pd-5 font-s mg-5 ">
-        {{(capsule.connections | length)}} blocs
-      </div>
-      {% endif %}
-      {{ include ('capsule/_like.html.twig')}}
+        {% if capsule.connections %}
+        {{ include ('capsule/_status.html.twig')}}
+        <div class="bloc-number br-black br-r5 width-fc pd-5 font-s mg-5 ">
+          {{(capsule.connections | length)}} blocs
+        </div>
+        {% endif %}
+        {{ include ('capsule/_like.html.twig')}}
       </div>
       {% if capsule.description %}
       <div class="description br-black br-r5 width-fc pd-5 font-s mg-5">
