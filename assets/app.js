@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const hamburger = document.querySelector(".hamburger");
   const navMenu = document.querySelector(".nav-menu");
   const navLink = document.querySelectorAll(".nav-link");
+  const navDropdowns = document.querySelectorAll('.nav-dropdown');
+  console.log(navDropdowns);
 
   if (likeElement) {
     new Like(likeElement);
@@ -104,4 +106,44 @@ document.addEventListener('DOMContentLoaded', () => {
     hamburger.addEventListener("click", mobileMenu);
     navLink.forEach((l) => l.addEventListener("click", closeMenu));
   }
+
+  if(navDropdowns){
+    // If a link has a dropdown, add sub menu toggle.
+    document.querySelectorAll('nav ul li a:not(:only-child)').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        // Toggle the visibility of the sibling nav-dropdown
+        const dropdown = this.nextElementSibling;
+        dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+
+        // Close other dropdowns
+        navDropdowns.forEach(function(navDropdown) {
+          if (navDropdown !== dropdown) {
+            navDropdown.style.display = 'none';
+          }
+        });
+
+        e.stopPropagation();
+      });
+    });
+
+    // Clicking away from dropdown will remove the dropdown class
+    document.addEventListener('click', function() {
+      navDropdowns.forEach(function(navDropdown) {
+        navDropdown.style.display = 'none';
+      });
+    });
+
+    // Toggle open and close nav styles on click
+    const navToggle = document.getElementById('nav-toggle');
+    const navList = document.querySelector('nav ul');
+
+    navToggle.addEventListener('click', function() {
+      if (navList.style.display === 'block') {
+        navList.style.display = 'none';
+      } else {
+        navList.style.display = 'flex';
+      }
+    });
+  }
+
 })

@@ -75,6 +75,14 @@ a.connection-container:hover{
 
 .listOfLikes {
   display: none;
+  z-index: 99;
+  border: 1px solid var(--primary-border);
+  background-color: var(--gray-2);
+  margin: 0;
+  position: absolute;
+  width: 200px;
+  bottom: 0;
+  bottom: calc(100% - 8px);;
 }
 
 /*  */

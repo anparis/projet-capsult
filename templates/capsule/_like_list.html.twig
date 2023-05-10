@@ -1,6 +1,6 @@
 {% if app.user %}
   <div class="like-wrapper">
-    <ul class="listOfLikes">
+    <ul class="listOfLikes pd-10 br-r5">
     {% for capsuleLiked  in app.user.capsulesLiked %}
       <li>
         <a href="{{path('capsule_index', {'slug_user':capsuleLiked.user.slug, 'slug_capsule':capsuleLiked.slug})}}">{{capsuleLiked.title}}</a>

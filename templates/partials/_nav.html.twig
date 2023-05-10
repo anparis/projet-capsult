@@ -5,7 +5,7 @@
 	</a>
 	  <ul class="nav-menu">
     {% if app.user %}
-    <li class="nav-item br-light br-r5">
+    <li id="nav-profile" class="hidden nav-item br-light br-r5">
 			<a class="pd-5 flex-r flex-ac gap-10" href="{{path('profile_index', {'slug':app.user.slug})}}" id="nav-link">Profil</a>
 		</li>
     {% endif %}
@@ -16,26 +16,29 @@
       </a>
 		</li>
     {% if app.user %}
-    <li class="nav-item br-light br-r5">
+    <li id="nav-logout" class="hidden nav-item br-light br-r5">
       <a href="{{path('app_logout')}}" id="nav-link" class="pd-5 flex-r flex-ac gap-10">
         <svg id="logout-logo" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="white" d="M12 12q-.425 0-.713-.288T11 11V3q0-.425.288-.713T12 2q.425 0 .713.288T13 3v8q0 .425-.288.713T12 12Zm0 9q-1.875 0-3.513-.713t-2.85-1.924q-1.212-1.213-1.924-2.85T3 12q0-1.525.5-2.963T4.95 6.4q.275-.35.7-.338t.75.338q.275.275.25.675t-.275.75Q5.7 8.725 5.35 9.8T5 12q0 2.925 2.038 4.963T12 19q2.925 0 4.963-2.038T19 12q0-1.15-.338-2.238T17.6 7.775q-.25-.325-.275-.713t.25-.662q.3-.3.725-.313t.7.313q.975 1.2 1.488 2.625T21 12q0 1.875-.713 3.513t-1.924 2.85q-1.213 1.212-2.85 1.925T12 21Z"/></svg>
         <span>Se déconnecter</span>
       </a>
     </li>
-    <li class="nav-item">
+    <li id="nav-delete" class="hidden nav-item">
       {{ include('profile/_delete_form.html.twig')}}
     </li>
-    <li class="nav-item user br-round height-fc">
-      <a href="#!" class="br-round height-fc pd-5">{{ app.user.initials }}</a>
-      <ul class="nav-dropdown hidden">
-        <li>
-          <a href="#!">Web Design</a>
+    <li id="nav-toggle" class="height-fc">
+      <a href="#!" class="nav-item user br-round height-fc pd-10">{{ app.user.initials }}</a>
+      <ul class="nav-dropdown">
+        <li class="nav-item br-light br-r5">
+			    <a class="pd-5 flex-r flex-ac gap-10" href="{{path('profile_index', {'slug':app.user.slug})}}" id="nav-link">Profil</a>
+		    </li>
+        <li class="nav-item br-light br-r5">
+          <a href="{{path('app_logout')}}" id="nav-link" class="pd-5 flex-r flex-ac gap-10">
+            <svg id="logout-logo" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="white" d="M12 12q-.425 0-.713-.288T11 11V3q0-.425.288-.713T12 2q.425 0 .713.288T13 3v8q0 .425-.288.713T12 12Zm0 9q-1.875 0-3.513-.713t-2.85-1.924q-1.212-1.213-1.924-2.85T3 12q0-1.525.5-2.963T4.95 6.4q.275-.35.7-.338t.75.338q.275.275.25.675t-.275.75Q5.7 8.725 5.35 9.8T5 12q0 2.925 2.038 4.963T12 19q2.925 0 4.963-2.038T19 12q0-1.15-.338-2.238T17.6 7.775q-.25-.325-.275-.713t.25-.662q.3-.3.725-.313t.7.313q.975 1.2 1.488 2.625T21 12q0 1.875-.713 3.513t-1.924 2.85q-1.213 1.212-2.85 1.925T12 21Z"/></svg>
+            <span>Se déconnecter</span>
+          </a>
         </li>
-        <li>
-          <a href="#!">Web Development</a>
-        </li>
-        <li>
-          <a href="#!">Graphic Design</a>
+        <li class="nav-item">
+          {{ include('profile/_delete_form.html.twig')}}
         </li>
       </ul>
     </li>

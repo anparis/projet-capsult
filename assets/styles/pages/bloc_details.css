@@ -85,3 +85,7 @@
   background-color: var(--user-avatar);
   margin-bottom: 10px;
 }
+
+#bloc_description{
+  height: 200px;
+}

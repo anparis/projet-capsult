@@ -74,9 +74,25 @@ a#nav-link:hover{
   order: 1;
 }
 
+.nav-dropdown {
+  position: absolute;
+  display: none;
+  z-index: 99;
+  right: 10px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+  color: white;
+  background-color: var(--dark-color);
+  padding: 20px 10px;
+  border-radius: 5px;
+}
+
+.nav-dropdown > *{
+  margin: 20px 0;
+}
+
 @media only screen and (max-width: 768px) {
   .nav-menu {
-    position: fixed;
+    position: absolute;
     left: -100%;
     top: 5rem;
     flex-direction: column;
@@ -88,10 +104,30 @@ a#nav-link:hover{
     box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
   }
   
+  .nav-dropdown {
+    display: block;
+  }
+
+  #nav-logout{
+    display: block;
+  }
+
+  #nav-profile{
+    display: block;
+  }
+  
+  #nav-delete{
+    display: block;
+  }
+
   .nav-menu.active {
     background-color: var(--dark-color);
     left: 0;
     z-index: 99;
+  }
+
+  .nav-menu.active a.user{
+    display: none;
   }
 
   .nav-item {
