@@ -1,4 +1,13 @@
 <form method="post" action="{{ path('app_connection_delete', {'user_id':app.user.id, 'capsule_id':capsule.id ,'bloc_id': bloc.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ bloc.id) }}">
-    <button class="btn">Supprimer</button>
+    <button class="btn d-btn">
+      <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M3.74658 5.36108V15.5694C3.74658 15.9453 4.01375 16.25 4.34333 16.25H11.5043C11.8338 16.25 12.101 15.9453 12.101 15.5694V5.36108H3.74658Z" stroke="black"/>
+        <path d="M14.886 4.58334H0.961914" stroke="black"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.53174 3.61111H9.31655V1.27778C9.31655 0.848223 9.10875 0.5 8.85241 0.5H6.99587C6.73954 0.5 6.53174 0.848223 6.53174 1.27778V3.61111Z" stroke="black"/>
+        <path d="M6.53223 8.08334V13.5278" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9.31641 8.08334V13.5278" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Supprimer
+    </button>
 </form>

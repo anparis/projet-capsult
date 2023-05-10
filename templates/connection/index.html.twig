@@ -8,12 +8,12 @@
   <a class="flex br-r5 br-black width-fc mg-5 pd-5" href="{{path('capsule_index', {'slug_capsule':current_capsule.slug, 'slug_user':current_capsule.user.slug})}}">Revenir à {{current_capsule.title}}</a>
   <section class="connection-wrapper m-a">
     <h2>Connexion</h2>
-    <p>Sélectionnez une capsule</p>
+    <p>Connectez le bloc à une de vos capsules</p>
     <ul class="connection-selection">
       {% for capsule in capsules %}
         {% if capsule.id != current_capsule.id %}
-        <li class="br-r5 br-black pd-10">
-          <a href="{{path('app_connection', {'slugUser': current_capsule.user.slug, 'slugCapsule': current_capsule.slug,'idCapsule':capsule.id, 'idBloc':bloc.id})}}">{{user.username}}  / {{capsule.title}}</a><br>
+        <li class="width-fc br-r5 br-black pd-10">
+          <a class="pd-10" href="{{path('app_connection', {'slugUser': current_capsule.user.slug, 'slugCapsule': current_capsule.slug,'idCapsule':capsule.id, 'idBloc':bloc.id})}}">{{user.username}}  / {{capsule.title}}</a><br>
         </li>
         {% endif %}
       {% endfor %}

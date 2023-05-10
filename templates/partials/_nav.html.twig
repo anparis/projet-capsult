@@ -1,31 +1,56 @@
 <header class="header">
 	<nav class="navbar">
-		<a href="{{path('app_home')}}" class="nav-logo">
+	<a href="{{path('app_home')}}" class="nav-logo">
     <img id="logo" src="{{asset('/logos/site-logo.svg')}}" alt="Logo du site, logo style pixel représentant une capsule avec un livre à l'intérieur"</img>
 	</a>
-	<ul class="nav-menu">
-  <li class="nav-item">
-			<a href="{{path('app_explore')}}" id="nav-link">Explorer les capsules</a>
+	  <ul class="nav-menu">
+    {% if app.user %}
+    <li class="nav-item br-light br-r5">
+			<a class="pd-5 flex-r flex-ac gap-10" href="{{path('profile_index', {'slug':app.user.slug})}}" id="nav-link">Profil</a>
+		</li>
+    {% endif %}
+    <li class="nav-item br-light br-r5">
+			<a class="pd-5 flex-r flex-ac gap-10" href="{{path('app_explore')}}" id="nav-link">
+        <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="white" d="m15 9l-3-9l-3 9l-9 3l9 3l3 9l3-9l9-3l-9-3M4 12l6-2l1 2H4m8 8l-2-6l2-1v7m0-16l2 6l-2 1V4m2 10l-1-2h7l-6 2m-5.3 3.3L5 19l1.7-3.7l1.6.5l.4 1.5m8.6-2L19 19l-3.7-1.7l.5-1.6l1.5-.4M6.7 8.7L5 5l3.7 1.7l-.5 1.5l-1.5.5m8.6-2L19 5l-1.7 3.7l-1.6-.5l-.4-1.5Z"/></svg>
+        <span>Explorer les capsules</span>
+      </a>
 		</li>
     {% if app.user %}
+    <li class="nav-item br-light br-r5">
+      <a href="{{path('app_logout')}}" id="nav-link" class="pd-5 flex-r flex-ac gap-10">
+        <svg id="logout-logo" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="white" d="M12 12q-.425 0-.713-.288T11 11V3q0-.425.288-.713T12 2q.425 0 .713.288T13 3v8q0 .425-.288.713T12 12Zm0 9q-1.875 0-3.513-.713t-2.85-1.924q-1.212-1.213-1.924-2.85T3 12q0-1.525.5-2.963T4.95 6.4q.275-.35.7-.338t.75.338q.275.275.25.675t-.275.75Q5.7 8.725 5.35 9.8T5 12q0 2.925 2.038 4.963T12 19q2.925 0 4.963-2.038T19 12q0-1.15-.338-2.238T17.6 7.775q-.25-.325-.275-.713t.25-.662q.3-.3.725-.313t.7.313q.975 1.2 1.488 2.625T21 12q0 1.875-.713 3.513t-1.924 2.85q-1.213 1.212-2.85 1.925T12 21Z"/></svg>
+        <span>Se déconnecter</span>
+      </a>
+    </li>
     <li class="nav-item">
-			<a href="{{path('profile_index', {'slug':app.user.slug})}}" id="nav-link">Profil</a>
-		</li>
-    <li class="nav-item">
-      <a href="{{path('app_logout')}}" id="nav-link">Se déconnecter</a>
+      {{ include('profile/_delete_form.html.twig')}}
+    </li>
+    <li class="nav-item user br-round height-fc">
+      <a href="#!" class="br-round height-fc pd-5">{{ app.user.initials }}</a>
+      <ul class="nav-dropdown hidden">
+        <li>
+          <a href="#!">Web Design</a>
+        </li>
+        <li>
+          <a href="#!">Web Development</a>
+        </li>
+        <li>
+          <a href="#!">Graphic Design</a>
+        </li>
+      </ul>
     </li>
     {% else %}
 		<li class="nav-item">
-			<a href="{{path('app_register')}}" id="nav-link">S'inscrire</a>
+			<a class="pd-5" href="{{path('app_register')}}" id="nav-link">S'inscrire</a>
 		</li>
 		<li class="nav-item">
-			<a href="{{path('app_login')}}" id="nav-link">Se connecter</a>
+			<a class="pd-5" href="{{path('app_login')}}" id="nav-link">Se connecter</a>
 		</li>
 		<li class="nav-item">
-			<a href="#" id="nav-link">À propos</a>
+			<a class="pd-5" href="#" id="nav-link">À propos</a>
 		</li>
 		<li class="nav-item">
-			<a href="#" id="nav-link">Contact</a>
+			<a class="pd-5" href="#" id="nav-link">Contact</a>
 		</li>
     {% endif %} 
 	</ul>

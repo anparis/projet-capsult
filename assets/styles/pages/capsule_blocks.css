@@ -48,6 +48,9 @@ a.explorable:hover{
   border-radius: 5px;
 }
 
+a.connection-container:hover{
+  filter: blur(5px);
+}
 
 /*  */
 /* USER */
@@ -117,7 +120,6 @@ svg.rotate{
 .bloc-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(335px, max-content));
-  padding: initial;
   justify-content: center;
 }
 

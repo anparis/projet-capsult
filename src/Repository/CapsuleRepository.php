@@ -92,7 +92,6 @@ class CapsuleRepository extends ServiceEntityRepository
       '
     )->setParameters(['user' => $user, 'bloc' => $bloc]);
 
-
     return $query->getResult();
   }
 

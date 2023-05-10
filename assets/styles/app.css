@@ -89,6 +89,9 @@
 .d-ib{
   display: inline-block;
 }
+.d-block{
+  display: block;
+}
 
 /* FLEX */
 .flex{
@@ -180,6 +183,10 @@
 
 .br-black{
   border: 1px solid var(--dark-color);
+}
+
+.br-light{
+  border: 1px solid var(--light-color);
 }
 
 /*  */

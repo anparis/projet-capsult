@@ -7,12 +7,16 @@
 	<hr>
 	<ul class="connection-list">
 		{% for connection in bloc.connections %}
-    <li>
-			<a class="mg-5 pd-5 br-r5 flex-r gap-10" href="{{path('capsule_index', {'slug_user': connection.capsule.user.slug, 'slug_capsule': connection.capsule.slug})}}">
+    <li class="width-fc br-r5 br-black pd-10 width-100">
+			<a class="pd-10 flex-r jc-sb " href="{{path('capsule_index', {'slug_user': connection.capsule.user.slug, 'slug_capsule': connection.capsule.slug})}}">
 				<span>{{ connection.capsule.title }}</span>
 			  <span>par {{connection.capsule.user.username}}</span>
 			</a>
     </li>
 		{% endfor %}
 	</ul>
+  {% if app.user %}
+  <a class="connection" href="{{path('capsules_connection', {'user_slug':app.user.slug,'capsule_slug':capsule.slug, 'id':bloc.id})}}"><img src="{{asset('logos/arrow-icon.svg')}}" alt="Logo flèche"> Connecter</a>
+  {% endif %}
+  
 </div>

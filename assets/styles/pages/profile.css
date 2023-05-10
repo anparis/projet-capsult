@@ -3,9 +3,9 @@
 }
 
 .capsule-list{
-  gap: 10%;
+  gap: 3vw;
   margin: 10px 0;
-  justify-content: space-between  ;
+  /* justify-content: space-between; */
 }
 
 .capsule-list h2{
@@ -20,7 +20,6 @@
 
 .capsule-title{
   font-size: 1.6em;
-  /* padding-right: 10px; */
 }
 
 .capsule-group{

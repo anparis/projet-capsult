@@ -10,22 +10,28 @@
 
 {% block body %}
   <section class="top-bar flex-r">
+    {% if app.user %}
     <div class="controls-wrapper flex-r jc-sb f-2 flex-center">
+    {% else %}
+    <div class="controls-wrapper flex-r f-2 flex-center">
+    {% endif %}
+      {% if app.user %}
       <div class="explore-control hidden">
         <button class="explore-btn br l-btn control-color" data-action="explore">explorer</button>
         {{ include ('capsule/_explore.html.twig')}}
       </div>
-      <div class="inherit control-color">
+      {% endif %}
           {% if app.user is same as (user) %}
+          <div class="inherit control-color">
           <a class="title br-r5 br l-btn height-fc" href="{{path('capsule_edit',{'id':capsule.id})}}">
               /{{capsule.title}}
           </a>
+          </div>
           {% else %}
-          <a class="br-r5 br l-btn height-fc" href="{{path('capsule_show',{'id':capsule.id})}}">
+          <p class="br-r5 br l-btn height-fc">
             /{{capsule.title}}
-          </a>
+          </p>
           {% endif %}
-        </div>
         {% if app.user is same as (user) %}
         <a class="add-btn l-btn br-black br-r5 height-fc" href="{{path('add_capsule', {'id':capsule.id})}}">
           <div class="plus-sign">
@@ -33,9 +39,6 @@
             + Nouvelle capsule
         </a>
         {% endif %}
-        {# <div class="user br-round height-fc">
-        <span>{{ user.initials }}</span>
-        </div> #}
       </div>
     </section>
 
@@ -135,12 +138,12 @@
                 </div>
                 {% if bloc['bloc'].capsule %}
                   {% if capsule.user.id == bloc['bloc'].capsule.user.id %}
-                    <p class="font-s pd-5">ajouté par {{bloc['bloc'].user.username}}</p>
+                    <p id="autor" class="font-s pd-5">ajouté par {{bloc['bloc'].user.username}}</p>
                   {% else %}
-                    <p class="font-s pd-5">connecté par {{bloc['bloc'].user.username}}</p>
+                    <p id="autor" class="font-s pd-5">connecté par {{bloc['bloc'].user.username}}</p>
                   {% endif %}
                 {% else %}
-                  <p class="font-s pd-5">connecté par {{app.user.username}}</p>
+                  <p id="autor" class="font-s pd-5">connecté par {{app.user.username}}</p>
                 {% endif %}
                 </div>
             {% endfor %}

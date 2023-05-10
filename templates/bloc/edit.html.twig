@@ -15,17 +15,24 @@
       {% endif %}
     </div>
   {% endif %}
-  
     {% if not bloc.content %}
     <div class="right-pane">
     {% endif %}
       {{ include('bloc/_form.html.twig') }}
     {% if not bloc.content %}
-       {% if bloc.capsule %}
-      <p>Bloc ajouté par <a href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.slug}}</a> le {{bloc.updatedAtFormatted}}</p>
+      {% if bloc.capsule %}
+      <a id="bloc-autor" class="d-block br-black br-r5 width-fc pd-5" href="{{path('profile_index', {'slug':bloc.capsule.user.slug})}}">{{bloc.capsule.user.username}}</a> 
+      <p class="flex-r gap-10 flex-ac br-black br-r5 width-fc pd-5">
+        <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9.99 0C4.47 0 0 4.256 0 9.5C0 14.744 4.47 19 9.99 19C15.52 19 20 14.744 20 9.5C20 4.256 15.52 0 9.99 0ZM10 17.1C5.58 17.1 2 13.699 2 9.5C2 5.301 5.58 1.9 10 1.9C14.42 1.9 18 5.301 18 9.5C18 13.699 14.42 17.1 10 17.1Z" fill="black"/>
+          <path d="M10.5 4.74997H9V10.45L14.25 13.4425L15 12.274L10.5 9.73747V4.74997Z" fill="black"/>
+        </svg>
+        <span>{{bloc.updatedAtFormatted}}</span>
+      </p>
       {% else %}
       <p>Bloc orphelin</p>
       {% endif %}
+      {{ include('bloc/_delete_form.html.twig') }}
       {{ include('bloc/_connection_list.html.twig') }}
     </div>
   </div>

@@ -3,19 +3,9 @@ section.connection-wrapper{
   height: 80vh;
 }
 
-.connection-selection{
-  display: flex;
-  flex-direction: column;
-  width: fit-content;
-  margin: auto;
-}
 
 .connection-selection > li:hover{
   background-color: var(--gray-1);
   box-shadow: var(--hover-shadow);
   border-radius: 5px;
-}
-
-.connection-selection li a{
-  
 }
